@@ -1,1 +1,94 @@
-/* You can add global styles to this file, and also import other style files */
+/* 1️⃣ Common Dropdown Styling */
+
+body {
+  background: #f1f8f4; /* soft greenish background complementing the header theme */
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.container-fluid {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+select.form-select {
+  appearance: none; /* Remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #f8f9fa; /* Light background */
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem; /* Rounded corners */
+  padding: 0.5rem 2.5rem 0.5rem 1rem; /* Space for custom icon */
+  font-size: 1rem;
+  color: #495057;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M70 100 L20 40 L120 40 Z' fill='%23666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+select.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+  background-color: #ffffff; /* Bright background on focus */
+}
+
+/* 2️⃣ Hover Effect */
+select.form-select:hover {
+  border-color: #80bdff;
+}
+
+/* 3️⃣ Remove default arrow for Safari */
+select.form-select::-ms-expand {
+  display: none;
+}
+
+/* General spacing & alignment */
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.form-check-label {
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+/* Make radio and checkbox bigger for better UX */
+.form-check-input {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+/* Optional: color customization */
+.form-check-input:checked {
+  background-color: #0d6efd; /* Bootstrap primary */
+  border-color: #0d6efd;
+}
+
+.btn-outline-primary {
+  border: 2px solid #0d6efd;
+  color: #0d6efd;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary.active {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-check .form-check-input {
+ 
+    border: 1px solid #0488e5 !important;
+}

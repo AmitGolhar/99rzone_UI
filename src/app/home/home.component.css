@@ -1,0 +1,41 @@
+.home-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.home-container .search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.home-container .search-bar input {
+  width: 300px;
+  padding: 0.5rem;
+}
+
+.home-container .search-bar button {
+  background: #ff5722;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+ 
+
+.home-container .featured-properties .properties {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.home-container .featured-properties .properties .property {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 4px;
+  width: 200px;
+  text-align: left;
+}

@@ -1,0 +1,90 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.header nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.header .actions button {
+  background: #ff5722;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+ 
+ /* Overall header panel with real estate theme */
+header.navbar {
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 0 0 10px 10px; /* slight rounded edges at bottom */
+}
+
+header .navbar-brand {
+ 
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0 0.3rem;
+  color: #d50096 !important;
+  background: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  background: #e8f5e9;
+  color: #2E7D32 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.navbar-nav .nav-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4);
+}
+
+.btn-primary {
+  background-color: #fff;
+  color: #2E7D32;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-primary:hover {
+  background-color: #e8f5e9;
+  color: #2E7D32;
+}
+
+

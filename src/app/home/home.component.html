@@ -1,0 +1,167 @@
+<div class="container py-4">
+  <h4 class="text-center mb-4">Your perfect home🏠 is out there. Let’s go find it together.</h4>
+
+<div class="container my-4">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs justify-content-center" id="propertyTab" role="tablist">
+    <li class="nav-item" role="presentation" (click)="onTabClick('Buy')">
+      <button class="nav-link active" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">Buy</button>
+    </li>
+    <li class="nav-item" role="presentation" (click)="onTabClick('Rent')">
+      <button class="nav-link" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">Rent</button>
+    </li>
+    <li class="nav-item" role="presentation" (click)="onTabClick('Commercial')">
+      <button class="nav-link" id="commercial-tab" data-bs-toggle="tab" data-bs-target="#commercial" type="button" role="tab">Commercial</button>
+    </li>
+  </ul>
+
+  <!-- Tab content -->
+  <div class="tab-content mt-4">
+    <!-- Buy Tab -->
+    <div class="tab-pane fade show active" id="buy" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label d-block">Property Type</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="buyPropertyType" id="buyFullHouse" value="Full House" checked>
+            <label class="form-check-label" for="buyFullHouse">Full House</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="buyPropertyType" id="buyLand" value="Land/Plot">
+            <label class="form-check-label" for="buyLand">Land/Plot</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="bhkTypeBuy" class="form-label">BHK Type</label>
+          <select class="form-select" id="bhkTypeBuy">
+            <option>Select</option>
+            <option>1 BHK</option>
+            <option>2 BHK</option>
+            <option>3 BHK</option>
+            <option>4 BHK</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="propertyStatusBuy" class="form-label">Property Status</label>
+          <select class="form-select" id="propertyStatusBuy">
+            <option>Select</option>
+            <option>Under Construction</option>
+            <option>Ready</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rent Tab -->
+    <div class="tab-pane fade" id="rent" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label d-block">Rental Type</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="rentPropertyType" id="rentFullHouse" value="Full House" checked>
+            <label class="form-check-label" for="rentFullHouse">Full House</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="rentPropertyType" id="rentPgHostel" value="PG/Hostel">
+            <label class="form-check-label" for="rentPgHostel">PG/Hostel</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="rentPropertyType" id="rentFlatmates" value="Flatmates">
+            <label class="form-check-label" for="rentFlatmates">Flatmates</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="bhkTypeRent" class="form-label">BHK Type</label>
+          <select class="form-select" id="bhkTypeRent">
+            <option>Select</option>
+            <option>1 BHK</option>
+            <option>2 BHK</option>
+            <option>3 BHK</option>
+            <option>4 BHK</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="availabilityRent" class="form-label">Availability</label>
+          <select class="form-select" id="availabilityRent">
+            <option>Select</option>
+            <option>Immediate</option>
+            <option>15 days</option>
+            <option>30 days</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commercial Tab -->
+    <div class="tab-pane fade" id="commercial" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label d-block">Purpose</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialRent" value="Rent" checked>
+            <label class="form-check-label" for="commercialRent">Rent</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialBuy" value="Buy">
+            <label class="form-check-label" for="commercialBuy">Buy</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="propertyTypeCommercial" class="form-label">Property Type</label>
+          <select class="form-select" id="propertyTypeCommercial">
+            <option>Select</option>
+            <option>Office</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="availabilityCommercial" class="form-label">Availability</label>
+          <select class="form-select" id="availabilityCommercial">
+            <option>Select</option>
+            <option>Immediate</option>
+            <option>15 days</option>
+            <option>30 days</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="row align-items-center mb-4">
+    <!-- City Dropdown (20%) -->
+    <div class="col-12 col-md-2 mb-2 mb-md-0">
+      <select class="form-select" [(ngModel)]="selectedCity">
+        <option value="" disabled selected>Select City</option>
+        <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+      </select>
+    </div>
+
+    <!-- Search Bar (80%) -->
+    <div class="col-12 col-md-10">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Enter location, property type, etc.">
+        <button class="btn btn-primary" (click)="handleAddressChange(query)">Search</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="featured-properties">
+    <h2 class="mb-3">Featured Properties</h2>
+    <div class="row g-3" *ngIf="properties.length; else loading">
+      <div class="col-12 col-md-4" *ngFor="let property of properties">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ property.title }}</h5>
+            <p class="card-text">{{ property.location }}</p>
+            <p class="card-text fw-bold">{{ property.price | currency:'INR' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #loading>
+      <p>Loading properties...</p>
+    </ng-template>
+  </div>
+</div>
