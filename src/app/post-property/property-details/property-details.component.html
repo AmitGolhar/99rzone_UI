@@ -5,11 +5,8 @@
       <h5 class="fw-bold mb-3">Steps</h5>
       <ul class="nav flex-column">
         <li class="nav-item" *ngFor="let step of steps; let i = index">
-          <a
-            class="nav-link"
-            [class.active]="currentStep === i + 1"
-            (click)="goToStep(i + 1)"
-          >{{ i + 1 }}. {{ step }}</a>
+          <a class="nav-link" [class.active]="currentStep === i + 1" (click)="goToStep(i + 1)">{{ i + 1 }}. {{ step
+            }}</a>
         </li>
       </ul>
     </div>
@@ -20,623 +17,783 @@
         Post Your Property - {{ steps[currentStep - 1] }}
       </h4>
 
-   <!-- Property Details Step -->
-<div *ngIf="currentStep === 1">
-  <form (ngSubmit)="onSubmit()" #propertyForm="ngForm">
-    <div class="row">
-      <!-- Column 1 -->
-      <div class="col-md-6">
-        <!-- Property BuyType -->
-        <div class="mb-3">
-          <label for="PropertyType" class="form-label">Buy Property Type</label>
-          <select id="PropertyType" class="form-select" [(ngModel)]="formData.propertyType" name="PropertyType" required>
-            <option value="">Select</option>
-            <option value="Full House">Full House</option>
-            <option value="Land/Plot">Land/Plot</option>
-          </select>
-        </div>
-
-    <!-- Rental Type -->
-        <div class="mb-3">
-          <label for="RentalType" class="form-label">Rental Type</label>
-          <select id="RentalType" class="form-select" [(ngModel)]="formData.rentalType" name="RentalType" required>
-            <option value="">Select</option>
-            <option value="Full House">Full House</option>
-            <option value="PG/Hostel">PG/Hostel</option>
-              <option value="Flatmates">Flatmates</option>
-          </select>
-        </div>
-
-  <!-- Commertial Type -->
-        <div class="mb-3">
-          <label for="commercialropertyType" class="form-label">Commercial Property Type</label>
-          <select id="commercialropertyType" class="form-select" [(ngModel)]="formData.commercialropertyType" name="commercialropertyType" required>
-            <option value="">Select</option>
-            <option value="Full House">Office</option>
-            <option value="PG/Hostel">Shop</option>
-              <option value="Flatmates">ShowRoom</option>
-          </select>
-        </div>
-
-
-         <!-- Apartment Type -->
-
-         <div class="mb-3">
-          <label for="apartmentType" class="form-label">Apartment Type*</label>
-          <select id="apartmentType" class="form-select" [(ngModel)]="formData.apartmentType" name="apartmentType" required>
-            <option value="">Select</option>
-            <option value="Flat">Flat</option>
-            <option value="Villa">Villa</option>
-            <option value="Penthouse">Penthouse</option>
-          </select>
-        </div>
-
-     
-        <!-- BHK Type -->
-        <div class="mb-3">
-          <label for="bhkType" class="form-label">BHK Type*</label>
-          <select id="bhkType" class="form-select" [(ngModel)]="formData.bhkType" name="bhkType" required>
-            <option value="">Select</option>
-            <option value="1 BHK">1 BHK</option>
-            <option value="2 BHK">2 BHK</option>
-            <option value="3 BHK">3 BHK</option>
-            <option value="4 BHK">4 BHK</option>
-          </select>
-        </div>
-
-        <!-- Floor -->
-        <div class="mb-3">
-          <label for="floor" class="form-label">Floor*</label>
-          <select id="floor" class="form-select" [(ngModel)]="formData.floor" name="floor" required>
-            <option value="">Select</option>
-            <option *ngFor="let f of floors" [value]="f">{{ f }}</option>
-          </select>
-        </div>
-
-        <!-- Facing -->
-        <div class="mb-3">
-          <label for="facing" class="form-label">Facing</label>
-          <select id="facing" class="form-select" [(ngModel)]="formData.facing" name="facing">
-            <option value="">Select</option>
-            <option value="North">North</option>
-            <option value="South">South</option>
-            <option value="East">East</option>
-            <option value="West">West</option>
-          </select>
-        </div>
-
+      <!-- Property Details Step -->
+    <div *ngIf="currentStep === 1">
+      <form (ngSubmit)="step1Form(propertyForm)" #propertyForm="ngForm">
+        <div class="row">
+          <!-- Column 1 -->
+          <div class="col-md-6">
+            <!-- Property BuyType -->
+            <div class="mb-3">
+              <label for="buyPropertyType" class="form-label">
+                Buy Property Type <span class="text-danger">*</span>
+              </label>
+              <select id="buyPropertyType" class="form-select" [(ngModel)]="formData.buyPropertyType" name="buyPropertyType"
+                required #buyPropertyTypeRef="ngModel">
+                <option value="">Select</option>
+                 <option value="NA">NA</option>
+                <option value="Full Property">Full Property</option>
+                <option value="Land/Plot">Land/Plot</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="buyPropertyTypeRef.invalid && (buyPropertyTypeRef.dirty || buyPropertyTypeRef.touched)">This field is
+                required</div>
+            </div>
     
+            <!-- Rental Type -->
+              <ng-container  *ngIf="this.postPropertyParentForm.propertyAdsType == 'Rent'">
+              <div class="mb-3">
+              <label for="RentalType" class="form-label">
+                Rental Type <span class="text-danger">*</span>
+              </label>
+              <select id="RentalType" class="form-select" [(ngModel)]="formData.rentalType" name="RentalType" required
+                #RentalTypeRef="ngModel">
+                <option value="">Select</option>
+                <option value="NA">NA</option>
+                <option value="Full Property">Full Property</option>
+                <option value="PG/Hostel">PG/Hostel</option>
 
-      </div>
+              </select>
+              <div class="text-danger" *ngIf="RentalTypeRef.invalid && (RentalTypeRef.dirty || RentalTypeRef.touched)">This
+                field is required</div>
+            </div>
+              </ng-container>
+            
+    
+            <!-- Commercial Type -->
+             <ng-container  *ngIf="this.postPropertyParentForm.propertyType == 'Commercial'">
+                  <div class="mb-3">
+                <label for="commercialPropertyType" class="form-label">
+                  Commercial Property Type <span class="text-danger">*</span>
+                </label>
+                <select id="commercialPropertyType" class="form-select" [(ngModel)]="formData.commercialPropertyType"
+                  name="commercialPropertyType" required #commercialRef="ngModel">
+                  <option value="">Select</option>
+                  <option value="NA">NA</option>
+                  <option value="Full House">Office</option>
+                  <option value="PG/Hostel">Shop</option>
+                  <option value="Flatmates">ShowRoom</option>
+                </select>
+                <div class="text-danger" *ngIf="commercialRef.invalid && (commercialRef.dirty || commercialRef.touched)">This
+                  field is required</div>
+            </div>
+             </ng-container>
 
-      <!-- Column 2 -->
-      <div class="col-md-6">
-           <!-- Apartment Name (Search Box Dropdown) -->
-        <div class="mb-3">
-          <label for="apartmentName" class="form-label">Apartment Name:*</label>
-          <input
-            type="text"
-            id="apartmentName"
-            name="apartmentName"
-            class="form-control"
-            [(ngModel)]="formData.apartmentName"
-            placeholder="Search and select apartment"
-            list="apartmentList"
-            required
-          />
-          <datalist id="apartmentList">
-            <option *ngFor="let apt of apartments" [value]="apt"></option>
-          </datalist>
-        </div>
-        
-        
+         
+    
+            <!-- Apartment Type -->
+            <div class="mb-3">
+              <label for="apartmentType" class="form-label">
+                Apartment Type <span class="text-danger">*</span>
+              </label>
+              <select id="apartmentType" class="form-select" [(ngModel)]="formData.apartmentType" name="apartmentType" required
+                #apartmentRef="ngModel">
+                <option value="">Select</option>
+                <option value="NA">NA</option>
+                <option value="Flat">Flat</option>
+                <option value="Villa">Villa</option>
+                <option value="Studio Apartment">Studio Apartment </option>
+                <option value="Duplex Apartment">Duplex Apartment </option>
+                <option value="Triplex Apartment">Triplex Apartment </option>
+                <option value="Serviced Apartment">Serviced Apartment </option>
+                <option value="Builder Floor">Builder Floor </option>
+                <option value="Row House">Row House </option>
+                <option value="Co-living/PG">Co-living/PG </option>
+                <option value="Villa">Villa</option>
+                <option value="Penthouse">Penthouse</option>
+              </select>
+              <div class="text-danger" *ngIf="apartmentRef.invalid && (apartmentRef.dirty || apartmentRef.touched)">This
+                field is required</div>
+            </div>
+    
+            <!-- BHK Type -->
+            <div class="mb-3">
+              <label for="bhkType" class="form-label">
+                BHK Type <span class="text-danger">*</span>
+              </label>
+              <select id="bhkType" class="form-select" [(ngModel)]="formData.bhkType" name="bhkType" required
+                #bhkTypeRef="ngModel">
+                <option value="">Select</option>
+                <option value="NA">NA</option>
+                <option value="1 BHK">1 BHK</option>
+                <option value="2 BHK">2 BHK</option>
+                <option value="3 BHK">3 BHK</option>
+                <option value="4 BHK">4 BHK</option>
+                <option value="5 BHK">5 BHK</option>
+                <option value="5+ BHK">5+ BHK</option>
+              </select>
+              <div class="text-danger" *ngIf="bhkTypeRef.invalid && (bhkTypeRef.dirty || bhkTypeRef.touched)">This field is
+                required</div>
+            </div>
+    
+            <!-- Floor -->
+            <div class="mb-3">
+              <label for="floor" class="form-label">
+                Floor <span class="text-danger">*</span>
+              </label>
+              <select id="floor" class="form-select" [(ngModel)]="formData.floor" name="floor" required #floorRef="ngModel">
+                <option value="">Select</option>
+                <option *ngFor="let f of floors" [value]="f">{{ f }}</option>
+              </select>
+              <div class="text-danger" *ngIf="floorRef.invalid && (floorRef.dirty || floorRef.touched)">This field is
+                required</div>
+            </div>
+    
+            <!-- Facing -->
+            <div class="mb-3">
+              <label for="facing" class="form-label">Facing
+                <span class="text-danger">*</span>
+              </label>
+              
+              <select id="facing" class="form-select" [(ngModel)]="formData.facing" name="facing" required #facing="ngModel">
+                <option value="">Select</option>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="North">North-East</option>
+                <option value="South">North-West</option>
+                <option value="East">South-East</option>
+                <option value="West">South-West</option>
+                <option value="Corner">Corner Flat</option>
+                <option value="Garden">Park/Garden </option>
+                <option value="Road">Road Facing	</option>
+                <option value="HillMountain">Hill Facing / Mountain Facing	</option>
+              </select>
+              <div class="text-danger" *ngIf="facing.invalid && (facing.dirty || facing.touched)">This field is
+                required</div>
+            </div>
+               <!-- Looking For  -->
+            <div class="mb-3">
+              <label for="purposeStatus" class="form-label">
+                Looking For <span class="text-danger">*</span>
+              </label>
+              <select id="purposeStatus" class="form-select" [(ngModel)]="formData.purposeStatus" name="purposeStatus"
+                required #purposeRef="ngModel">
+                <option value="">Select</option>
+                <option value="Full House">Rent</option>
+                <option value="Land/Plot">Buy</option>
+                 <option value="Sell">Sell</option>
 
-        <!-- Total Floor -->
-        <div class="mb-3">
-          <label for="totalFloor" class="form-label">Total Floor*</label>
-          <select id="totalFloor" class="form-select" [(ngModel)]="formData.totalFloor" name="totalFloor" required>
-            <option value="">Select</option>
-            <option *ngFor="let f of floors" [value]="f">{{ f }}</option>
-          </select>
-        </div>
-
-        <!-- Property Age -->
-        <div class="mb-3">
-          <label for="propertyAge" class="form-label">Property Age*</label>
-          <select id="propertyAge" class="form-select" [(ngModel)]="formData.propertyAge" name="propertyAge" required>
-            <option value="">Select</option>
-            <option value="0-1 year">0-1 year</option>
-            <option value="1-5 years">1-5 years</option>
-            <option value="5-10 years">5-10 years</option>
-            <option value="10+ years">10+ years</option>
-          </select>
-        </div>
-
-        <!-- Built Up Area -->
-        <div class="mb-3">
-          <label for="builtUpArea" class="form-label">Built Up Area*</label>
-          <div class="input-group">
-            <input type="number" id="builtUpArea" class="form-control" [(ngModel)]="formData.builtUpArea" name="builtUpArea" placeholder="Sq.ft" required />
-            <span class="input-group-text">Sq.ft</span>
+                  <option value="Lease">Lease</option>
+                   <option value="PG/Coliving">PG/Coliving</option>
+                    <option value="Short-Term Rent">Short-Term Rent</option>
+                    <option value="Invest">Invest</option>
+              </select>
+              <div class="text-danger" *ngIf="purposeRef.invalid && (purposeRef.dirty || purposeRef.touched)">This field is
+                required</div>
+            </div>
+            
+          </div>
+    
+          <!-- Column 2 -->
+          <div class="col-md-6">
+            <!-- Apartment Name -->
+            <div class="mb-3">
+              <label for="apartmentName" class="form-label">
+                Apartment Name <span class="text-danger">*</span>
+              </label>
+              <input type="text" id="apartmentName" name="apartmentName" class="form-control"
+                [(ngModel)]="formData.apartmentName" placeholder="Search and select apartment" list="apartmentList" required
+                #apartmentNameRef="ngModel" />
+              <datalist id="apartmentList">
+                <option *ngFor="let apt of apartments" [value]="apt"></option>
+              </datalist>
+              <div class="text-danger"
+                *ngIf="apartmentNameRef.invalid && (apartmentNameRef.dirty || apartmentNameRef.touched)">This field is
+                required</div>
+            </div>
+    
+            <!-- Total Floor -->
+            <div class="mb-3">
+              <label for="totalFloor" class="form-label">
+                Total Floor <span class="text-danger">*</span>
+              </label>
+              <select id="totalFloor" class="form-select" [(ngModel)]="formData.totalFloor" name="totalFloor" required
+                #totalFloorRef="ngModel">
+                <option value="">Select</option>
+                <option *ngFor="let f of floors" [value]="f">{{ f }}</option>
+              </select>
+              <div class="text-danger" *ngIf="totalFloorRef.invalid && (totalFloorRef.dirty || totalFloorRef.touched)">This
+                field is required</div>
+            </div>
+    
+            <!-- Property Age -->
+            <div class="mb-3">
+              <label for="propertyAge" class="form-label">
+                Property Age <span class="text-danger">*</span>
+              </label>
+              <select id="propertyAge" class="form-select" [(ngModel)]="formData.propertyAge" name="propertyAge" required
+                #propertyAgeRef="ngModel">
+                <option value="">Select</option>
+                <option value="0-1 year">0-1 year</option>
+                <option value="1-5 years">1-5 years</option>
+                <option value="5-10 years">5-10 years</option>
+                <option value="10+ years">10+ years</option>
+              </select>
+              <div class="text-danger" *ngIf="propertyAgeRef.invalid && (propertyAgeRef.dirty || propertyAgeRef.touched)">
+                This field is required</div>
+            </div>
+    
+            <!-- Built Up Area -->
+            <div class="mb-3">
+              <label for="builtUpArea" class="form-label">
+                Built Up Area <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <input type="number" id="builtUpArea" class="form-control" [(ngModel)]="formData.builtUpArea"
+                  name="builtUpArea" placeholder="Sq.ft" required #builtUpAreaRef="ngModel" />
+                <span class="input-group-text">Sq.ft</span>
+              </div>
+              <div class="text-danger" *ngIf="builtUpAreaRef.invalid && (builtUpAreaRef.dirty || builtUpAreaRef.touched)">
+                This field is required</div>
+            </div>
+    
+            <!-- Property Status -->
+            <div class="mb-3">
+              <label for="propertyStatus" class="form-label">
+                Property Status <span class="text-danger">*</span>
+              </label>
+              <select id="propertyStatus" class="form-select" [(ngModel)]="formData.propertyStatus" name="propertyStatus" required
+                #propertyStatusRef="ngModel">
+                <option value="">Select</option>
+              
+                <option value="Ready to Move">Ready to Move</option>
+                <option value="Under Construction">Under Construction</option>
+              
+                <option value="New Launch">New Launch</option>
+                <option value="Possession Soon">Possession Soon</option>
+                <option value="Pre-Launch">Pre-Launch</option>
+                <option value="Resale">Resale</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="propertyStatusRef.invalid && (propertyStatusRef.dirty || propertyStatusRef.touched)">This field is
+                required</div>
+            </div>
+    
+    
+            <!-- Availability Status -->
+            <div class="mb-3">
+              <label for="availabilityStatus" class="form-label">
+                Availability Status <span class="text-danger">*</span>
+              </label>
+              <select id="availabilityStatus" class="form-select" [(ngModel)]="formData.availabilityStatus"
+                name="availabilityStatus" required #availabilityRef="ngModel">
+                <option value="">Select</option>
+                <option value="Full House">Immediate</option>
+                <option value="Land/Plot">within 1 week</option>
+                <option value="Land/Plot">within 15 days</option>
+                <option value="Land/Plot">30 days</option>
+                <option value="Land/Plot">60 days</option>
+                <option value="Land/Plot">90 days</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="availabilityRef.invalid && (availabilityRef.dirty || availabilityRef.touched)">This field is required
+              </div>
+            </div>
+    
+     
           </div>
         </div>
-                      <!-- Property Status -->
-        <div class="mb-3">
-          <label for="propertyStatus" class="form-label">Property Status</label>
-          <select id="propertyStatus" class="form-select" [(ngModel)]="formData.propertyStatus" name="propertyStatus" required>
-            <option value="">Select</option>
-            <option value="Full House">Under Construction</option>
-            <option value="Land/Plot">Ready</option>
-          </select>
+    
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-outline-secondary" disabled>Previous</button>
+          <button type="button" (click)="step1Form(formData); nextStep()" class="btn btn-primary">Next</button>
         </div>
-         <div class="mb-3">
-          <label for="availabilityStatus" class="form-label">Availability Status</label>
-          <select id="availabilityStatus" class="form-select" [(ngModel)]="formData.availabilityStatus" name="availabilityStatus" required>
-            <option value="">Select</option>
-            <option value="Full House">Immediate</option>
-            <option value="Land/Plot">within 1 week</option>
-            <option value="Land/Plot">within 15 days</option>
-            <option value="Land/Plot">30 days</option>
-          </select>
-        </div>
-                 <!-- Purpose Status -->
-        <div class="mb-3">
-          <label for="purposeStatus" class="form-label">Purpose Status</label>
-          <select id="purposeStatus" class="form-select" [(ngModel)]="formData.purposeStatus" name="purposeStatus" required>
-            <option value="">Select</option>
-            <option value="Full House">Rent</option>
-            <option value="Land/Plot">Buy</option>
-          </select>
-        </div>
-
-        
-      </div>
+      </form>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-outline-secondary" disabled>Previous</button>
-      <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
-    </div>
-  </form>
-</div>
 
 
 
-     <!-- Location Details Step -->
+      <!-- Location Details Step -->
 <div *ngIf="currentStep === 2">
-  <form (ngSubmit)="onSubmit()" #locationForm="ngForm">
+  <form (ngSubmit)="step2Form(locationForm)" #locationForm="ngForm">
     <div class="row g-3">
       <!-- City Dropdown -->
       <div class="col-md-4">
-        <label for="city" class="form-label">City*</label>
-        <select id="city" class="form-select" [(ngModel)]="locationData.city" name="city" required>
+        <label for="localityCity" class="form-label">
+          City <span class="text-danger">*</span>
+        </label>
+        <select id="localityCity" class="form-select" [(ngModel)]="locationData.localityCity"
+          name="localityCity" required #localityCityRef="ngModel">
           <option value="">Select</option>
           <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
         </select>
+        <div *ngIf="localityCityRef.invalid && (localityCityRef.dirty || localityCityRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
       </div>
 
       <!-- Locality Input -->
       <div class="col-md-4">
-        <label for="locality" class="form-label">Locality*</label>
-        <input type="text" id="locality" class="form-control" [(ngModel)]="locationData.locality" name="locality" placeholder="e.g., Indiranagar" required />
+        <label for="locality" class="form-label">
+          Locality <span class="text-danger">*</span>
+        </label>
+        <input type="text" id="locality" class="form-control" [(ngModel)]="locationData.locality"
+          name="locality" placeholder="e.g., Indiranagar" required #localityRef="ngModel" />
+        <div *ngIf="localityRef.invalid && (localityRef.dirty || localityRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
       </div>
 
       <!-- Landmark / Street Input -->
       <div class="col-md-4">
-        <label for="landmark" class="form-label">Landmark / Street*</label>
-        <input type="text" id="landmark" class="form-control" [(ngModel)]="locationData.landmark" name="landmark" placeholder="e.g., Near Metro Station" required />
+        <label for="landmark" class="form-label">
+          Landmark / Street <span class="text-danger">*</span>
+        </label>
+        <input type="text" id="landmark" class="form-control" [(ngModel)]="locationData.landmark"
+          name="landmark" placeholder="e.g., Near Metro Station" required #landmarkRef="ngModel" />
+        <div *ngIf="landmarkRef.invalid && (landmarkRef.dirty || landmarkRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
       </div>
     </div>
 
     <!-- Navigation Buttons -->
     <div class="d-flex justify-content-between mt-4">
       <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-      <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
+      <button type="button" (click)="step2Form(locationData)" class="btn btn-primary" (click)="nextStep()">Next</button>
     </div>
   </form>
 </div>
 
 
 
-   <!-- Rental Details Step -->
+    <!-- Rental Details Step -->
 <div *ngIf="currentStep === 3">
-  <form (ngSubmit)="onSubmit()" #rentalForm="ngForm">
+  <form (ngSubmit)="step3Form(rentalData)" #rentalForm="ngForm">
     <div class="row g-3">
-<p>
-    Rental Details
-</p>
-      <!-- Only Rent / Only Lease Radio -->
-     <!-- Rental Type Radio Buttons -->
-<div class="mb-3">
-  <label class="form-label fw-bold">Rental Type*</label>
-  <div class="form-check">
-    <input
-      class="form-check-input"
-      type="radio"
-      name="rentalType"
-      value="Only Rent"
-      [(ngModel)]="rentalData.rentalType"
-      required
-      id="onlyRent"
-    />
-    <label class="form-check-label" for="onlyRent">Only Rent</label>
-&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <input
-      class="form-check-input"
-      type="radio"
-      name="rentalType"
-      value="Only Lease"
-      [(ngModel)]="rentalData.rentalType"
-      required
-      id="onlyLease"
-    />
-    <label class="form-check-label" for="onlyLease">Only Lease</label>
+      <p>Rental Details</p>
 
-  </div>
-</div>
+      <!-- Rental Type Radio Buttons -->
+      <div class="mb-3">
+        <label class="form-label fw-bold">Rental Type <span class="text-danger">*</span></label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="rentType" value="Only Rent"
+            [(ngModel)]="rentalData.rentType" required id="onlyRent" #rentTypeRef="ngModel" />
+          <label class="form-check-label" for="onlyRent">Only Rent</label>
 
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+          <input class="form-check-input" type="radio" name="rentType" value="Only Lease"
+            [(ngModel)]="rentalData.rentType" required id="onlyLease" />
+          <label class="form-check-label" for="onlyLease">Only Lease</label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+           <input class="form-check-input" type="radio" name="rentType" value="Rent or Lease"
+            [(ngModel)]="rentalData.rentType" required id="RentorLease" />
+          <label class="form-check-label" for="RentorLease">Rent or Lease	</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+           <input class="form-check-input" type="radio" name="rentType" value="Company Lease"
+            [(ngModel)]="rentalData.rentType" required id="CompanyLease" />
+          <label class="form-check-label" for="CompanyLease">Company Lease</label>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          
+        </div>
+        <div *ngIf="rentTypeRef.invalid && (rentTypeRef.dirty || rentTypeRef.touched)" class="text-danger mt-1">
+          This field is required
+        </div>
+      </div>
 
       <!-- Expected Rent -->
       <div class="col-md-6">
-        <label for="expectedRent" class="form-label">Expected Rent*</label>
-        <input type="text" id="expectedRent" class="form-control" [(ngModel)]="rentalData.expectedRent" name="expectedRent" required>
+        <label for="expectedRent" class="form-label">Expected Rent <span class="text-danger">*</span></label>
+        <input type="number" id="expectedRent" class="form-control" [(ngModel)]="rentalData.expectedRent"
+          name="expectedRent" required #expectedRentRef="ngModel">
+        <div *ngIf="expectedRentRef.invalid && (expectedRentRef.dirty || expectedRentRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
       </div>
 
       <!-- Expected Deposit -->
       <div class="col-md-6">
-        <label for="expectedDeposit" class="form-label">Expected Deposit*</label>
-        <input type="text" id="expectedDeposit" class="form-control" [(ngModel)]="rentalData.expectedDeposit" name="expectedDeposit" required>
+        <label for="expectedDeposite" class="form-label">Expected Deposit <span class="text-danger">*</span></label>
+        <input type="number" id="expectedDeposite" class="form-control" [(ngModel)]="rentalData.expectedDeposite"
+          name="expectedDeposite" required #expectedDepositeRef="ngModel">
+        <div *ngIf="expectedDepositeRef.invalid && (expectedDepositeRef.dirty || expectedDepositeRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
       </div>
 
       <!-- Rent Negotiable -->
       <div class="col-md-6 d-flex align-items-center">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="rentNegotiable" [(ngModel)]="rentalData.rentNegotiable" name="rentNegotiable">
-          <label class="form-check-label" for="rentNegotiable">Rent Negotiable</label>
+          <input class="form-check-input" type="checkbox" id="isRentNegotiable"
+            [(ngModel)]="rentalData.isRentNegotiable" name="isRentNegotiable">
+          <label class="form-check-label" for="isRentNegotiable">Rent Negotiable</label>
         </div>
       </div>
 
       <!-- Monthly Maintenance -->
       <div class="col-md-6">
-        <label for="maintenanceType" class="form-label">Monthly Maintenance*</label>
-        <select id="maintenanceType" class="form-select" [(ngModel)]="rentalData.maintenanceType" name="maintenanceType" required>
+        <label for="monthlyMaintainence" class="form-label">Monthly Maintenance <span class="text-danger">*</span></label>
+        <select id="monthlyMaintainence" class="form-select" [(ngModel)]="rentalData.monthlyMaintainence"
+          name="monthlyMaintainence" required #maintenanceTypeRef="ngModel">
           <option value="">Select</option>
+         
           <option value="Included">Included</option>
           <option value="Extra">Extra</option>
         </select>
-      </div>
-
-      <!-- Maintenance Amount -->
-      <div class="col-md-6">
-        <label for="maintenanceAmount" class="form-label">Maintenance Amount*</label>
-        <input type="text" id="maintenanceAmount" class="form-control" [(ngModel)]="rentalData.maintenanceAmount" name="maintenanceAmount" required>
-      </div>
-
-      <!-- Available From Date -->
-      <div class="col-md-6">
-        <label for="availableFrom" class="form-label">Available From*</label>
-        <input type="date" id="availableFrom" class="form-control" [(ngModel)]="rentalData.availableFrom" name="availableFrom" required>
-      </div>
-
-      <!-- Preferred Tenants Checkboxes -->
-      <div class="col-md-6">
-        <label class="form-label">Preferred Tenants*</label>
-        <div class="form-check" *ngFor="let tenant of tenantOptions">
-          <input class="form-check-input" type="checkbox" [id]="tenant.value" [value]="tenant.value" (change)="onTenantChange($event)">
-          <label class="form-check-label" [for]="tenant.value">{{ tenant.label }}</label>
+        <div *ngIf="maintenanceTypeRef.invalid && (maintenanceTypeRef.dirty || maintenanceTypeRef.touched)"
+          class="text-danger mt-1">
+          This field is required
         </div>
       </div>
 
+      <!-- Maintenance Amount -->
+       <ng-container *ngIf="rentalData.monthlyMaintainence == 'Extra'">
+      <div class="col-md-6" >
+        <label for="maintainenceAmount" class="form-label">Maintenance Amount <span class="text-danger">*</span></label>
+        <input type="number" id="maintainenceAmount" class="form-control"
+          [(ngModel)]="rentalData.maintainenceAmount" name="maintainenceAmount" required
+          #maintainenceAmountRef="ngModel">
+        <div *ngIf="maintainenceAmountRef.invalid && (maintainenceAmountRef.dirty || maintainenceAmountRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
+      </div>
+       </ng-container>
+
+
+      <!-- Available From -->
+      <div class="col-md-6">
+        <label for="availableFrom" class="form-label">Available From <span class="text-danger">*</span></label>
+        <input type="date" id="availableFrom" class="form-control" [(ngModel)]="rentalData.availableFrom"
+          name="availableFrom" required #availableFromRef="ngModel">
+        <div *ngIf="availableFromRef.invalid && (availableFromRef.dirty || availableFromRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
+      </div>
+
+      
+
       <!-- Furnishing -->
       <div class="col-md-6">
-        <label for="furnishing" class="form-label">Furnishing*</label>
-        <select id="furnishing" class="form-select" [(ngModel)]="rentalData.furnishing" name="furnishing" required>
+        <label for="furnishingStatus" class="form-label">Furnishing <span class="text-danger">*</span></label>
+        <select id="furnishingStatus" class="form-select" [(ngModel)]="rentalData.furnishingStatus"
+          name="furnishingStatus" required #furnishingStatusRef="ngModel">
           <option value="">Select</option>
+          <option value="NA">NA</option>
           <option value="Unfurnished">Unfurnished</option>
           <option value="Semi-Furnished">Semi-Furnished</option>
-          <option value="Fully Furnished">Fully Furnished</option>
+          <option value="Fully-Furnished">Fully-Furnished</option>
         </select>
+        <div *ngIf="furnishingStatusRef.invalid && (furnishingStatusRef.dirty || furnishingStatusRef.touched)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
       </div>
 
       <!-- Parking -->
       <div class="col-md-6">
-        <label for="parking" class="form-label">Parking*</label>
-        <select id="parking" class="form-select" [(ngModel)]="rentalData.parking" name="parking" required>
+        <label for="parking" class="form-label">Parking <span class="text-danger">*</span></label>
+        <select id="parking" class="form-select" [(ngModel)]="rentalData.parking" name="parking" required
+          #parkingRef="ngModel">
           <option value="">Select</option>
           <option value="bike">Bike</option>
           <option value="car">Car</option>
-          <option value="both">Both</option>
+          <option value="Bike & Car">Both</option>
           <option value="none">None</option>
         </select>
+        <div *ngIf="parkingRef.invalid && (parkingRef.dirty || parkingRef.touched)" class="text-danger mt-1">
+          This field is required
+        </div>
       </div>
-
+      <!-- Preferred Tenants -->
+      <div class="col-md-6">
+        <label class="form-label">Preferred Tenants <span class="text-danger">*</span></label>
+        <div class="form-check" *ngFor="let tenant of tenantOptions">
+          <input class="form-check-input" type="checkbox" [id]="tenant.value" [value]="tenant.value"
+            (change)="onTenantChange($event)">
+          <label class="form-check-label" [for]="tenant.value">{{ tenant.label }}</label>
+        </div>
+        <!-- Optional validation message if tenant list is required -->
+        <div *ngIf="rentalData.preferredTenants?.length === 0" class="text-danger mt-1">
+          Please select at least one tenant
+        </div>
+      </div>
       <!-- Description -->
       <div class="col-12">
         <label for="description" class="form-label">Description</label>
-        <textarea id="description" class="form-control" [(ngModel)]="rentalData.description" name="description" rows="4" placeholder="Provide a detailed description"></textarea>
+        <textarea id="description" class="form-control" [(ngModel)]="rentalData.description" name="description"
+          rows="4" placeholder="Provide a detailed description"></textarea>
       </div>
+
+
     </div>
 
     <!-- Navigation Buttons -->
     <div class="d-flex justify-content-between mt-4">
       <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-      <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
+      <button type="button" (click)="step3Form(rentalData)" class="btn btn-primary" (click)="nextStep()">Next</button>
     </div>
   </form>
 </div>
 
 
       <!-- Amenities -->
- <!-- Step 4: Amenities -->
-<div *ngIf="currentStep === 4" class="row g-3">
-<p>
-    Amenities
-</p>
-  <!-- Left Column -->
-  <div class="col-md-6">
-    <!-- Bathrooms -->
-    <div class="mb-3">
-      <label for="bathrooms" class="form-label fw-bold">Bathroom(s)*</label>
-      <input type="number" id="bathrooms" class="form-control" [(ngModel)]="amenities.bathrooms" name="bathrooms" min="1" required>
-    </div>
+      <!-- Step 4: Amenities -->
+      <div *ngIf="currentStep === 4" class="row g-3">
+        <form (ngSubmit)="step4Form(amenities)" #amenitiesForm="ngForm">
 
-    <!-- Balcony -->
-    <div class="mb-3">
-      <label for="balcony" class="form-label fw-bold">Balcony</label>
-      <input type="number" id="balcony" class="form-control" [(ngModel)]="amenities.balcony" name="balcony" min="0">
-    </div>
 
-    <!-- Water Supply -->
-    <div class="mb-3">
-      <label for="waterSupply" class="form-label fw-bold">Water Supply</label>
-      <select id="waterSupply" class="form-select" [(ngModel)]="amenities.waterSupply" name="waterSupply">
-        <option value="">Select</option>
-        <option value="corporate">Corporate</option>
-        <option value="borewell">Borewell</option>
-        <option value="both">Both</option>
-      </select>
-    </div>
+          <p>
+            Amenities
+          </p>
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <!-- Bathrooms -->
+            <div class="mb-3">
+              <label for="bathroom" class="form-label fw-bold">Bathroom(s)*</label>
+              <input type="number" id="bathroom" class="form-control" [(ngModel)]="amenities.bathroom" name="bathroom"
+                min="1" required>
+            </div>
 
-    <!-- Gym -->
-    <div class="mb-3">
-      <label class="form-label fw-bold">Gym</label>
-      <div>
-        <input type="radio" id="gymYes" name="gym" [(ngModel)]="amenities.gym" [value]="true">
-        <label for="gymYes" class="me-3">Yes</label>
+            <!-- Balcony -->
+            <div class="mb-3">
+              <label for="balcony" class="form-label fw-bold">Balcony</label>
+              <input type="number" id="balcony" class="form-control" [(ngModel)]="amenities.balcony" name="balcony"
+                min="0">
+            </div>
 
-        <input type="radio" id="gymNo" name="gym" [(ngModel)]="amenities.gym" [value]="false">
-        <label for="gymNo">No</label>
+            <!-- Water Supply -->
+            <div class="mb-3">
+              <label for="waterSupply" class="form-label fw-bold">Water Supply</label>
+              <select id="waterSupply" class="form-select" [(ngModel)]="amenities.waterSupply" name="waterSupply">
+                <option value="">Select</option>
+                <option value="corporate">Corporation</option>
+                <option value="borewell">Borewell</option>
+                 <option value="privateplant">Private Plant</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+
+            <!-- Gym -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Gym</label>
+              <div>
+                <input type="radio" id="gymYes" name="gym" [(ngModel)]="amenities.gym" [value]="true">
+                <label for="gymYes" class="me-3">Yes</label>
+
+                <input type="radio" id="gymNo" name="gym" [(ngModel)]="amenities.gym" [value]="false">
+                <label for="gymNo">No</label>
+              </div>
+            </div>
+
+            <!-- Non Veg Allowed -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Non Veg Allowed</label>
+              <div>
+                <input type="radio" id="nonvegAllowed" name="nonvegAllowed" [(ngModel)]="amenities.nonvegAllowed"
+                  [value]="true">
+                <label for="nonvegAllowed" class="me-3">Yes</label>
+
+                <input type="radio" id="nonvegAllowed" name="nonvegAllowed" [(ngModel)]="amenities.nonvegAllowed"
+                  [value]="false">
+                <label for="nonvegAllowed">No</label>
+              </div>
+            </div>
+
+            <!-- Gate Security -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Gate Security</label>
+              <div>
+                <input type="radio" id="securityYes" name="security" [(ngModel)]="amenities.gateSecurity"
+                  [value]="true">
+                <label for="securityYes" class="me-3">Yes</label>
+
+                <input type="radio" id="securityNo" name="security" [(ngModel)]="amenities.gateSecurity"
+                  [value]="false">
+                <label for="securityNo">No</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="col-md-6">
+            <!-- Who Will Show the Property? -->
+            <div class="mb-3">
+              <label for="whoWillShowProperty" class="form-label fw-bold">Who will show the property?</label>
+              <select id="whoWillShowProperty" class="form-select" [(ngModel)]="amenities.whoWillShowProperty"
+                name="whoWillShowProperty" required>
+                <option value="">Select</option>
+                <option value="owner">Owner</option>
+                <option value="security">Security</option>
+                <option value="broker">Broker</option>
+              </select>
+            </div>
+
+            <!-- Current Property Condition -->
+            <div class="mb-3">
+              <label for="currentPropertyCondition" class="form-label fw-bold">Current Property Condition</label>
+              <select id="currentPropertyCondition" class="form-select" [(ngModel)]="amenities.currentPropertyCondition"
+                name="currentPropertyCondition">
+                <option value="">Select</option>
+                <option value="vacant">Vacant</option>
+                <option value="notice">Under Notice</option>
+              </select>
+            </div>
+
+            <!-- Secondary Number -->
+            <div class="mb-3">
+              <label for="alternateNumber" class="form-label fw-bold">Secondary Number</label>
+              <input type="tel" id="alternateNumber" class="form-control" [(ngModel)]="amenities.alternateNumber"
+                name="alternateNumber">
+            </div>
+
+
+          </div>
+
+          <!-- Available Amenities -->
+          <div class="row mt-3">
+            <label class="form-label fw-bold mb-2">Available Amenities:</label>
+
+            <div class="col-md-6">
+              <div class="form-check" *ngFor="let amenity of amenitiesList.slice(0, (amenitiesList.length / 2))">
+                <input class="form-check-input" type="checkbox" [value]="amenity" (change)="onAmenityChange($event)"
+                  [checked]="amenities.availableAmenities.includes(amenity)" />
+                <label class="form-check-label">
+                  {{ amenity }}
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-check" *ngFor="let amenity of amenitiesList.slice((amenitiesList.length / 2))">
+                <input class="form-check-input" type="checkbox" [value]="amenity" (change)="onAmenityChange($event)"
+                  [checked]="amenities.availableAmenities.includes(amenity)" />
+                <label class="form-check-label">
+                  {{ amenity }}
+                </label>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
+              <button type="button" (click)="step4Form(amenities)" class="btn btn-primary"
+                (click)="nextStep()">Next</button>
+            </div>
+          </div>
+
+        </form>
+
       </div>
-    </div>
-
-    <!-- Non Veg Allowed -->
-    <div class="mb-3">
-      <label class="form-label fw-bold">Non Veg Allowed</label>
-      <div>
-        <input type="radio" id="nonVegYes" name="nonVeg" [(ngModel)]="amenities.nonVeg" [value]="true">
-        <label for="nonVegYes" class="me-3">Yes</label>
-
-        <input type="radio" id="nonVegNo" name="nonVeg" [(ngModel)]="amenities.nonVeg" [value]="false">
-        <label for="nonVegNo">No</label>
-      </div>
-    </div>
-
-    <!-- Gate Security -->
-    <div class="mb-3">
-      <label class="form-label fw-bold">Gate Security</label>
-      <div>
-        <input type="radio" id="securityYes" name="security" [(ngModel)]="amenities.gateSecurity" [value]="true">
-        <label for="securityYes" class="me-3">Yes</label>
-
-        <input type="radio" id="securityNo" name="security" [(ngModel)]="amenities.gateSecurity" [value]="false">
-        <label for="securityNo">No</label>
-      </div>
-    </div>
-  </div>
-
-  <!-- Right Column -->
-  <div class="col-md-6">
-    <!-- Who Will Show the Property? -->
-    <div class="mb-3">
-      <label for="showProperty" class="form-label fw-bold">Who will show the property?*</label>
-      <select id="showProperty" class="form-select" [(ngModel)]="amenities.showProperty" name="showProperty" required>
-        <option value="">Select</option>
-        <option value="owner">I will</option>
-        <option value="security">Security</option>
-        <option value="broker">Broker</option>
-      </select>
-    </div>
-
-    <!-- Current Property Condition -->
-    <div class="mb-3">
-      <label for="propertyCondition" class="form-label fw-bold">Current Property Condition</label>
-      <select id="propertyCondition" class="form-select" [(ngModel)]="amenities.propertyCondition" name="propertyCondition">
-        <option value="">Select</option>
-        <option value="vacant">Vacant</option>
-        <option value="notice">Under Notice</option>
-      </select>
-    </div>
-
-    <!-- Secondary Number -->
-    <div class="mb-3">
-      <label for="secondaryNumber" class="form-label fw-bold">Secondary Number</label>
-      <input type="tel" id="secondaryNumber" class="form-control" [(ngModel)]="amenities.secondaryNumber" name="secondaryNumber">
-    </div>
-
-   
-  </div>
-
-  <!-- Available Amenities -->
-<div class="row mt-3">
-  <label class="form-label fw-bold mb-2">Available Amenities:</label>
-  
-  <div class="col-md-6">
-    <div class="form-check" *ngFor="let amenity of amenitiesList.slice(0, (amenitiesList.length / 2))">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        [value]="amenity"
-        (change)="onAmenityChange($event)"
-        [checked]="amenities.selectedAmenities.includes(amenity)"
-      />
-      <label class="form-check-label">
-        {{ amenity }}
-      </label>
-    </div>
-  </div>
-  
-  <div class="col-md-6">
-    <div class="form-check" *ngFor="let amenity of amenitiesList.slice((amenitiesList.length / 2))">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        [value]="amenity"
-        (change)="onAmenityChange($event)"
-        [checked]="amenities.selectedAmenities.includes(amenity)"
-      />
-      <label class="form-check-label">
-        {{ amenity }}
-      </label>
-    </div>
-  </div>
-   <div class="d-flex justify-content-between mt-4">
-    <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-    <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
-  </div>
-</div>
 
 
 
-</div>
-
- 
 
 
 
- 
 
       <!-- Gallery Step -->
-<div *ngIf="currentStep === 5">
- <p>Upload your property’s gallery images…</p>
-  
-  <div class="mb-3">
-    <label for="photoUpload" class="form-label fw-bold">Upload Photos</label>
-    
-    <div
-      class="border border-secondary rounded p-4 text-center"
-      style="min-height: 150px; cursor: pointer; background-color: #f8f9fa;"
-      (drop)="onFileDrop($event)"
-      (dragover)="onFileDragOver($event)"
-      (dragleave)="onFileDragLeave($event)"
-    >
-      <input
-        type="file"
-        id="photoUpload"
-        (change)="onFileSelected($event)"
-        multiple
-        hidden
-      />
-      
-      <div (click)="triggerFileInput()">
-        <i class="bi bi-upload" style="font-size: 2rem;"></i>
-        <p class="mt-2 mb-0 text-muted">
-          Add photos to get <strong>5X more responses.</strong><br>
-          <em>90% tenants contact on properties with photos.</em>
-        </p>
-        <p class="text-primary mt-2 fw-bold">Upload/Drag and Drop</p>
+      <div *ngIf="currentStep === 5">
+        <form (ngSubmit)="step5Form(uploadedPhotos)" #galleryForm="ngForm">
+
+
+          <p>Upload your property’s gallery images…</p>
+
+          <div class="mb-3">
+            <label for="photoUpload" class="form-label fw-bold">Upload Photos</label>
+
+            <div class="border border-secondary rounded p-4 text-center"
+              style="min-height: 150px; cursor: pointer; background-color: #f8f9fa;" (drop)="onFileDrop($event)"
+              (dragover)="onFileDragOver($event)" (dragleave)="onFileDragLeave($event)">
+              <input type="file" id="photoUpload" (change)="onFileSelected($event)" multiple hidden [max]="7" />
+
+              <div (click)="triggerFileInput()">
+                <i class="bi bi-upload" style="font-size: 2rem;"></i>
+                <p class="mt-2 mb-0 text-muted">
+                  Add photos to get <strong>5X more responses.</strong><br>
+                  <em>90% tenants contact on properties with photos.</em>
+                </p>
+                <p class="text-primary mt-2 fw-bold">Upload/Drag and Drop</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Show uploaded photos as thumbnails (if needed) -->
+          <div class="mt-3 d-flex flex-wrap">
+            <div *ngFor="let photo of uploadedPhotos" class="me-2 mb-2 border rounded overflow-hidden"
+              style="width: 100px; height: 100px;">
+              <img [src]="photo" class="img-fluid w-100 h-100" style="object-fit: cover;" />
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
+            <button type="button" (click)="step5Form(uploadedPhotos)" class="btn btn-primary"
+              (click)="nextStep()">Next</button>
+          </div>
+        </form>
+      </div>
+
+
+
+
+  <!-- Schedule Step -->
+<div *ngIf="currentStep === 6">
+  <form (ngSubmit)="step6Form(scheduleData)" #scheduleForm="ngForm">
+
+    <h4 class="fw-bold mb-3">Schedule</h4>
+    <p class="text-muted">Schedule property visits here</p>
+
+    <!-- Availability Buttons -->
+    <div class="mb-3">
+      <label class="form-label fw-bold">Availability <span class="text-danger">*</span></label><br>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn"
+          [ngClass]="{ 'btn-primary': scheduleData.ownerAvailability === 'EveryDay', 'btn-outline-primary': scheduleData.ownerAvailability !== 'EveryDay' }"
+          (click)="setAvailability('EveryDay')">EveryDay</button>
+
+        <button type="button" class="btn"
+          [ngClass]="{ 'btn-primary': scheduleData.ownerAvailability === 'WeekEnd', 'btn-outline-primary': scheduleData.ownerAvailability !== 'WeekEnd' }"
+          (click)="setAvailability('WeekEnd')">WeekEnd</button>
+
+        <button type="button" class="btn"
+          [ngClass]="{ 'btn-primary': scheduleData.ownerAvailability === 'WeekDay', 'btn-outline-primary': scheduleData.ownerAvailability !== 'WeekDay' }"
+          (click)="setAvailability('WeekDay')">WeekDay</button>
+      </div>
+
+      <div *ngIf="!scheduleData.ownerAvailability && scheduleForm.submitted" class="text-danger mt-1">
+        Please select your availability
       </div>
     </div>
-  </div>
-  
-  <!-- Show uploaded photos as thumbnails (if needed) -->
-  <div class="mt-3 d-flex flex-wrap">
-    <div
-      *ngFor="let photo of uploadedPhotos"
-      class="me-2 mb-2 border rounded overflow-hidden"
-      style="width: 100px; height: 100px;"
-    >
-      <img [src]="photo" class="img-fluid w-100 h-100" style="object-fit: cover;" />
+
+    <!-- Time Schedule -->
+    <div class="row">
+      <!-- Start Time -->
+      <div class="col-md-6 mb-3">
+        <label for="fromTime" class="form-label fw-bold">Start Time <span class="text-danger">*</span></label>
+        <input type="time" id="fromTime" class="form-control" [(ngModel)]="scheduleData.fromTime" name="fromTime"
+          required #fromTimeRef="ngModel" />
+        <div *ngIf="fromTimeRef.invalid && (fromTimeRef.dirty || fromTimeRef.touched || scheduleForm.submitted)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
+      </div>
+
+      <!-- End Time -->
+      <div class="col-md-6 mb-3">
+        <label for="toTime" class="form-label fw-bold">End Time <span class="text-danger">*</span></label>
+        <input type="time" id="toTime" class="form-control" [(ngModel)]="scheduleData.toTime" name="toTime"
+          required #toTimeRef="ngModel" />
+        <div *ngIf="toTimeRef.invalid && (toTimeRef.dirty || toTimeRef.touched || scheduleForm.submitted)"
+          class="text-danger mt-1">
+          This field is required
+        </div>
+      </div>
     </div>
-  </div>
-  
-  <div class="d-flex justify-content-between mt-4">
-    <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-    <button type="button" class="btn btn-primary" (click)="nextStep()">Next</button>
-  </div>
-</div>
 
-
-     
-
-      <!-- Schedule Step -->
-<div *ngIf="currentStep === 6">
-  <h4 class="fw-bold mb-3">Schedule</h4>
-  <p class="text-muted">
-    Schedule property visits here
-  </p>
-
-  <!-- Availability Buttons -->
-  <div class="mb-3">
-    <label class="form-label fw-bold">Availability</label>
-    <br>
-    <div class="btn-group" role="group">
-      <button
-        type="button"
-        class="btn"
-        [ngClass]="{ 'btn-primary': scheduleData.availability === 'EveryDay', 'btn-outline-primary': scheduleData.availability !== 'EveryDay' }"
-        (click)="setAvailability('EveryDay')"
-      >
-        EveryDay
-      </button>
-      <button
-        type="button"
-        class="btn"
-        [ngClass]="{ 'btn-primary': scheduleData.availability === 'WeekEnd', 'btn-outline-primary': scheduleData.availability !== 'WeekEnd' }"
-        (click)="setAvailability('WeekEnd')"
-      >
-        WeekEnd
-      </button>
-      <button
-        type="button"
-        class="btn"
-        [ngClass]="{ 'btn-primary': scheduleData.availability === 'WeekDay', 'btn-outline-primary': scheduleData.availability !== 'WeekDay' }"
-        (click)="setAvailability('WeekDay')"
-      >
-        WeekDay
-      </button>
+    <!-- Submit Button -->
+    <div class="d-flex justify-content-between mt-4">
+      <button type="submit" class="btn btn-success">Finish</button>
     </div>
-  </div>
-
-  <!-- Time Schedule -->
-  <div class="row">
-    <div class="col-md-6 mb-3">
-      <label for="startTime" class="form-label fw-bold">Start Time</label>
-      <input
-        type="time"
-        id="startTime"
-        class="form-control"
-        [(ngModel)]="scheduleData.startTime"
-        name="startTime"
-        required
-      />
-    </div>
-    <div class="col-md-6 mb-3">
-      <label for="endTime" class="form-label fw-bold">End Time</label>
-      <input
-        type="time"
-        id="endTime"
-        class="form-control"
-        [(ngModel)]="scheduleData.endTime"
-        name="endTime"
-        required
-      />
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-between mt-4">
- <button class="btn btn-success">Finish</button>
-  </div>
+  </form>
 </div>
 
 

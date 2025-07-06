@@ -1,3 +1,6 @@
 label.btn {
   pointer-events: auto; /* enable clicks */
 }
+.active :active {
+  content: red;
+}

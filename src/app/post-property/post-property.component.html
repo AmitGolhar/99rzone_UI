@@ -1,99 +1,118 @@
 <div class="container my-5">
   <h2 class="mb-4 fw-bold">Post Your Property</h2>
-  <form (ngSubmit)="onSubmit()" #postPropertyForm="ngForm">
+  <form (ngSubmit)="onSubmit()" #postPropertyForm="ngForm" novalidate>
+
     <!-- First Grid -->
     <div class="row">
+      <!-- Name -->
       <div class="col-md-3 mb-3">
-        <label class="form-label">Name</label>
-        <input type="text" class="form-control" name="name" [(ngModel)]="formData.name" required>
+        <label class="form-label">Name  <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="formData.name" required #nameRef="ngModel">
+        <div *ngIf="nameRef.invalid && (nameRef.dirty || nameRef.touched)" class="text-danger">
+          This is Required Field
+        </div>
       </div>
+
+      <!-- Email -->
       <div class="col-md-3 mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-control" name="email" [(ngModel)]="formData.email" required>
+        <label class="form-label">Email  <span class="text-danger">*</span></label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="formData.email" required #emailRef="ngModel">
+        <div *ngIf="emailRef.invalid && (emailRef.dirty || emailRef.touched)" class="text-danger">
+          This is Required Field
+        </div>
       </div>
+
+      <!-- Mobile -->
       <div class="col-md-3 mb-3">
-        <label class="form-label">Mobile Number</label>
-        <input type="tel" class="form-control" name="mobile" [(ngModel)]="formData.mobile" required>
+        <label class="form-label">Mobile Number <span class="text-danger">*</span></label>
+        <input type="tel" class="form-control" name="mobileNo" [(ngModel)]="formData.mobileNo" required #mobileRef="ngModel">
+        <div *ngIf="mobileRef.invalid && (mobileRef.dirty || mobileRef.touched)" class="text-danger">
+          This is Required Field
+        </div>
       </div>
+
+      <!-- Posted By -->
       <div class="col-md-3 mb-3">
-        <label class="form-label">Select City</label>
-        <select class="form-select" name="city" [(ngModel)]="formData.city" required>
-          <option value="" disabled selected>Select City</option>
-          <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+        <label class="form-label">Posted By <span class="text-danger">*</span></label>
+        <select class="form-select" name="postedBy" [(ngModel)]="formData.postedBy" required #postedByRef="ngModel">
+          <option value="" disabled selected>Select</option>
+          <option *ngFor="let pb of posted_By" [value]="pb">{{ pb }}</option>
         </select>
+        <div *ngIf="postedByRef.invalid && (postedByRef.dirty || postedByRef.touched)" class="text-danger">
+          This is Required Field
+        </div>
       </div>
     </div>
 
-    <!-- Second Grid: Tabs -->
+    <!-- Tabs Section -->
     <div class="my-4">
+        <label class="form-label d-block mb-2">Select Property Type  <span class="text-danger">*</span></label>
+
       <ul class="nav nav-tabs" id="propertyTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="residential-tab" data-bs-toggle="tab" data-bs-target="#residential"
-            type="button" role="tab">Residential</button>
+        <li class="nav-item" role="presentation" (click)="getpropertyType('Residential')">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#residential" type="button" role="tab">Residential</button>
         </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="commercial-tab" data-bs-toggle="tab" data-bs-target="#commercial" type="button"
-            role="tab">Commercial</button>
+        <li class="nav-item" role="presentation" (click)="getpropertyType('Commercial')">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#commercial" type="button" role="tab">Commercial</button>
         </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="land-tab" data-bs-toggle="tab" data-bs-target="#land" type="button"
-            role="tab">Land/Plot</button>
-        </li>
+        
       </ul>
 
       <div class="tab-content p-3 border border-top-0" id="propertyTabsContent">
-        <!-- Residential Tab -->
-        <div class="tab-pane fade show active" id="residential" role="tabpanel">
-          <label class="form-label d-block mb-2">Select Property Ad Type</label>
-          <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" id="rent" name="adType" value="Rent"  
-              autocomplete="off">
-            <label class="btn btn-outline-primary" for="rent">Rent</label>
+        <!-- Residential -->
+     <div class="tab-pane fade show active" id="residential" role="tabpanel">
+  <label class="form-label d-block mb-2">Select Property Ad Type  <span class="text-danger">*</span></label>
+  <div class="btn-group" role="group" aria-label="Property Ad Type">
+    <input type="radio" class="btn-check" id="rent" name="propertyAdsType"
+      [(ngModel)]="formData.propertyAdsType" value="Rent"
+      required #propertyAdRef="ngModel">
+    <label class="btn btn-outline-primary" for="rent" [ngClass]="{ 'active': formData.propertyAdsType === 'Rent' }">Rent</label>
 
-            <input type="radio" class="btn-check" id="resale" name="adType" value="Resale"  
-              autocomplete="off">
-            <label class="btn btn-outline-primary" for="resale">Resale</label>
+    <input type="radio" class="btn-check" id="resale" name="propertyAdsType"
+      [(ngModel)]="formData.propertyAdsType" value="Resale" required>
+    <label class="btn btn-outline-primary" for="resale" [ngClass]="{ 'active': formData.propertyAdsType === 'Resale' }">Resale</label>
 
-            <input type="radio" class="btn-check" id="pg" name="adType" value="PG/Hostel"  
-              autocomplete="off">
-            <label class="btn btn-outline-primary" for="pg">PG/Hostel</label>
+   <!--  <input type="radio" class="btn-check" id="pg" name="propertyAdsType"
+      [(ngModel)]="formData.propertyAdsType" value="PG/Hostel" required>
+    <label class="btn btn-outline-primary" for="pg">PG/Hostel</label>
 
-            <input type="radio" class="btn-check" id="flatmates" name="adType" value="Flatmates"
-              [(ngModel)]="formData.adType" autocomplete="off">
-            <label class="btn btn-outline-primary" for="flatmates">Flatmates</label>
-          </div>
-        </div>
+    <input type="radio" class="btn-check" id="flatmates" name="propertyAdsType"
+      [(ngModel)]="formData.propertyAdsType" value="Flatmates" required>
+    <label class="btn btn-outline-primary" for="flatmates">Flatmates</label> -->
+  </div>
 
+  <!-- Validation error -->
+  <div *ngIf="propertyAdRef?.invalid && (propertyAdRef?.touched || propertyAdRef?.dirty)" class="text-danger mt-2">
+    This is Required Field
+  </div>
+</div>
 
-        <!-- Commercial Tab -->
+        <!-- Commercial -->
         <div class="tab-pane fade" id="commercial" role="tabpanel">
-          <label class="form-label d-block mb-2">Select Property Ad Type</label>
+          <label class="form-label d-block mb-2">Select Property Ad Post Type</label>
           <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" id="commercial-rent1" name="adType" value="Rent"  
-              autocomplete="off">
-            <label class="btn btn-outline-primary" for="commercial-rent1">Rent</label>
-        
-            <input type="radio" class="btn-check" id="commercial-resale" name="adType" value="Resale"
-              autocomplete="off">
-            <label class="btn btn-outline-primary" for="commercial-resale">Resale</label>
+            <input type="radio" class="btn-check" id="commercial-rent" name="propertyAdsType" value="Rent" [(ngModel)]="formData.propertyAdsType" required>
+            <label class="btn btn-outline-primary" for="commercial-rent" [ngClass]="{ 'active': formData.propertyAdsType === 'Rent' }">Rent</label>
+ 
+            <input type="radio" class="btn-check" id="commercial-resale" name="propertyAdsType" value="Sale" [(ngModel)]="formData.propertyAdsType" required>
+            <label class="btn btn-outline-primary" for="commercial-resale" [ngClass]="{ 'active': formData.propertyAdsType === 'Sale' }" >Sale</label>
           </div>
         </div>
 
-
-        <!-- Land/Plot Tab -->
+        <!-- Land/Plot -->
         <div class="tab-pane fade" id="land" role="tabpanel">
           <label class="form-label d-block mb-2">Select Property Ad Type</label>
           <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" id="land-resale2" name="adType" value="Resale"
-              autocomplete="off">
-            <label class="btn btn-outline-primary" for="land-resale2">Resale</label>
+            <input type="radio" class="btn-check" id="land-resale" name="propertyAdsType" value="Resale" [(ngModel)]="formData.propertyAdsType" required>
+            <label class="btn btn-outline-primary" for="land-resale" [ngClass]="{ 'active': formData.propertyAdsType === 'Resale' }" >Resale</label>
           </div>
         </div>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-success mt-3">Post Property</button>
-
-
+    <!-- Submit [disabled]="!postPropertyForm.form.valid" -->
+    <button type="submit" class="btn btn-success mt-3" >
+      Post Property
+    </button>
   </form>
 </div>

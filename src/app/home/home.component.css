@@ -39,3 +39,15 @@
   width: 200px;
   text-align: left;
 }
+
+.list-group-item {
+    
+    border-right: none;
+    border-left: none;
+}
+div .plist >p{
+  font-size: 12px;
+}
+.seemore{
+  float: right;
+}

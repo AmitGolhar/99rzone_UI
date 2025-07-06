@@ -1,0 +1,134 @@
+   ### all from Post Your Property - Rent Property Details
+
+               <!-- Looking For  -->
+            <div class="mb-3">
+              <label for="purposeStatus" class="form-label">
+                Looking For <span class="text-danger">*</span>
+              </label>
+              <select id="purposeStatus" class="form-select" [(ngModel)]="formData.purposeStatus" name="purposeStatus"
+                required #purposeRef="ngModel">
+                <option value="">Select</option>
+                <option value="Full House">Rent</option>
+                <option value="Land/Plot">Buy</option>
+                 <option value="Sell">Sell</option>
+
+                  <option value="Lease">Lease</option>
+                   <option value="PG/Coliving">PG/Coliving</option>
+                    <option value="Short-Term Rent">Short-Term Rent</option>
+                    <option value="Invest">Invest</option>
+              </select>
+              <div class="text-danger" *ngIf="purposeRef.invalid && (purposeRef.dirty || purposeRef.touched)">This field is
+                required</div>
+            </div>
+
+
+
+              <!-- Property Status -->
+            <div class="mb-3">
+              <label for="propertyStatus" class="form-label">
+                Property Status <span class="text-danger">*</span>
+              </label>
+              <select id="propertyStatus" class="form-select" [(ngModel)]="formData.propertyStatus" name="propertyStatus" required
+                #propertyStatusRef="ngModel">
+                <option value="">Select</option>
+              
+                <option value="Ready to Move">Ready to Move</option>
+                <option value="Under Construction">Under Construction</option>
+              
+                <option value="New Launch">New Launch</option>
+                <option value="Possession Soon">Possession Soon</option>
+                <option value="Pre-Launch">Pre-Launch</option>
+                <option value="Resale">Resale</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="propertyStatusRef.invalid && (propertyStatusRef.dirty || propertyStatusRef.touched)">This field is
+                required</div>
+            </div>
+
+
+
+             
+    
+            <!-- Availability Status -->
+            <div class="mb-3">
+              <label for="availabilityStatus" class="form-label">
+                Availability Status <span class="text-danger">*</span>
+              </label>
+              <select id="availabilityStatus" class="form-select" [(ngModel)]="formData.availabilityStatus"
+                name="availabilityStatus" required #availabilityRef="ngModel">
+                <option value="">Select</option>
+                <option value="Full House">Immediate</option>
+                <option value="Land/Plot">within 1 week</option>
+                <option value="Land/Plot">within 15 days</option>
+                <option value="Land/Plot">30 days</option>
+                <option value="Land/Plot">60 days</option>
+                <option value="Land/Plot">90 days</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="availabilityRef.invalid && (availabilityRef.dirty || availabilityRef.touched)">This field is required
+              </div>
+            </div>
+    
+
+End Post Your Property - Rent Property Details
+
+
+
+
+
+
+
+ <!-- Property BuyType -->
+            <div class="mb-3">
+              <label for="buyPropertyType" class="form-label">
+                Buy Property Type <span class="text-danger">*</span>
+              </label>
+              <select id="buyPropertyType" class="form-select" [(ngModel)]="formData.buyPropertyType" name="buyPropertyType"
+                required #buyPropertyTypeRef="ngModel">
+                <option value="">Select</option>
+                 <option value="NA">NA</option>
+                <option value="Full Property">Full Property</option>
+                <option value="Land/Plot">Land/Plot</option>
+              </select>
+              <div class="text-danger"
+                *ngIf="buyPropertyTypeRef.invalid && (buyPropertyTypeRef.dirty || buyPropertyTypeRef.touched)">This field is
+                required</div>
+            </div>
+    
+            <!-- Rental Type -->
+              <ng-container  *ngIf="this.postPropertyParentForm.propertyAdsType == 'Rent'">
+              <div class="mb-3">
+              <label for="RentalType" class="form-label">
+                Rental Type <span class="text-danger">*</span>
+              </label>
+              <select id="RentalType" class="form-select" [(ngModel)]="formData.rentalType" name="RentalType" required
+                #RentalTypeRef="ngModel">
+                <option value="">Select</option>
+                <option value="NA">NA</option>
+                <option value="Full Property">Full Property</option>
+                <option value="PG/Hostel">PG/Hostel</option>
+
+              </select>
+              <div class="text-danger" *ngIf="RentalTypeRef.invalid && (RentalTypeRef.dirty || RentalTypeRef.touched)">This
+                field is required</div>
+            </div>
+              </ng-container>
+
+
+formData
+
+formData.apartmentType
+
+formData.bhkType
+
+formData.floor
+formData.totalFloor
+formData.facing
+formData.apartmentName
+formData.propertyAge
+formData.builtUpArea
+
+
+
+
+

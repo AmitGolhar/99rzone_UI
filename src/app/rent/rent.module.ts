@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { RentRoutingModule } from './rent-routing.module';
 import { RentComponent } from './rent.component';
 import { FormsModule } from '@angular/forms';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { AppRoutingModule } from '@app/app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -13,7 +16,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    RentRoutingModule
+    RentRoutingModule,
+        InfiniteScrollModule,
+        HttpClientModule,
+    
   ]
 })
 export class RentModule { }

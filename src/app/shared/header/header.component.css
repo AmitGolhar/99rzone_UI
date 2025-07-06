@@ -46,7 +46,7 @@ header.navbar {
 header .navbar-brand {
  
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 16px;
 }
 
 .navbar-nav .nav-link {
@@ -88,3 +88,7 @@ header .navbar-brand {
 }
 
 
+
+.postbtn {
+  font-size: 14px !important;
+}
