@@ -1,4 +1,5 @@
  
+<app-loader [isLoading]="pageLoading"></app-loader>
 
 
 <div class="container py-4">
@@ -44,7 +45,7 @@
                <p class="card-text">  <strong> Availability Status : </strong>{{ property.availabilityStatus }}</p>
                <p class="card-text">  <strong> Posted Date : </strong>{{ property.propertyPostedDate }}</p>
                <p class="card-text">  <strong> Available For :</strong>{{ property.propertyAdsType }}</p>
-                <p class="card-text">  <strong> Deposite : </strong>{{ property.expectedDeposit}}</p>
+                <p class="card-text">  <strong> Deposite : </strong>{{ property.expectedDeposit | currency:'INR'}}</p>
               <p class="card-text">  <strong>Available From : </strong>{{ property.availableFrom }}</p>
                <p class="card-text">  <strong> Furnishing :</strong>{{ property.furnishing }}</p>
                <p class="card-text"> <strong> Type : </strong>{{property.propertyType }}</p>
@@ -53,7 +54,9 @@
                                  
             <button type="button" class="btn btn-secondary seemore" data-bs-toggle="modal" data-bs-target="#detailsModal" (click)="getSelectedProperty(property)">
               Show Details
-            </button>
+            </button> &nbsp;&nbsp;&nbsp;
+               <button class="btn btn-success" (click)="sendWhatsAppInterest(property)">Contact via WhatsApp</button>
+
           </div>
 
         </div>
@@ -64,10 +67,17 @@
 
     </div>
 
-     
-    <ng-template #loading>
+     <div *ngIf="propertiesList.length > 0; else noData">
+
+     </div>
+<ng-template #noData>
+  <div class="text-center text-danger mt-4">
+    No data found
+  </div>
+</ng-template>
+    <ng-template #loading >
       <p>Loading properties...</p>
-    </ng-template>
+     </ng-template>
 </div>
 
 </div>
@@ -121,11 +131,11 @@
         <h5 class="text-primary">Rental Details</h5>
         <ul class="list-group mb-3">
           <li class="list-group-item"><strong>Rent Type:</strong> {{ currentSelectedProperty.rentType }}</li>
-          <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.expectedRent }}</li>
-          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.expectedDeposite }}</li>
+          <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.expectedRent | currency:'INR'}}</li>
+          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.expectedDeposite | currency:'INR' }}</li>
           <li class="list-group-item"><strong>Rent Negotiable:</strong> {{ currentSelectedProperty.rentNegotiable ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{ currentSelectedProperty.monthlyMaintainence }}</li>
-          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.maintainenceAmount }}</li>
+          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{ currentSelectedProperty.monthlyMaintainence | currency:'INR' }}</li>
+          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.maintainenceAmount | currency:'INR' }}</li>
           <li class="list-group-item"><strong>Available From:</strong> {{ currentSelectedProperty.availableFrom }}</li>
           <li class="list-group-item"><strong>Furnishing Status:</strong> {{ currentSelectedProperty.furnishingStatus }}</li>
           <li class="list-group-item"><strong>Parking:</strong> {{ currentSelectedProperty.parking }}</li>
@@ -155,6 +165,14 @@
           <li class="list-group-item"><strong>From Time:</strong> {{ formatTimeToDate(currentSelectedProperty.fromTime) | date:'hh:mm a' }}</li>
           <li class="list-group-item"><strong>To Time:</strong> {{ formatTimeToDate(currentSelectedProperty.toTime) | date:'hh:mm a' }}</li>
         </ul>
+
+           <!-- Contact via WhatsApp -->
+        <h5 class="text-primary">Contact via WhatsApp</h5>
+        <div class="d-flex flex-wrap gap-3 justify-content-start">
+       
+          <button class="btn btn-success" (click)="sendWhatsAppInterest(currentSelectedProperty)">Contact via WhatsApp</button>
+
+        </div>
 
         <!-- Gallery -->
         <h5 class="text-primary">Gallery</h5>

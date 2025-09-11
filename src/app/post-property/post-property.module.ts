@@ -18,6 +18,7 @@ import { VillaResellComponent } from './villa-resell/villa-resell.component';
 import { VillaRentComponent } from './villa-rent/villa-rent.component';
 import { NewLaunchComponent } from './new-launch/new-launch.component';
 import { ProjectsComponent } from './projects/projects.component';
+import { SharedModule } from '@app/shared/shared.module';
 
  
 @NgModule({
@@ -27,7 +28,8 @@ import { ProjectsComponent } from './projects/projects.component';
   imports: [
     CommonModule,
      FormsModule,
-    PostPropertyRoutingModule
+    PostPropertyRoutingModule,
+     SharedModule
     ],
 })
 export class PostPropertyModule { }

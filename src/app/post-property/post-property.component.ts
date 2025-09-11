@@ -14,7 +14,8 @@ export class PostPropertyComponent {
     mobileNo: '',
     postedBy: '',
     propertyType: 'Residential',
-    propertyAdsType:'Rent'
+    propertyAdsType:'Rent',
+ 
   };
  
 
@@ -52,6 +53,9 @@ constructor(private router: Router, private route: ActivatedRoute) {}
   getpropertyAdsType(adsType:any){
     this.formData.propertyAdsType = adsType;
   }
+
+ 
+
 
 
 }

@@ -236,7 +236,7 @@ export class PropertyDetailsComponent implements OnInit {
         propertyAdsType: this.postPropertyParentForm.propertyAdsType,
       
       }
-console.log(this.formObject)
+          console.log(this.formObject)
     });
   }
 

@@ -5,7 +5,7 @@ import { PostPropertiesService } from 'src/app/services/post-properties.service'
 @Component({
   selector: 'app-residential-rent',
   templateUrl: './residential-rent.component.html',
-  styleUrls: ['./residential-rent.component.css']
+  styleUrls: ['./residential-rent.component.css'],
 })
 export class ResidentialRentComponent implements OnInit {
   currentStep = 1;
@@ -18,7 +18,7 @@ export class ResidentialRentComponent implements OnInit {
     'Gallery',
     'Schedule',
   ];
-
+pageLoading = false;
   formData = {
     apartmentType: '',
     apartmentName: '',
@@ -31,6 +31,7 @@ export class ResidentialRentComponent implements OnInit {
   };
 
   floors: number[] = Array.from({ length: 40 }, (_, i) => i + 1);
+  isAmenitiesTouched: boolean = false;
 
   apartments: string[] = [
     'VTP Monarque',
@@ -44,11 +45,11 @@ export class ResidentialRentComponent implements OnInit {
     'Godrej Hillside',
     'Godrej Hill Retreat',
     'Godrej Meadows',
-    'Godrej Green Cove'
+    'Godrej Green Cove',
   ];
 
   cities: string[] = [
-     'Pune',
+    'Pune',
     'Bangalore',
     'Mumbai',
     'Delhi',
@@ -63,7 +64,6 @@ export class ResidentialRentComponent implements OnInit {
     landmark: '',
   };
 
-
   rentalData: {
     rentOrLease: string;
     expectedRent: string;
@@ -72,11 +72,11 @@ export class ResidentialRentComponent implements OnInit {
     monthlyMaintenance: string;
     maintenanceAmount: number;
     availableFrom: string;
-    preferredTenants: string[]; 
+    preferredTenants: string[];
     furnishing: string;
     parking: string;
     description: string;
-    expectedLeaseAmount:number;
+    expectedLeaseAmount: number;
   } = {
     rentOrLease: '',
     expectedRent: '',
@@ -85,11 +85,11 @@ export class ResidentialRentComponent implements OnInit {
     monthlyMaintenance: '',
     maintenanceAmount: 0,
     availableFrom: '',
-    preferredTenants: [], 
+    preferredTenants: [] as string[],
     furnishing: '',
     parking: '',
     description: '',
-    expectedLeaseAmount:0
+    expectedLeaseAmount: 0,
   };
 
   tenantOptions = [
@@ -100,22 +100,19 @@ export class ResidentialRentComponent implements OnInit {
     { label: 'Company', value: 'Company' },
   ];
 
- 
-
   amenities = {
     bathroom: 1,
     balcony: 0,
     waterSupply: '',
-    gym: true,
-    nonvegAllowed: true,
-    gatedSecurity: true,
-    petAllowed:true,
+    gym: false,
+    nonVegAllowed: false,
+    gatedSecurity: false,
+    petAllowed: false,
     whoWillShowProperty: '',
     currentPropertyCondition: '',
     secondaryNumber: '',
     availableAmenities: [] as string[], //
   };
- 
 
   amenitiesList: string[] = [
     'Lift',
@@ -145,6 +142,7 @@ export class ResidentialRentComponent implements OnInit {
     toTime: '',
   };
   postPropertyParentForm: any;
+  dummyPreferredTenants: any;
 
   formObject: any = {
     name: '',
@@ -180,13 +178,13 @@ export class ResidentialRentComponent implements OnInit {
     preferredTenants: [],
     parking: '',
     description: '',
-    bathroom: '',
+    bathroom: '1',
     balcony: '',
     waterSupply: '',
-    gym: '',
-    nonvegAllowed: '',
-    gatedSecurity: '',
-    petAllowed:'',
+    gym: false,
+    nonVegAllowed: false,
+    gatedSecurity:false,
+    petAllowed: false,
     whoWillShowProperty: '',
     currentPropertyCondition: '',
     secondaryNumber: '',
@@ -194,7 +192,7 @@ export class ResidentialRentComponent implements OnInit {
     ownerAvailability: '',
     fromTime: '',
     toTime: '',
-    rentOrLease:''
+    rentOrLease: '',
   };
 
   propertyForm: any;
@@ -213,11 +211,12 @@ export class ResidentialRentComponent implements OnInit {
   propertyPhotos6: any;
   propertyPhotos7: any;
 
+  preferredTenantsformSubmitted = false;
+
   constructor(
     private route: ActivatedRoute,
     private postPropertiesService: PostPropertiesService,
-        private router: Router,  // ✅ Add this
-
+    private router: Router // ✅ Add this
   ) {}
 
   ngOnInit() {
@@ -226,17 +225,16 @@ export class ResidentialRentComponent implements OnInit {
       const postdate = new Date();
       const formattedDate = postdate.toISOString().split('T')[0];
 
-      this.formObject= {
-        name:  this.postPropertyParentForm.name,
+      this.formObject = {
+        name: this.postPropertyParentForm.name,
         email: this.postPropertyParentForm.email,
         propertyPostedDate: formattedDate,
         mobileNo: this.postPropertyParentForm.mobileNo,
         postedBy: this.postPropertyParentForm.postedBy,
         propertyType: this.postPropertyParentForm.propertyType || 'Residential',
         propertyAdsType: this.postPropertyParentForm.propertyAdsType,
-      
-      }
-console.log(this.formObject)
+      };
+      console.log(this.formObject);
     });
   }
 
@@ -254,23 +252,27 @@ console.log(this.formObject)
         this.amenities.availableAmenities.splice(index, 1);
       }
     }
+    this.isAmenitiesTouched = true;
   }
 
-  onTenantChange(event: any) {
-    const tenant: any = event.target.value;
- //preferredTenants
-    if (event.target.checked) {
-      this.rentalData.preferredTenants.push(tenant);
-    } else {
-      this.rentalData.preferredTenants =
-        this.rentalData.preferredTenants.filter((t) => t !== tenant);
+  onTenantChange(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    const value = checkbox.value;
+    const index = this.rentalData.preferredTenants.indexOf(value);
+
+    if (checkbox.checked && index === -1) {
+      this.rentalData.preferredTenants.push(value);
+    } else if (!checkbox.checked && index !== -1) {
+      this.rentalData.preferredTenants.splice(index, 1);
+    }
+    if (this.rentalData.preferredTenants.length == 0) {
+      this.preferredTenantsformSubmitted = true;
     }
   }
 
   goToStep(step: number) {
     this.currentStep = step;
- console.log(this.formObject)
-    
+    console.log(this.formObject);
   }
 
   nextStep() {
@@ -285,8 +287,6 @@ console.log(this.formObject)
     }
   }
 
- 
-
   triggerFileInput() {
     const fileInput = document.getElementById(
       'photoUpload'
@@ -295,8 +295,8 @@ console.log(this.formObject)
   }
 
   onFileSelected(event: any) {
-     const files = event.target.files;
-     this.readFiles(files);
+    const files = event.target.files;
+    this.readFiles(files);
 
     const file1 = (event.target as HTMLInputElement).files?.[0];
     const file2 = (event.target as HTMLInputElement).files?.[1];
@@ -340,8 +340,14 @@ console.log(this.formObject)
       reader.readAsDataURL(files[i]);
     }
   }
+
+  isAmenitiesInvalid(): boolean {
+    return (
+      this.isAmenitiesTouched && this.amenities.availableAmenities.length === 0
+    );
+  }
+
   step1Form(data: any) {
-  
     this.formObject.apartmentName = data.apartmentName;
     this.formObject.apartmentType = data.apartmentType;
     this.formObject.bhkType = data.bhkType;
@@ -350,7 +356,7 @@ console.log(this.formObject)
     this.formObject.floor = data.floor;
     this.formObject.propertyAge = data.propertyAge;
     this.formObject.totalFloor = data.totalFloor;
-      console.log(this.formObject)
+    console.log(this.formObject);
   }
 
   step2Form(data: any) {
@@ -358,51 +364,56 @@ console.log(this.formObject)
     this.formObject.landmark = data.landmark;
     this.formObject.locality = data.locality;
 
-       console.log(this.formObject)
-
+    console.log(this.formObject);
   }
   step3Form(data: any) {
-    this.formObject.availableFrom = data.availableFrom;
-    this.formObject.description = data.description;
-    this.formObject.expectedDeposit = data.expectedDeposit;
-    this.formObject.expectedRent = data.expectedRent;
-    this.formObject.furnishing = data.furnishing;
-    this.formObject.maintenanceAmount = data.maintenanceAmount;
-    this.formObject.monthlyMaintenance = data.monthlyMaintenance;
-    this.formObject.parking = data.parking;
-    this.formObject.preferredTenants = data.preferredTenants;
-    this.formObject.rentNegotiable = data.rentNegotiable;
-    this.formObject.rentOrLease = data.rentOrLease;
-      console.log(this.formObject)
+    this.preferredTenantsformSubmitted = true;
+    if (this.rentalData.preferredTenants.length === 0) {
+      return; // stop here until a tenant is selected
+    } else {
+      this.formObject.availableFrom = data.availableFrom;
+      this.formObject.description = data.description;
+      this.formObject.expectedDeposit = data.expectedDeposit;
+      this.formObject.expectedRent = data.expectedRent;
+      this.formObject.furnishing = data.furnishing;
+      this.formObject.maintenanceAmount = data.maintenanceAmount;
+      this.formObject.monthlyMaintenance = data.monthlyMaintenance;
+      this.formObject.parking = data.parking;
+      this.formObject.preferredTenants = data.preferredTenants;
+      this.formObject.rentNegotiable = data.rentNegotiable;
+      this.formObject.rentOrLease = data.rentOrLease;
+    }
+
+    console.log(this.formObject);
   }
   step4Form(data: any) {
     this.formObject.balcony = data.balcony;
     this.formObject.bathroom = data.bathroom;
     this.formObject.gatedSecurity = data.gatedSecurity;
-     this.formObject.petAllowed = data.petAllowed;
+    this.formObject.petAllowed = data.petAllowed;
     this.formObject.gym = data.gym;
-    this.formObject.nonvegAllowed = data.nonVegAllowed;
+    this.formObject.nonVegAllowed = data.nonVegAllowed;
     this.formObject.currentPropertyCondition = data.currentPropertyCondition;
     this.formObject.secondaryNumber = data.secondaryNumber;
     this.formObject.availableAmenities = data.availableAmenities;
     this.formObject.whoWillShowProperty = data.whoWillShowProperty;
     this.formObject.waterSupply = data.waterSupply;
-      console.log(this.formObject)
+    console.log(this.formObject);
   }
   step5Form(data: any) {
-console.log(this.formObject)
+    console.log(this.formObject);
   }
   step6Form(data: any) {
-     this.formObject.ownerAvailability = data.ownerAvailability;
-      this.formObject.fromTime = data.fromTime;
-       this.formObject.toTime = data.toTime;
-    console.log(this.formObject)
+    this.formObject.ownerAvailability = data.ownerAvailability;
+    this.formObject.fromTime = data.fromTime;
+    this.formObject.toTime = data.toTime;
+    console.log(this.formObject);
     this.submitForm();
   }
 
   submitForm() {
     const formData = new FormData();
- 
+
     // Required form fields
     formData.append('name', this.formObject.name);
     formData.append('email', this.formObject.email);
@@ -413,7 +424,7 @@ console.log(this.formObject)
     formData.append('propertyAdsType', this.formObject.propertyAdsType);
 
     // PropertyDetails
- 
+
     formData.append('apartmentType', this.formObject.apartmentType);
     formData.append('bhkType', this.formObject.bhkType);
     formData.append('floor', this.formObject.floor);
@@ -422,7 +433,7 @@ console.log(this.formObject)
     formData.append('totalFloor', this.formObject.totalFloor);
     formData.append('propertyAge', this.formObject.propertyAge);
     formData.append('builtUpArea', this.formObject.builtUpArea);
- 
+
     // LocalityDetails
     formData.append('localityCity', this.formObject.localityCity);
     formData.append('locality', this.formObject.locality);
@@ -430,20 +441,22 @@ console.log(this.formObject)
 
     // RentalDetails
 
-    
-    formData.append('rentOrLease',  this.formObject.rentOrLease)
+    formData.append('rentOrLease', this.formObject.rentOrLease);
     formData.append('expectedRent', this.formObject.expectedRent);
     formData.append('expectedDeposit', this.formObject.expectedDeposit);
     formData.append('rentNegotiable', this.formObject.rentNegotiable);
     formData.append('monthlyMaintenance', this.formObject.monthlyMaintenance);
-    formData.append('maintenanceAmount', this.formObject.maintenanceAmount || '0');
+    formData.append(
+      'maintenanceAmount',
+      this.formObject.maintenanceAmount || '0'
+    );
     formData.append('availableFrom', this.formObject.availableFrom);
     formData.append('furnishing', this.formObject.furnishing);
     formData.append('parking', this.formObject.parking);
     formData.append('description', this.formObject.description);
-    formData.append('preferredTenants',  this.formObject.preferredTenants)
-    formData.append('availableAmenities',  this.formObject.availableAmenities)
- 
+    formData.append('preferredTenants', this.formObject.preferredTenants);
+    formData.append('availableAmenities', this.formObject.availableAmenities);
+
     // Amenities
     formData.append('bathroom', this.formObject.bathroom);
     formData.append('balcony', this.formObject.balcony);
@@ -452,9 +465,12 @@ console.log(this.formObject)
     formData.append('nonVegAllowed', this.formObject.nonVegAllowed);
     formData.append('gatedSecurity', this.formObject.gatedSecurity);
     formData.append('petAllowed', this.formObject.petAllowed);
-    
+
     formData.append('whoWillShowProperty', this.formObject.whoWillShowProperty);
-    formData.append('currentPropertyCondition', this.formObject.currentPropertyCondition);
+    formData.append(
+      'currentPropertyCondition',
+      this.formObject.currentPropertyCondition
+    );
     formData.append('secondaryNumber', this.formObject.secondaryNumber || '');
 
     // Schedule
@@ -471,89 +487,27 @@ console.log(this.formObject)
     formData.append('propertyPhotos5', this.propertyPhotos5);
     formData.append('propertyPhotos6', this.propertyPhotos6);
     formData.append('propertyPhotos7', this.propertyPhotos7);
-  
 
- const data = {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "propertyPostedDate": "2025-07-03",
-  "mobileNo": 9876543210,
-  "postedBy": "Owner",
-  "propertyType": "Apartment",
-  "propertyAdsType": "Rent",
+    formData.forEach((value, key) => {
+      if (value === undefined || value === 'undefined') {
+        formData.delete(key);
+      }
+    });
+this.pageLoading = true
 
-  "apartmentType": "2BHK",
-  "bhkType": "2BHK",
-  "apartmentName": "Sunshine Residency",
-  "floor": "3",
-  "totalFloor": "10",
-  "propertyAge": "5-10 years",
-  "facing": "East",
-  "builtUpArea": "1200 sqft",
-
-  "city": "Mumbai",
-  "locality": "Andheri",
-  "landmark": "Near Metro Station",
-
-  "rentOrLease": "Rent",
-  "expectedRent": 25000,
-  "expectedDeposit": 50000,
-  "expectedLeaseAmount": 0,
-  "rentNegotiable": true,
-  "monthlyMaintenance": 1500,
-  "maintenanceAmount": 1500,
-  "availableFrom": "2025-08-01",
-
-  "preferredTenants": ["Family", "Bachelors"],
-  "furnishing": "Semi-Furnished",
-  "parking": "Reserved",
-  "description": "Spacious and well-lit 2BHK.",
-
-  "bathroom": 2,
-  "balcony": 1,
-  "waterSupply": "Corporation",
-  "petAllowed": "Yes",
-  "gym": "Yes",
-  "gatedSecurity": "Yes",
-  "nonVegAllowed": "No",
-  "whoWillShowProperty": "Owner",
-  "currentPropertyCondition": "Vacant",
-  "secondaryNumber": 9876543211,
-  "addDirectionsTip": "Near Green Park gate",
-
-  "availableAmenities": ["Lift", "CCTV", "Garden", "Power Backup"],
-
-  "propertyPhotos1": null,
-  "propertyPhotos2": null,
-  "propertyPhotos3": null,
-  "propertyPhotos4": null,
-  "propertyPhotos5": null,
-  "propertyPhotos6": null,
-  "propertyPhotos7": null,
-
-  "ownerAvailability": "Weekends",
-  "fromTime": "10:00:00",
-  "toTime": "18:00:00"
-}
-
- formData.forEach((value, key) => {
-  if (value === undefined || value === 'undefined') {
-    formData.delete(key);
-  }
-});
 
     this.postPropertiesService.postAds(formData).subscribe({
-        next: (response) => {
-          // Handle success (HTTP 200)
-          console.log('Post successful:', response);
-          this.router.navigate(['/']); // Redirect to home
-        },
-        error: (error) => {
-          // Handle error
-          console.error('Post failed:', error);
-        }
-});
+      next: (response) => {
+        // Handle success (HTTP 200)
+        this.pageLoading = false
+       // console.log('Post successful:', response);
+        alert('Posted Successfully');
+        this.router.navigate(['/rent']); // Redirect to rent
+      },
+      error: (error) => {
+        // Handle error
+        console.error('Post failed:', error);
+      },
+    });
   }
 }
-
- 

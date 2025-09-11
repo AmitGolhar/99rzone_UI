@@ -60,58 +60,50 @@
 
       <div class="tab-content p-3 border border-top-0" id="propertyTabsContent">
         <!-- Residential -->
-     <div class="tab-pane fade show active" id="residential" role="tabpanel">
-  <label class="form-label d-block mb-2">Select Property Ad Type  <span class="text-danger">*</span></label>
-  <div class="btn-group" role="group" aria-label="Property Ad Type">
-    <input type="radio" class="btn-check" id="rent" name="propertyAdsType"
-      [(ngModel)]="formData.propertyAdsType" value="Rent"
-      required #propertyAdRef="ngModel">
-    <label class="btn btn-outline-primary" for="rent" [ngClass]="{ 'active': formData.propertyAdsType === 'Rent' }">Rent</label>
-
-    <input type="radio" class="btn-check" id="resale" name="propertyAdsType"
-      [(ngModel)]="formData.propertyAdsType" value="Resale" required>
-    <label class="btn btn-outline-primary" for="resale" [ngClass]="{ 'active': formData.propertyAdsType === 'Resale' }">Resale</label>
-
-   <!--  <input type="radio" class="btn-check" id="pg" name="propertyAdsType"
-      [(ngModel)]="formData.propertyAdsType" value="PG/Hostel" required>
-    <label class="btn btn-outline-primary" for="pg">PG/Hostel</label>
-
-    <input type="radio" class="btn-check" id="flatmates" name="propertyAdsType"
-      [(ngModel)]="formData.propertyAdsType" value="Flatmates" required>
-    <label class="btn btn-outline-primary" for="flatmates">Flatmates</label> -->
-  </div>
-
-  <!-- Validation error -->
-  <div *ngIf="propertyAdRef?.invalid && (propertyAdRef?.touched || propertyAdRef?.dirty)" class="text-danger mt-2">
-    This is Required Field
-  </div>
-</div>
-
+        <div class="tab-pane fade show active" id="residential" role="tabpanel1">
+          <label class="form-label d-block mb-2">Select Property Ad Type <span class="text-danger">*</span></label>
+          <div class="btn-group" role="group1" aria-label="Property Ad Type">
+            <input type="radio" class="btn-check" id="rent" name="propertyAdsType" [(ngModel)]="formData.propertyAdsType"
+              value="Rent" required #propertyAdRef="ngModel">
+            <label class="btn btn-outline-primary" for="rent"
+              [ngClass]="{ 'active': formData.propertyAdsType === 'Rent' }">Rent</label>
+      
+            <input type="radio" class="btn-check" id="resale" name="propertyAdsType" [(ngModel)]="formData.propertyAdsType"
+              value="Resale" required>
+            <label class="btn btn-outline-primary" for="resale"
+              [ngClass]="{ 'active': formData.propertyAdsType === 'Resale' }">Resale</label>
+      
+      
+          </div>
+      
+          <!-- Validation error -->
+          <div *ngIf="propertyAdRef?.invalid && (propertyAdRef?.touched || propertyAdRef?.dirty)" class="text-danger mt-2">
+            This is Required Field
+          </div>
+        </div>
+      
         <!-- Commercial -->
-        <div class="tab-pane fade" id="commercial" role="tabpanel">
+        <div class="tab-pane fade" id="commercial" role="tabpanel2">
           <label class="form-label d-block mb-2">Select Property Ad Post Type</label>
-          <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" id="commercial-rent" name="propertyAdsType" value="Rent" [(ngModel)]="formData.propertyAdsType" required>
-            <label class="btn btn-outline-primary" for="commercial-rent" [ngClass]="{ 'active': formData.propertyAdsType === 'Rent' }">Rent</label>
- 
-            <input type="radio" class="btn-check" id="commercial-resale" name="propertyAdsType" value="Sale" [(ngModel)]="formData.propertyAdsType" required>
-            <label class="btn btn-outline-primary" for="commercial-resale" [ngClass]="{ 'active': formData.propertyAdsType === 'Sale' }" >Sale</label>
+          <div class="btn-group" role="group2">
+            <input type="radio" class="btn-check" id="commercial-rent" name="propertyAdsType" value="Rent"
+              [(ngModel)]="formData.propertyAdsType" required>
+            <label class="btn btn-outline-primary" for="commercial-rent"
+              [ngClass]="{ 'active': formData.propertyAdsType === 'Rent' }">Rent</label>
+      
+            <input type="radio" class="btn-check" id="commercial-resale" name="propertyAdsType" value="Sale"
+              [(ngModel)]="formData.propertyAdsType" required>
+            <label class="btn btn-outline-primary" for="commercial-resale"
+              [ngClass]="{ 'active': formData.propertyAdsType === 'Sale' }">Sale</label>
           </div>
         </div>
-
-        <!-- Land/Plot -->
-        <div class="tab-pane fade" id="land" role="tabpanel">
-          <label class="form-label d-block mb-2">Select Property Ad Type</label>
-          <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" id="land-resale" name="propertyAdsType" value="Resale" [(ngModel)]="formData.propertyAdsType" required>
-            <label class="btn btn-outline-primary" for="land-resale" [ngClass]="{ 'active': formData.propertyAdsType === 'Resale' }" >Resale</label>
-          </div>
-        </div>
+      
+      
       </div>
-    </div>
+      </div>
 
     <!-- Submit [disabled]="!postPropertyForm.form.valid" -->
-    <button type="submit" class="btn btn-success mt-3" >
+    <button type="submit" class="btn btn-success mt-3"  [disabled]="postPropertyForm.invalid" >
       Post Property
     </button>
   </form>

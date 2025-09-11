@@ -1,3 +1,5 @@
+<app-loader [isLoading]="pageLoading"></app-loader>
+
 <div class="container-fluid">
   <div class="row">
     <!-- Sidebar -->
@@ -25,11 +27,6 @@
             <div class="col-md-6">
 
 
-
-
-
-
-
               <!-- Apartment Type -->
               <div class="mb-3">
                 <label for="apartmentType" class="form-label">
@@ -38,7 +35,6 @@
                 <select id="apartmentType" class="form-select" [(ngModel)]="formData.apartmentType" name="apartmentType"
                   required #apartmentRef="ngModel">
                   <option value="">Select</option>
-                  <option value="NA">NA</option>
                   <option value="Flat">Flat</option>
                   <option value="Villa">Villa</option>
                   <option value="Studio Apartment">Studio Apartment </option>
@@ -64,13 +60,12 @@
                 <select id="bhkType" class="form-select" [(ngModel)]="formData.bhkType" name="bhkType" required
                   #bhkTypeRef="ngModel">
                   <option value="">Select</option>
-                  <option value="NA">NA</option>
                   <option value="1 BHK">1 BHK</option>
                   <option value="2 BHK">2 BHK</option>
                   <option value="3 BHK">3 BHK</option>
                   <option value="4 BHK">4 BHK</option>
                   <option value="5 BHK">5 BHK</option>
-                  <option value="5+ BHK">5+ BHK</option>
+                  <option value="5 BHK+">5+ BHK</option>
                 </select>
                 <div class="text-danger" *ngIf="bhkTypeRef.invalid && (bhkTypeRef.dirty || bhkTypeRef.touched)">This
                   field is
@@ -195,7 +190,8 @@
           <!-- Navigation Buttons -->
           <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-outline-secondary" disabled>Previous</button>
-            <button type="button" (click)="step1Form(formData); nextStep()" class="btn btn-primary">Next</button>
+            <button type="button" (click)="step1Form(formData); nextStep()" class="btn btn-primary"
+              [disabled]="propertyForm.invalid">Next</button>
           </div>
         </form>
       </div>
@@ -251,8 +247,8 @@
           <!-- Navigation Buttons -->
           <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-            <button type="button" (click)="step2Form(locationData)" class="btn btn-primary"
-              (click)="nextStep()">Next</button>
+            <button type="button" (click)="step2Form(locationData)" class="btn btn-primary" (click)="nextStep()"
+              [disabled]="locationForm.invalid">Next</button>
           </div>
         </form>
       </div>
@@ -308,13 +304,15 @@
               </div>
             </div>
 
-              <!-- Expected Lease Amount * -->
+            <!-- Expected Lease Amount * -->
             <div class="col-md-6" *ngIf="rentalData.rentOrLease == 'Only Lease'">
               <label for="expectedLeaseAmount" class="form-label">Expected Lease Amount <span
                   class="text-danger">*</span></label>
-              <input type="number" id="expectedLeaseAmount" class="form-control" [(ngModel)]="rentalData.expectedLeaseAmount"
-                name="expectedLeaseAmount" required #expectedLeaseAmountRef="ngModel" />
-              <div *ngIf="expectedLeaseAmountRef.invalid && (expectedLeaseAmountRef.dirty || expectedLeaseAmountRef.touched)"
+              <input type="number" id="expectedLeaseAmount" class="form-control"
+                [(ngModel)]="rentalData.expectedLeaseAmount" name="expectedLeaseAmount" required
+                #expectedLeaseAmountRef="ngModel" />
+              <div
+                *ngIf="expectedLeaseAmountRef.invalid && (expectedLeaseAmountRef.dirty || expectedLeaseAmountRef.touched)"
                 class="text-danger mt-1">
                 This field is required
               </div>
@@ -373,10 +371,9 @@
             <!-- Furnishing -->
             <div class="col-md-6">
               <label for="furnishing" class="form-label">Furnishing <span class="text-danger">*</span></label>
-              <select id="furnishing" class="form-select" [(ngModel)]="rentalData.furnishing"
-                name="furnishing" required #furnishingStatusRef="ngModel">
+              <select id="furnishing" class="form-select" [(ngModel)]="rentalData.furnishing" name="furnishing" required
+                #furnishingStatusRef="ngModel">
                 <option value="">Select</option>
-                <option value="NA">NA</option>
                 <option value="Unfurnished">Unfurnished</option>
                 <option value="Semi-Furnished">Semi-Furnished</option>
                 <option value="Fully-Furnished">Fully-Furnished</option>
@@ -423,16 +420,22 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="rentalData.preferredTenants?.length === 0" class="text-danger mt-1">
+
+            <!-- Validation error -->
+            
+            <div *ngIf="rentalData.preferredTenants.length === 0 && preferredTenantsformSubmitted"
+              class="text-danger mt-1">
               Please select at least one tenant
             </div>
+
           </div>
+
 
           <!-- Navigation Buttons -->
           <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-            <button type="button" (click)="step3Form(rentalData)" class="btn btn-primary"
-              (click)="nextStep()">Next</button>
+            <button type="button" (click)="step3Form(rentalData)" class="btn btn-primary" (click)="nextStep()"
+              [disabled]="rentalForm.invalid  || rentalData.preferredTenants?.length === 0">Next</button>
           </div>
         </form>
       </div>
@@ -443,113 +446,139 @@
         <form (ngSubmit)="step4Form(amenities)" #amenitiesForm="ngForm">
           <p class="fw-bold">Amenities</p>
 
-          <!-- Row with 2 equal columns -->
           <div class="row g-3">
             <!-- Left Column -->
             <div class="col-md-6">
-              <!-- Bathrooms -->
+              <!-- Bathroom -->
               <div class="mb-3">
-                <label for="bathroom" class="form-label fw-bold">Bathroom(s)*</label>
+                <label for="bathroom" class="form-label fw-bold">Bathroom(s) <span class="text-danger">*</span></label>
                 <input type="number" id="bathroom" class="form-control" [(ngModel)]="amenities.bathroom" name="bathroom"
-                  min="1" required />
+                  #bathroom="ngModel" min="1" required />
+                <div *ngIf="bathroom.invalid && bathroom.touched" class="text-danger">Bathroom is required.</div>
               </div>
 
               <!-- Balcony -->
               <div class="mb-3">
-                <label for="balcony" class="form-label fw-bold">Balcony</label>
+                <label for="balcony" class="form-label fw-bold">Balcony <span class="text-danger">*</span></label>
                 <input type="number" id="balcony" class="form-control" [(ngModel)]="amenities.balcony" name="balcony"
-                  min="0" />
+                  #balcony="ngModel" min="0" required />
+                <div *ngIf="balcony.invalid && balcony.touched" class="text-danger">Enter Number Of Balcony.</div>
+
               </div>
 
               <!-- Water Supply -->
               <div class="mb-3">
-                <label for="waterSupply" class="form-label fw-bold">Water Supply</label>
-                <select id="waterSupply" class="form-select" [(ngModel)]="amenities.waterSupply" name="waterSupply">
+                <label for="waterSupply" class="form-label fw-bold">Water Supply <span
+                    class="text-danger">*</span></label>
+                <select id="waterSupply" class="form-select" [(ngModel)]="amenities.waterSupply" name="waterSupply"
+                  #waterSupply="ngModel" required>
                   <option value="">Select</option>
                   <option value="corporate">Corporation</option>
                   <option value="borewell">Borewell</option>
                   <option value="privateplant">Private Plant</option>
                   <option value="both">Both</option>
                 </select>
+                <div *ngIf="waterSupply.invalid && waterSupply.touched" class="text-danger">Water supply is required.
+                </div>
               </div>
 
               <!-- Gym -->
               <div class="mb-3">
-                <label class="form-label fw-bold">Gym</label>
+                <label class="form-label fw-bold">Gym <span class="text-danger">*</span></label>
                 <div>
-                  <input type="radio" id="gymYes" name="gym" [(ngModel)]="amenities.gym" [value]="true" />
+                  <input type="radio" id="gymYes" name="gym" [(ngModel)]="amenities.gym" [value]="true" #gym="ngModel"
+                    required />
                   <label for="gymYes" class="me-3">Yes</label>
 
-                  <input type="radio" id="gymNo" name="gym" [(ngModel)]="amenities.gym" [value]="false" />
+                  <input type="radio" id="gymNo" name="gym" [(ngModel)]="amenities.gym" [value]="false" required />
                   <label for="gymNo">No</label>
                 </div>
+                <div *ngIf="gym.invalid && gym.touched" class="text-danger">Select an option for Gym.</div>
               </div>
 
               <!-- Non Veg Allowed -->
               <div class="mb-3">
-                <label class="form-label fw-bold">Non Veg Allowed</label>
+                <label class="form-label fw-bold">Non Veg Allowed <span class="text-danger">*</span></label>
                 <div>
-                  <input type="radio" id="nonvegAllowedYes" name="nonvegAllowed" [(ngModel)]="amenities.nonvegAllowed"
-                    [value]="true" />
-                  <label for="nonvegAllowedYes" class="me-3">Yes</label>
+                  <input type="radio" id="nonVegAllowedYes" name="nonVegAllowed" [(ngModel)]="amenities.nonVegAllowed"
+                    [value]="true" #nonVegAllowed="ngModel" required />
+                  <label for="nonVegAllowedYes" class="me-3">Yes</label>
 
-                  <input type="radio" id="nonvegAllowedNo" name="nonvegAllowed" [(ngModel)]="amenities.nonvegAllowed"
-                    [value]="false" />
-                  <label for="nonvegAllowedNo">No</label>
+                  <input type="radio" id="nonVegAllowedNo" name="nonVegAllowed" [(ngModel)]="amenities.nonVegAllowed"
+                    [value]="false" required />
+                  <label for="nonVegAllowedNo">No</label>
+                </div>
+                <div *ngIf="nonVegAllowed.invalid && nonVegAllowed.touched" class="text-danger">Please select an option.
                 </div>
               </div>
 
-              <!-- Gate Security -->
+              <!-- Gated Security -->
               <div class="mb-3">
-                <label class="form-label fw-bold">Gate Security</label>
+                <label class="form-label fw-bold">Gate Security <span class="text-danger">*</span></label>
                 <div>
                   <input type="radio" id="securityYes" name="gatedSecurity" [(ngModel)]="amenities.gatedSecurity"
-                    [value]="true" />
+                    [value]="true" #gatedSecurity="ngModel" required />
                   <label for="securityYes" class="me-3">Yes</label>
 
                   <input type="radio" id="securityNo" name="gatedSecurity" [(ngModel)]="amenities.gatedSecurity"
-                    [value]="false" />
+                    [value]="false" required />
                   <label for="securityNo">No</label>
                 </div>
+                <div *ngIf="gatedSecurity.invalid && gatedSecurity.touched" class="text-danger">Select an option for
+                  Gate
+                  Security.</div>
               </div>
+
               <!-- Pets Allowed -->
               <div class="mb-3">
-                <label class="form-label fw-bold">Pet Allowed </label>
+                <label class="form-label fw-bold">Pet Allowed <span class="text-danger">*</span></label>
                 <div>
                   <input type="radio" id="petAllowedYes" name="petAllowed" [(ngModel)]="amenities.petAllowed"
-                    [value]="true" />
+                    [value]="true" #petAllowed="ngModel" required />
                   <label for="petAllowedYes" class="me-3">Yes</label>
 
                   <input type="radio" id="petAllowedNo" name="petAllowed" [(ngModel)]="amenities.petAllowed"
-                    [value]="false" />
+                    [value]="false" required />
                   <label for="petAllowedNo">No</label>
+                </div>
+                <div *ngIf="petAllowed.invalid && petAllowed.touched" class="text-danger">Select an option for Pets
+                  Allowed.
                 </div>
               </div>
             </div>
 
             <!-- Right Column -->
             <div class="col-md-6">
-              <!-- Who Will Show the Property? -->
+              <!-- Who Will Show the Property -->
               <div class="mb-3">
-                <label for="whoWillShowProperty" class="form-label fw-bold">Who will show the property?</label>
+                <label for="whoWillShowProperty" class="form-label fw-bold">Who will show the property? <span
+                    class="text-danger">*</span></label>
                 <select id="whoWillShowProperty" class="form-select" [(ngModel)]="amenities.whoWillShowProperty"
-                  name="whoWillShowProperty" required>
+                  name="whoWillShowProperty" #whoWillShowProperty="ngModel" required>
                   <option value="">Select</option>
                   <option value="owner">Owner</option>
                   <option value="security">Security</option>
                   <option value="broker">Broker</option>
                 </select>
+                <div *ngIf="whoWillShowProperty.invalid && whoWillShowProperty.touched" class="text-danger">This field
+                  is
+                  required.</div>
               </div>
 
               <!-- Current Property Condition -->
               <div class="mb-3">
-                <label for="currentPropertyCondition" class="form-label fw-bold">Current Property Condition</label>
+                <label for="currentPropertyCondition" class="form-label fw-bold">Current Property Condition <span
+                    class="text-danger">*</span></label>
                 <select id="currentPropertyCondition" class="form-select"
-                  [(ngModel)]="amenities.currentPropertyCondition" name="currentPropertyCondition">
+                  [(ngModel)]="amenities.currentPropertyCondition" name="currentPropertyCondition"
+                  #currentPropertyCondition="ngModel" required>
                   <option value="">Select</option>
                   <option value="vacant">Vacant</option>
                   <option value="notice">Under Notice</option>
                 </select>
+                <div *ngIf="currentPropertyCondition.invalid && currentPropertyCondition.touched" class="text-danger">
+                  Current Property Condition is required.
+                </div>
               </div>
 
               <!-- Secondary Number -->
@@ -559,14 +588,11 @@
                   name="secondaryNumber" />
               </div>
             </div>
-            <div class="col-md-6">
-
-            </div>
           </div>
 
-          <!-- Available Amenities (2 Columns) -->
+          <!-- Available Amenities -->
           <div class="row mt-4">
-            <label class="form-label fw-bold mb-2">Available Amenities:</label>
+            <label class="form-label fw-bold mb-2">Available Amenities: <span class="text-danger">*</span></label>
 
             <div class="col-md-6">
               <div class="form-check" *ngFor="let amenity of amenitiesList.slice(0, amenitiesList.length / 2)">
@@ -583,19 +609,25 @@
                 <label class="form-check-label">{{ amenity }}</label>
               </div>
             </div>
+            <div *ngIf="isAmenitiesInvalid()" class="text-danger mt-2">
+              Please select at least one amenity.
+            </div>
           </div>
 
           <!-- Navigation Buttons -->
           <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-            <button type="button" (click)="step4Form(amenities)" class="btn btn-primary"
-              (click)="nextStep()">Next</button>
+            <button type="submit" (click)="step4Form(amenities)" class="btn btn-primary"  (click)="nextStep()"
+              [disabled]="amenitiesForm.invalid || amenities.availableAmenities?.length === 0">
+              Next
+            </button>
           </div>
         </form>
+
       </div>
 
 
- 
+
       <!-- Gallery Step -->
       <div *ngIf="currentStep === 5">
         <form (ngSubmit)="step5Form(uploadedPhotos)" #galleryForm="ngForm">
@@ -644,7 +676,6 @@
       <!-- Schedule Step -->
       <div *ngIf="currentStep === 6">
         <form (ngSubmit)="step6Form(scheduleData)" #scheduleForm="ngForm">
-
           <h4 class="fw-bold mb-3">Schedule</h4>
           <p class="text-muted">Schedule property visits here</p>
 
@@ -695,9 +726,12 @@
             </div>
           </div>
 
-          <!-- Submit Button -->
+          <!-- Submit Button   [disabled]="!scheduleData.ownerAvailability || scheduleForm.invalid"-->
           <div class="d-flex justify-content-between mt-4">
-            <button type="submit" class="btn btn-success">Finish</button>
+            <button type="submit" class="btn btn-success"
+             >
+              Finish
+            </button>
           </div>
         </form>
       </div>

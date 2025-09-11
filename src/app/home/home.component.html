@@ -1,147 +1,154 @@
+<app-loader [isLoading]="pageLoading"></app-loader>
+
 <div class="container py-4">
   <h4 class="text-center mb-4">Your perfect home🏠 is out there. Let’s go find it together.</h4>
 
 <div class="container my-4">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs justify-content-center" id="propertyTab" role="tablist">
+     
     <li class="nav-item" role="presentation" (click)="onTabClick('Buy')">
-      <button class="nav-link active" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">Buy</button>
+      <button class="nav-link " id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">Buy</button>
     </li>
-    <li class="nav-item" role="presentation" (click)="onTabClick('Rent')">
-      <button class="nav-link" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">Rent</button>
+   <li class="nav-item" role="presentation" (click)="onTabClick('Rent')">
+      <button class="nav-link active" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">Rent</button>
     </li>
+
     <li class="nav-item" role="presentation" (click)="onTabClick('Commercial')">
       <button class="nav-link" id="commercial-tab" data-bs-toggle="tab" data-bs-target="#commercial" type="button" role="tab">Commercial</button>
     </li>
   </ul>
 
-  <!-- Tab content -->
-  <div class="tab-content mt-4">
-    <!-- Buy Tab -->
-    <div class="tab-pane fade show active" id="buy" role="tabpanel">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <label class="form-label d-block">Property Type</label>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="buyPropertyType" id="buyFullHouse" value="Full House" checked>
-            <label class="form-check-label" for="buyFullHouse">Full House</label>
+<!-- Tab content -->
+<div class="tab-content mt-4">
+  <!-- Buy Tab -->
+  <div class="tab-pane fade show " id="buy" role="tabpanel">
+    <div class="row g-3">
+      <!-- Looking For -->
+      <div class="col-md-4">
+        <label class="form-label d-block">Looking For</label>
+        <div class="row">
+          <div class="col-6 col-lg-6" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="buyPropertyType" [id]="'buy-' + i" [value]="type">
+              <label class="form-check-label" [for]="'buy-' + i">{{ type }}</label>
+            </div>
           </div>
-
-           <div class="form-check">
-            <input class="form-check-input" type="radio" name="IndependentBuilderFloor" id="IndependentBuilderFloor" value="IndependentBuilderFloor">
-            <label class="form-check-label" for="IndependentBuilderFloor">Independent/Builder Floor</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="1RKStudioApartment" id="1RKStudioApartment" value="1RKStudioApartment">
-            <label class="form-check-label" for="1RKStudioApartment"> 1 RK/ Studio Apartment</label>
-          </div>
-           <div class="form-check">
-            <input class="form-check-input" type="radio" name="IndependentHouseVilla" id="IndependentHouseVilla" value="IndependentHouseVilla">
-            <label class="form-check-label" for="IndependentHouseVilla"> Independent House/Villa</label>
-          </div>
-          
-        </div>
-        <div class="col-md-4">
-          <label for="bhkTypeBuy" class="form-label">BHK Type</label>
-          <select class="form-select" id="bhkTypeBuy">
-            <option>Select</option>
-            <option>1 BHK</option>
-            <option>2 BHK</option>
-            <option>3 BHK</option>
-            <option>4 BHK</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="propertyStatusBuy" class="form-label">Property Status</label>
-          <select class="form-select" id="propertyStatusBuy">
-            <option>Select</option>
-            <option>Under Construction</option>
-            <option>Ready</option>
-          </select>
         </div>
       </div>
-    </div>
 
-    <!-- Rent Tab -->
-    <div class="tab-pane fade" id="rent" role="tabpanel">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <label class="form-label d-block">Rental Type</label>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="rentPropertyType" id="rentFullHouse" value="Full House" checked>
-            <label class="form-check-label" for="rentFullHouse">Full House</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="rentPropertyType" id="rentPgHostel" value="PG/Hostel">
-            <label class="form-check-label" for="rentPgHostel">PG/Hostel</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="rentPropertyType" id="rentFlatmates" value="Flatmates">
-            <label class="form-check-label" for="rentFlatmates">Flatmates</label>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <label for="bhkTypeRent" class="form-label">BHK Type</label>
-          <select class="form-select" id="bhkTypeRent">
-            <option>Select</option>
-            <option>1 BHK</option>
-            <option>2 BHK</option>
-            <option>3 BHK</option>
-            <option>4 BHK</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="availabilityRent" class="form-label">Availability</label>
-          <select class="form-select" id="availabilityRent">
-            <option>Select</option>
-            <option>Immediate</option>
-            <option>15 days</option>
-            <option>30 days</option>
-          </select>
-        </div>
+      <div class="col-md-4">
+        <label for="bhkTypeBuy" class="form-label">BHK Type</label>
+        <select class="form-select" id="bhkTypeBuy">
+          <option>Select</option>
+          <option>1 BHK</option>
+          <option>2 BHK</option>
+          <option>3 BHK</option>
+          <option>4 BHK</option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label for="propertyStatusBuy" class="form-label">Property Status</label>
+        <select class="form-select" id="propertyStatusBuy">
+          <option>Select</option>
+          <option>Under Construction</option>
+          <option>Ready</option>
+        </select>
       </div>
     </div>
+  </div>
 
-    <!-- Commercial Tab -->
-    <div class="tab-pane fade" id="commercial" role="tabpanel">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <label class="form-label d-block">Purpose</label>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialRent" value="Rent" checked>
-            <label class="form-check-label" for="commercialRent">Rent</label>
+  <!-- Rent Tab -->
+  <div class="tab-pane fade show active" id="rent" role="tabpanel">
+    <div class="row g-3">
+   
+
+      <div class="col-md-6">
+        <label for="availabilityRent" class="form-label">Availability</label>
+        <select class="form-select" id="availabilityRent" [(ngModel)]="withinDays">
+          <option value="">Select</option>
+          <option value="2">Immediate</option>
+          <option value="7">1 week</option>
+          <option value="15">15 days</option>
+          <option value="30">30 days</option>
+        </select>
+      </div>
+        
+
+      <div class="col-md-6">
+        <label for="bhkTypeRent" class="form-label">BHK Type</label>
+        <select id="bhkType" class="form-select" name="bhkType" [(ngModel)]="bhkType">
+          <option value="">Select</option>
+          <option value="1 BHK">1 BHK</option>
+          <option value="2 BHK">2 BHK</option>
+          <option value="3 BHK">3 BHK</option>
+          <option value="4 BHK">4 BHK</option>
+          <option value="5 BHK">5 BHK</option>
+          <option value="5 BHK+">5+ BHK</option>
+        </select>
+      </div>
+
+       <!-- Looking For -->
+      <div class="col-md-12">
+        <label class="form-label d-block">Looking For</label>
+        <div class="row">
+          <div class="col-6 col-lg-6" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="apartmentType" [id]="'rent-' + i" [value]="type" [(ngModel)]="apartmentType">
+              <label class="form-check-label" [for]="'rent-' + i">{{ type }}</label>
+            </div>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialBuy" value="Buy">
-            <label class="form-check-label" for="commercialBuy">Buy</label>
-          </div>
         </div>
-        <div class="col-md-4">
-          <label for="propertyTypeCommercial" class="form-label">Property Type</label>
-          <select class="form-select" id="propertyTypeCommercial">
-            <option>Select</option>
-            <option>Office</option>
-            <option>Other</option>
-          </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Commercial Tab -->
+  <div class="tab-pane fade" id="commercial" role="tabpanel">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label d-block">Purpose</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialRent" value="Rent" checked>
+          <label class="form-check-label" for="commercialRent">Rent</label>
         </div>
-        <div class="col-md-4">
-          <label for="availabilityCommercial" class="form-label">Availability</label>
-          <select class="form-select" id="availabilityCommercial">
-            <option>Select</option>
-            <option>Immediate</option>
-            <option>15 days</option>
-            <option>30 days</option>
-          </select>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialBuy" value="Buy">
+          <label class="form-check-label" for="commercialBuy">Buy</label>
         </div>
+      </div>
+
+      <div class="col-md-4">
+        <label for="propertyTypeCommercial" class="form-label">Property Type</label>
+        <select class="form-select" id="propertyTypeCommercial">
+          <option>Select</option>
+          <option>Office</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label for="availabilityCommercial" class="form-label">Availability</label>
+        <select class="form-select" id="availabilityCommercial">
+          <option>Select</option>
+          <option>Immediate</option>
+          <option>1 week</option>
+          <option>15 days</option>
+          <option>30 days</option>
+        </select>
       </div>
     </div>
   </div>
 </div>
 
+</div>
+
   <div class="row align-items-center mb-4">
     <!-- City Dropdown (20%) -->
     <div class="col-12 col-md-2 mb-2 mb-md-0">
-      <select class="form-select" [(ngModel)]="selectedCity">
+      <select class="form-select" [(ngModel)]="localityCity" name="localityCity">
         <option value="" disabled selected>Select City</option>
         <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
       </select>
@@ -151,7 +158,7 @@
     <div class="col-12 col-md-10">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Enter location, property type, etc.">
-        <button class="btn btn-primary" (click)="handleAddressChange(query)">Search</button>
+        <button class="btn btn-primary" (click)="searchProperty(query)">Search</button>
       </div>
     </div>
   </div>
@@ -160,13 +167,13 @@
   <div class="featured-properties">
     <h2 class="mb-3">Featured Properties</h2>
 
-    <div
-  class="scroll-container"
-  infiniteScroll
-  [infiniteScrollDistance]="2"
-  [infiniteScrollThrottle]="300"
-  (scrolled)="onScroll()"
->
+   <div class="scroll-container"
+     style="height: 80vh; overflow: auto;"
+     infiniteScroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="300"
+     (scrolled)="onScroll()">
+
  
   <div class="row g-3" *ngIf="propertiesList.length; else loading">
       <div class="col-12 col-md-4" *ngFor="let property of propertiesList">
@@ -185,7 +192,7 @@
                <p class="card-text"> <strong> Type:</strong>{{property.propertyDetails.propertyType }}</p>
               <p class="card-text fw-bold">Expected Rent{{ property.rentalDetails.expectedRent | currency:'INR' }}</p>
 
-                                 
+                             &nbsp;&nbsp;&nbsp;       
             <button type="button" class="btn btn-secondary seemore" data-bs-toggle="modal" data-bs-target="#detailsModal" (click)="getSelectedProperty(property)">
               Show Details
             </button>

@@ -7,19 +7,17 @@ import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-
+ import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    RentComponent
-  ],
+  declarations: [RentComponent],
   imports: [
     CommonModule,
     FormsModule,
     RentRoutingModule,
-        InfiniteScrollModule,
-        HttpClientModule,
-    
-  ]
+    InfiniteScrollModule,
+    HttpClientModule,
+    SharedModule
+  ],
 })
-export class RentModule { }
+export class RentModule {}
