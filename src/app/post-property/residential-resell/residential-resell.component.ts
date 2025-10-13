@@ -5,7 +5,7 @@ import { PostPropertiesService } from 'src/app/services/post-properties.service'
 @Component({
   selector: 'app-residential-resell',
   templateUrl: './residential-resell.component.html',
-  styleUrls: ['./residential-resell.component.css']
+  styleUrls: ['./residential-resell.component.css'],
 })
 export class ResidentialResellComponent implements OnInit {
   currentStep = 1;
@@ -27,10 +27,9 @@ export class ResidentialResellComponent implements OnInit {
     propertyAge: '',
     facing: '',
     builtUpArea: '',
-    carpetArea:'',
-    floorType:'',
-    plotArea:'',
-    leaseYears:'',
+    carpetArea: '',
+    floorType: '',
+    leaseYears: '',
     apartmentName: '',
     propertyType: '',
     propertyStatus: '',
@@ -38,7 +37,8 @@ export class ResidentialResellComponent implements OnInit {
     availabilityStatus: '',
     purposeStatus: '',
     commercialPropertyType: '',
-    buyPropertyType:''
+    buyPropertyType: '',
+    ownershipType: '',
   };
 
   floors: number[] = Array.from({ length: 40 }, (_, i) => i + 1);
@@ -55,11 +55,11 @@ export class ResidentialResellComponent implements OnInit {
     'Godrej Hillside',
     'Godrej Hill Retreat',
     'Godrej Meadows',
-    'Godrej Green Cove'
+    'Godrej Green Cove',
   ];
 
   cities: string[] = [
-     'Pune',
+    'Pune',
     'Bangalore',
     'Mumbai',
     'Delhi',
@@ -68,38 +68,30 @@ export class ResidentialResellComponent implements OnInit {
   ];
 
   locationData = {
-    localityCity: '',
+    city: '',
     locality: '',
     landmark: '',
   };
 
   rentalData: {
-    rentType: string;
     expectedPrice: string;
     maintenanceCost: string;
     isPriceNegotiable: boolean;
-    isCurrentlyUnder:boolean;
-    monthlyMaintainence: string;
-    maintainenceAmount: string;
+    isCurrentlyUnder: boolean;
     availableFrom: string;
-    preferredTenants: string[]; // <-- explicitly typed as an array of strings
-    furnishingStatus: string;
+    furnishing: string;
     parking: string;
     description: string;
-    kitchenType:string
+    kitchenType: string;
   } = {
-    rentType: '',
     expectedPrice: '',
     maintenanceCost: '',
     isPriceNegotiable: false,
-    isCurrentlyUnder:false,
-    monthlyMaintainence: '',
-    maintainenceAmount: '',
+    isCurrentlyUnder: false,
     availableFrom: '',
-    preferredTenants: [], // <-- initialized as empty array
-    furnishingStatus: '',
+    furnishing: '',
     parking: '',
-    kitchenType:'',
+    kitchenType: '',
     description: '',
   };
 
@@ -117,13 +109,13 @@ export class ResidentialResellComponent implements OnInit {
     waterSupply: '',
     gym: true,
     powerBackup: '',
-    gateSecurity: true,
+    gatedSecurity: true,
     whoWillShowProperty: '',
     currentPropertyCondition: '',
-    alternateNumber: '',
-    availableAmenities: [] as string[], //
+    secondaryNumber: '',
+    availableAmenities: [] as string[],
+    selectedCount: 0,
   };
- 
 
   amenitiesList: string[] = [
     'Lift',
@@ -151,62 +143,67 @@ export class ResidentialResellComponent implements OnInit {
     ownerAvailability: '',
     fromTime: '',
     toTime: '',
-    allotmentLetterAvailable:'',
+    allotmentLetterAvailable: '',
     saleDeedCertificateAvailable: '',
-    paidPropertyTax:'',
-    occupancyCertificateAvailable:''
+    paidPropertyTax: '',
+    occupancyCertificateAvailable: '',
   };
+
   postPropertyParentForm: any;
 
   formObject: any = {
     name: '',
     email: '',
-    date: '',
+    propertyPostedDate: '',
     mobileNo: '',
     postedBy: '',
     propertyType: '',
     propertyAdsType: '',
-    buyPropertyType: '',
-    rentalType: '',
-    commercialPropertyType: '',
+    apartmentName: '',
     apartmentType: '',
     bhkType: '',
-    floor: '',
-    facing: '',
-    apartmentName: ' ',
-    totalFloor: '',
-    propertyAge: '',
+    plotArea: '',
+    ownershipType: '',
+    leaseYears: '',
     builtUpArea: '',
-    propertyStatus: '',
-    availabilityStatus: '',
-    purposeStatus: '',
-    localityCity: '',
+    carpetArea: '',
+    propertyAge: '',
+    facing: '',
+    floorType: '',
+    floor: '',
+    totalFloor: '',
+    city: '',
     locality: '',
-    landmarkStreet: '',
-    rentType: '',
-    expectedRent: '',
-    expectedDeposite: '',
-    isRentNegotiable: '',
-    monthlyMaintainence: '',
-    maintainenceAmount: '',
+    landmark: '',
+    expectedPrice: '',
+    maintenanceCost: '',
+    isPriceNegotiable: '',
+    isCurrentlyUnder: '',
     availableFrom: '',
-    furnishingStatus: '',
-    preferredTenants: [],
+    kitchenType: '',
+    furnishing: '',
     parking: '',
     description: '',
     bathroom: '',
     balcony: '',
     waterSupply: '',
     gym: '',
-    nonvegAllowed: '',
-    gateSecurity: '',
+    powerBackup: '',
+    gatedSecurity: '',
     whoWillShowProperty: '',
     currentPropertyCondition: '',
-    alternateNumber: '',
+    secondaryNumber: '',
     availableAmenities: [],
+    propertyStatus: '',
+    availabilityStatus: '',
+    purposeStatus: '',
     ownerAvailability: '',
     fromTime: '',
     toTime: '',
+    allotmentLetterAvailable: '',
+    saleDeedCertificateAvailable: '',
+    paidPropertyTax: '',
+    occupancyCertificateAvailable: '',
   };
 
   propertyForm: any;
@@ -224,11 +221,11 @@ export class ResidentialResellComponent implements OnInit {
   propertyPhotos6: any;
   propertyPhotos7: any;
 
+  photoCount = 0;
   constructor(
     private route: ActivatedRoute,
     private postPropertiesService: PostPropertiesService,
-        private router: Router,  // ✅ Add this
-
+    private router: Router // ✅ Add this
   ) {}
 
   ngOnInit() {
@@ -237,50 +234,59 @@ export class ResidentialResellComponent implements OnInit {
       const postdate = new Date();
       const formattedDate = postdate.toISOString().split('T')[0];
 
-      this.formObject= {
-        name:  this.postPropertyParentForm.name,
+      this.formObject = {
+        name: this.postPropertyParentForm.name,
         email: this.postPropertyParentForm.email,
-        date: formattedDate,
+        propertyPostedDate: formattedDate,
         mobileNo: this.postPropertyParentForm.mobileNo,
         postedBy: this.postPropertyParentForm.postedBy,
         propertyType: this.postPropertyParentForm.propertyType || 'Residential',
         propertyAdsType: this.postPropertyParentForm.propertyAdsType,
-      
-      }
-console.log(this.formObject)
+      };
+      console.log(this.formObject);
     });
   }
 
   setAvailability(value: string) {
     this.scheduleData.ownerAvailability = value;
   }
+  isScheduleValid(): boolean {
+    const s = this.scheduleData;
+    return (
+      !!s.ownerAvailability &&
+      !!s.fromTime &&
+      !!s.toTime &&
+      !!s.allotmentLetterAvailable &&
+      !!s.saleDeedCertificateAvailable &&
+      !!s.paidPropertyTax &&
+      !!s.occupancyCertificateAvailable
+    );
+  }
+  removePhoto(photo: string) {
+    this.uploadedPhotos = this.uploadedPhotos.filter((p) => p !== photo);
+    this.photoCount = this.uploadedPhotos.length;
+  }
 
-  onAmenityChange(event: any) {
-    const amenity = event.target.value;
-    if (event.target.checked) {
-      this.amenities.availableAmenities.push(amenity);
-    } else {
-      const index = this.amenities.availableAmenities.indexOf(amenity);
-      if (index > -1) {
-        this.amenities.availableAmenities.splice(index, 1);
+  onAmenityChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    if (input.checked) {
+      if (!this.amenities.availableAmenities.includes(value)) {
+        this.amenities.availableAmenities.push(value);
       }
+    } else {
+      const idx = this.amenities.availableAmenities.indexOf(value);
+      if (idx > -1) this.amenities.availableAmenities.splice(idx, 1);
     }
+
+    // update selectedCount for the hidden required control
+    this.amenities.selectedCount = this.amenities.availableAmenities.length;
   }
 
-  onTenantChange(event: any) {
-    const tenant: any = event.target.value;
-    if (event.target.checked) {
-      this.rentalData.preferredTenants.push(tenant);
-    } else {
-      this.rentalData.preferredTenants =
-        this.rentalData.preferredTenants.filter((t) => t !== tenant);
-    }
-  }
+ 
 
   goToStep(step: number) {
     this.currentStep = step;
- console.log(this.formObject)
-    
   }
 
   nextStep() {
@@ -295,8 +301,6 @@ console.log(this.formObject)
     }
   }
 
- 
-
   triggerFileInput() {
     const fileInput = document.getElementById(
       'photoUpload'
@@ -305,8 +309,8 @@ console.log(this.formObject)
   }
 
   onFileSelected(event: any) {
-     const files = event.target.files;
-     this.readFiles(files);
+    const files = event.target.files;
+    this.readFiles(files);
 
     const file1 = (event.target as HTMLInputElement).files?.[0];
     const file2 = (event.target as HTMLInputElement).files?.[1];
@@ -346,137 +350,140 @@ console.log(this.formObject)
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.uploadedPhotos.push(e.target.result);
+        this.photoCount = this.uploadedPhotos.length;
       };
       reader.readAsDataURL(files[i]);
     }
   }
   step1Form(data: any) {
-  
     this.formObject.apartmentName = data.apartmentName;
     this.formObject.apartmentType = data.apartmentType;
-    this.formObject.availabilityStatus = data.availabilityStatus;
     this.formObject.bhkType = data.bhkType;
+    this.formObject.plotArea = data.plotArea || '';
     this.formObject.builtUpArea = data.builtUpArea;
-    this.formObject.commercialPropertyType = data.commercialPropertyType;
-    this.formObject.buyPropertyType = data.buyPropertyType;
+    this.formObject.ownershipType = data.ownershipType;
+    this.formObject.leaseYears = data.leaseYears;
     this.formObject.facing = data.facing;
     this.formObject.floor = data.floor;
     this.formObject.propertyAge = data.propertyAge;
-    this.formObject.propertyStatus = data.propertyStatus;
-    this.formObject.purposeStatus = data.purposeStatus; // going wrong value while posting
-    this.formObject.rentalType = data.rentalType;
+    this.formObject.carpetArea = data.carpetArea;
+    this.formObject.floorType = data.floorType; // going wrong value while posting
     this.formObject.totalFloor = data.totalFloor;
-      console.log(this.formObject)
+    console.log(this.formObject);
   }
 
   step2Form(data: any) {
-    this.formObject.localityCity = data.localityCity;
+    this.formObject.city = data.city;
     this.formObject.landmark = data.landmark;
     this.formObject.locality = data.locality;
 
-       console.log(this.formObject)
-
+    console.log(this.formObject);
   }
   step3Form(data: any) {
+    this.formObject.expectedPrice = data.expectedPrice;
+    this.formObject.maintenanceCost = data.maintenanceCost;
+    this.formObject.isPriceNegotiable = data.isPriceNegotiable;
+    this.formObject.isCurrentlyUnder = data.isCurrentlyUnder;
     this.formObject.availableFrom = data.availableFrom;
-    this.formObject.description = data.description;
-    this.formObject.expectedDeposite = data.expectedDeposite;
-    this.formObject.expectedRent = data.expectedRent;
-    this.formObject.furnishingStatus = data.furnishingStatus;
-    this.formObject.maintainenceAmount = data.maintainenceAmount;
-    this.formObject.maintenanceType = data.maintenanceType;
+    this.formObject.kitchenType = data.kitchenType;
+    this.formObject.furnishing = data.furnishing;
     this.formObject.parking = data.parking;
-    this.formObject.preferredTenants = data.preferredTenants;
-    this.formObject.isRentNegotiable = data.isRentNegotiable;
-    this.formObject.rentType = data.rentType;
-      console.log(this.formObject)
+    this.formObject.description = data.description;
+    console.log(this.formObject);
   }
   step4Form(data: any) {
+
     this.formObject.balcony = data.balcony;
     this.formObject.bathroom = data.bathroom;
-    this.formObject.gateSecurity = data.gateSecurity;
+    this.formObject.gatedSecurity = data.gatedSecurity;
     this.formObject.gym = data.gym;
-    this.formObject.nonvegAllowed = data.nonvegAllowed;
+    this.formObject.powerBackup = data.powerBackup;
     this.formObject.currentPropertyCondition = data.currentPropertyCondition;
-    this.formObject.alternateNumber = data.alternateNumber;
+    this.formObject.secondaryNumber = data.secondaryNumber;
     this.formObject.availableAmenities = data.availableAmenities;
     this.formObject.whoWillShowProperty = data.whoWillShowProperty;
     this.formObject.waterSupply = data.waterSupply;
-      console.log(this.formObject)
+
+    console.log(this.formObject);
+    // this.nextStep();
   }
   step5Form(data: any) {
-
+    console.log(this.formObject);
   }
   step6Form(data: any) {
-     this.formObject.ownerAvailability = data.ownerAvailability;
-      this.formObject.fromTime = data.fromTime;
-       this.formObject.toTime = data.toTime;
-    console.log(this.formObject)
+    this.formObject.ownerAvailability = data.ownerAvailability;
+    this.formObject.fromTime = data.fromTime;
+    this.formObject.toTime = data.toTime;
+    this.formObject.allotmentLetterAvailable = data.allotmentLetterAvailable;
+    this.formObject.saleDeedCertificateAvailable = data.saleDeedCertificateAvailable;
+    this.formObject.paidPropertyTax = data.paidPropertyTax;
+    this.formObject.occupancyCertificateAvailable = data.occupancyCertificateAvailable;
+    console.log(this.formObject);
+
+    if (!this.isScheduleValid()) {
+      return;
+    }
+   // alert('✅ Schedule submitted successfully!');
     this.submitForm();
   }
 
   submitForm() {
     const formData = new FormData();
- 
+
     // Required form fields
     formData.append('name', this.formObject.name);
     formData.append('email', this.formObject.email);
-    formData.append('date', this.formObject.date);
-    formData.append('mobileNo', this.formObject.mobileNo);
+     formData.append('mobileNo', this.formObject.mobileNo);
     formData.append('postedBy', this.formObject.postedBy);
     formData.append('propertyType', this.formObject.propertyType);
     formData.append('propertyAdsType', this.formObject.propertyAdsType);
+    formData.append('propertyPostedDate', this.formObject.propertyPostedDate);
 
     // PropertyDetails
-    formData.append('buyPropertyType', this.formObject.buyPropertyType);
-    formData.append('rentalType', this.formObject.rentalType);
-    formData.append('commercialPropertyType', this.formObject.commercialPropertyType);
+    formData.append('apartmentName', this.formObject.apartmentName);
     formData.append('apartmentType', this.formObject.apartmentType);
     formData.append('bhkType', this.formObject.bhkType);
-    formData.append('floor', this.formObject.floor);
-    formData.append('facing', this.formObject.facing);
-    formData.append('apartmentName', this.formObject.apartmentName);
-    formData.append('totalFloor', this.formObject.totalFloor);
-    formData.append('propertyAge', this.formObject.propertyAge);
+    formData.append('plotArea', this.formObject.plotArea || '');
     formData.append('builtUpArea', this.formObject.builtUpArea);
-    formData.append('propertyStatus', this.formObject.propertyStatus);
-    formData.append('availabilityStatus', this.formObject.availabilityStatus);
-    formData.append('purposeStatus', this.formObject.purposeStatus);
+    formData.append('ownershipType', this.formObject.ownershipType);
+    formData.append('leaseYears', this.formObject.leaseYears);
+    formData.append('facing', this.formObject.facing);
+    formData.append('floor', this.formObject.floor);
+    formData.append('propertyAge', this.formObject.propertyAge);
+    formData.append('carpetArea', this.formObject.carpetArea);
+    formData.append('floorType', this.formObject.floorType);
+    formData.append('totalFloor', this.formObject.totalFloor);
 
     // LocalityDetails
-    formData.append('localityCity', this.formObject.localityCity);
+    formData.append('city', this.formObject.city);
     formData.append('locality', this.formObject.locality);
-    formData.append('landmarkStreet', this.formObject.landmarkStreet);
+    formData.append('landmark', this.formObject.landmark);
 
     // RentalDetails
-    formData.append('rentType', this.formObject.rentType);
-    formData.append('expectedRent', this.formObject.expectedRent);
-    formData.append('expectedDeposite', this.formObject.expectedDeposite);
-    formData.append('isRentNegotiable', this.formObject.isRentNegotiable);
-    formData.append('monthlyMaintainence', this.formObject.monthlyMaintainence);
-    formData.append('maintainenceAmount', this.formObject.maintainenceAmount || '');
+    formData.append('expectedPrice', this.formObject.expectedPrice);
+    formData.append('maintenanceCost', this.formObject.maintenanceCost);
+    formData.append('kitchenType', this.formObject.kitchenType);
+    formData.append('isPriceNegotiable', this.formObject.isPriceNegotiable);
+    formData.append('isCurrentlyUnder', this.formObject.isCurrentlyUnder);
     formData.append('availableFrom', this.formObject.availableFrom);
-    formData.append('furnishingStatus', this.formObject.furnishingStatus);
+    formData.append('furnishing', this.formObject.furnishing);
     formData.append('parking', this.formObject.parking);
     formData.append('description', this.formObject.description);
-    formData.append('preferredTenants',  this.formObject.preferredTenants)
-    formData.append('availableAmenities',  this.formObject.availableAmenities)
- 
+
     // Amenities
+
     formData.append('bathroom', this.formObject.bathroom);
     formData.append('balcony', this.formObject.balcony);
     formData.append('waterSupply', this.formObject.waterSupply);
     formData.append('gym', this.formObject.gym);
-    formData.append('nonvegAllowed', this.formObject.nonvegAllowed);
-    formData.append('gateSecurity', this.formObject.gateSecurity);
+    formData.append('powerBackup', this.formObject.powerBackup);
+    formData.append('gatedSecurity', this.formObject.gatedSecurity);
     formData.append('whoWillShowProperty', this.formObject.whoWillShowProperty);
-    formData.append('currentPropertyCondition', this.formObject.currentPropertyCondition);
-    formData.append('alternateNumber', this.formObject.alternateNumber || '');
+    formData.append('currentPropertyCondition',this.formObject.currentPropertyCondition );
+    formData.append('secondaryNumber', this.formObject.secondaryNumber || '');
+    formData.append('availableAmenities', this.formObject.availableAmenities);
 
-    // Schedule
-    formData.append('ownerAvailability', this.formObject.ownerAvailability);
-    formData.append('fromTime', this.formObject.fromTime);
-    formData.append('toTime', this.formObject.toTime);
+ 
 
     // Optional: Gallery image files
 
@@ -487,23 +494,28 @@ console.log(this.formObject)
     formData.append('propertyPhotos5', this.propertyPhotos5);
     formData.append('propertyPhotos6', this.propertyPhotos6);
     formData.append('propertyPhotos7', this.propertyPhotos7);
-  
 
-/*     this.http.post('http://localhost:8082/api/post-ads', formData).subscribe({
-      next: (res) => console.log('Success:', res),
-      error: (err) => console.error('Error:', err),
-    }); */
-    this.postPropertiesService.postAds(formData).subscribe({
-        next: (response) => {
-          // Handle success (HTTP 200)
-          console.log('Post successful:', response);
-          this.router.navigate(['/']); // Redirect to home
-        },
-        error: (error) => {
-          // Handle error
-          console.error('Post failed:', error);
-        }
-});
+       // Schedule
+    formData.append('ownerAvailability', this.formObject.ownerAvailability);
+    formData.append('fromTime', this.formObject.fromTime);
+    formData.append('toTime', this.formObject.toTime);
+    formData.append('allotmentLetterAvailable',this.formObject.allotmentLetterAvailable);
+    formData.append('saleDeedCertificateAvailable',this.formObject.saleDeedCertificateAvailable);
+    formData.append('paidPropertyTax', this.formObject.paidPropertyTax);
+    formData.append('occupancyCertificateAvailable',this.formObject.occupancyCertificateAvailable);
+
+ 
+    this.postPropertiesService.postResidentialRentAds(formData).subscribe({
+      next: (response) => {
+        // Handle success (HTTP 200)
+        console.log('Post successful:', response);
+        this.router.navigate(['/']); // Redirect to home
+      },
+      error: (error) => {
+        // Handle error
+        console.error('Post failed:', error);
+      },
+    });
   }
 }
 

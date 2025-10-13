@@ -83,6 +83,7 @@ loadProperties() {
         this.propertiesList.push(...response.content);
         this.page++;
         this.hasMore = !response.last;
+        console.log(this.propertiesList)
       } else {
         this.hasMore = false;
       }

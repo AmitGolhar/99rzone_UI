@@ -143,7 +143,7 @@ idealForOptions: string[] = [
     noOfAvailableParkingSlot: '',
     availableAmenities: [] as string[], //
   };
- 
+   photoCount = 0;
 
   amenitiesList: string[] = [
     'Lift',
@@ -252,6 +252,27 @@ idealForOptions: string[] = [
         private router: Router,  // ✅ Add this
 
   ) {}
+
+
+  isScheduleValid(): boolean {
+    const s = this.scheduleData;
+    return (
+      !!s.ownerAvailability &&
+      !!s.fromTime &&
+      !!s.toTime &&
+      !!s.previousOccupancy &&
+      !!s.whoShowProperty &&
+      !!s.propertyPainted &&
+      !!s.propertyCleaned &&
+      !!s.propertyDescription
+
+    );
+  }
+  removePhoto(photo: string) {
+    this.uploadedPhotos = this.uploadedPhotos.filter(p => p !== photo);
+    this.photoCount = this.uploadedPhotos.length;
+  }
+
 
   toggleFeature(feature: string): void {
   const index = this.formData.otherFeatures.indexOf(feature);
@@ -394,6 +415,7 @@ console.log(this.formObject)
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.uploadedPhotos.push(e.target.result);
+         this.photoCount = this.uploadedPhotos.length;
       };
       reader.readAsDataURL(files[i]);
     }

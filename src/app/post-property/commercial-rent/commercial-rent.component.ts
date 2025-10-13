@@ -92,6 +92,7 @@ idealForOptions: string[] = [
     expectedRent: string;
     expectedDeposite: string;
     isRentNegotiable: boolean;
+    isMaintenanceExtra:boolean;
     leaseDuration: string;
     maintainenceAmount: string;
     availableFrom: string;
@@ -108,6 +109,7 @@ idealForOptions: string[] = [
     expectedRent: '',
     expectedDeposite: '',
     isRentNegotiable: false,
+    isMaintenanceExtra:false,
     leaseDuration: '',
     maintainenceAmount: '',
     availableFrom: '',
@@ -169,11 +171,11 @@ idealForOptions: string[] = [
     ownerAvailability: '',
     fromTime: '',
     toTime: '',
-    previousOccupancy:'',
-    whoShowProperty:'',
-  propertyPainted:'',
-  propertyCleaned:'',
-  propertyDescription:''
+  previousOccupancy: '',
+  whoShowProperty: '',
+  propertyPainted: '',
+  propertyCleaned: '',
+  propertyDescription: ''
   };
   postPropertyParentForm: any;
 
@@ -243,13 +245,34 @@ idealForOptions: string[] = [
   propertyPhotos6: any;
   propertyPhotos7: any;
 
-  
+    photoCount = 0;
+
   constructor(
     private route: ActivatedRoute,
     private postPropertiesService: PostPropertiesService,
         private router: Router,  // ✅ Add this
 
   ) {}
+
+  isScheduleValid(): boolean {
+    const s = this.scheduleData;
+    return (
+      !!s.ownerAvailability &&
+      !!s.fromTime &&
+      !!s.toTime &&
+      !!s.previousOccupancy &&
+      !!s.whoShowProperty &&
+      !!s.propertyPainted &&
+      !!s.propertyCleaned &&
+      !!s.propertyDescription
+
+    );
+  }
+  removePhoto(photo: string) {
+    this.uploadedPhotos = this.uploadedPhotos.filter(p => p !== photo);
+    this.photoCount = this.uploadedPhotos.length;
+  }
+
 
   toggleFeature(feature: string): void {
   const index = this.formData.otherFeatures.indexOf(feature);
@@ -297,10 +320,13 @@ console.log(this.formObject)
     });
   }
 
-  setAvailability(value: string) {
-    this.scheduleData.ownerAvailability = value;
-  }
-
+ setAvailability(type: string) {
+  this.scheduleData.ownerAvailability = type;
+}
+isEndTimeValid(): boolean {
+  if (!this.scheduleData.fromTime || !this.scheduleData.toTime) return true;
+  return this.scheduleData.toTime > this.scheduleData.fromTime;
+}
   onAmenityChange(event: any) {
     const amenity = event.target.value;
     if (event.target.checked) {
@@ -392,6 +418,7 @@ console.log(this.formObject)
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.uploadedPhotos.push(e.target.result);
+          this.photoCount = this.uploadedPhotos.length;
       };
       reader.readAsDataURL(files[i]);
     }

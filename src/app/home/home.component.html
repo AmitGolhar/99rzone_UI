@@ -1,219 +1,221 @@
 <app-loader [isLoading]="pageLoading"></app-loader>
 
-<div class="container py-4">
-  <h4 class="text-center mb-4">Your perfect home🏠 is out there. Let’s go find it together.</h4>
+<div class="container py-5">
 
-<div class="container my-4">
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs justify-content-center" id="propertyTab" role="tablist">
-     
+  <!-- ✨ Header -->
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-primary">
+      Your perfect home 🏠 is out there — let’s go find it together.
+    </h2>
+    <p class="text-muted mt-2">Search by city, BHK, or property type to get started.</p>
+  </div>
+
+  <!-- 🧭 Property Type Tabs -->
+  <ul class="nav nav-pills justify-content-center shadow-sm rounded-pill bg-light p-2 mb-4" id="propertyTab" role="tablist">
     <li class="nav-item" role="presentation" (click)="onTabClick('Buy')">
-      <button class="nav-link " id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">Buy</button>
+      <button class="nav-link px-4 rounded-pill" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">
+        🏡 Buy
+      </button>
     </li>
-   <li class="nav-item" role="presentation" (click)="onTabClick('Rent')">
-      <button class="nav-link active" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">Rent</button>
+    <li class="nav-item" role="presentation" (click)="onTabClick('Rent')">
+      <button class="nav-link active px-4 rounded-pill" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">
+        🏠 Rent
+      </button>
     </li>
-
     <li class="nav-item" role="presentation" (click)="onTabClick('Commercial')">
-      <button class="nav-link" id="commercial-tab" data-bs-toggle="tab" data-bs-target="#commercial" type="button" role="tab">Commercial</button>
+      <button class="nav-link px-4 rounded-pill" id="commercial-tab" data-bs-toggle="tab" data-bs-target="#commercial" type="button" role="tab">
+        🏢 Commercial
+      </button>
     </li>
   </ul>
 
-<!-- Tab content -->
-<div class="tab-content mt-4">
-  <!-- Buy Tab -->
-  <div class="tab-pane fade show " id="buy" role="tabpanel">
-    <div class="row g-3">
-      <!-- Looking For -->
-      <div class="col-md-4">
-        <label class="form-label d-block">Looking For</label>
-        <div class="row">
-          <div class="col-6 col-lg-6" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="buyPropertyType" [id]="'buy-' + i" [value]="type">
-              <label class="form-check-label" [for]="'buy-' + i">{{ type }}</label>
+  <!-- 📋 Tab Content -->
+  <div class="tab-content card border-0 shadow-sm p-4 rounded-4 bg-white mb-5">
+
+    <!-- Buy Tab -->
+    <div class="tab-pane fade" id="buy" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Looking For</label>
+          <div class="row">
+            <div class="col-6" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="buyPropertyType" [id]="'buy-' + i" [value]="type">
+                <label class="form-check-label small text-muted" [for]="'buy-' + i">{{ type }}</label>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-4">
-        <label for="bhkTypeBuy" class="form-label">BHK Type</label>
-        <select class="form-select" id="bhkTypeBuy">
-          <option>Select</option>
-          <option>1 BHK</option>
-          <option>2 BHK</option>
-          <option>3 BHK</option>
-          <option>4 BHK</option>
-        </select>
-      </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">BHK Type</label>
+          <select class="form-select">
+            <option>Select</option>
+            <option>1 BHK</option>
+            <option>2 BHK</option>
+            <option>3 BHK</option>
+            <option>4 BHK</option>
+          </select>
+        </div>
 
-      <div class="col-md-4">
-        <label for="propertyStatusBuy" class="form-label">Property Status</label>
-        <select class="form-select" id="propertyStatusBuy">
-          <option>Select</option>
-          <option>Under Construction</option>
-          <option>Ready</option>
-        </select>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Property Status</label>
+          <select class="form-select">
+            <option>Select</option>
+            <option>Under Construction</option>
+            <option>Ready</option>
+          </select>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Rent Tab -->
-  <div class="tab-pane fade show active" id="rent" role="tabpanel">
-    <div class="row g-3">
-   
+    <!-- Rent Tab -->
+    <div class="tab-pane fade show active" id="rent" role="tabpanel">
+      <div class="row g-3">
 
-      <div class="col-md-6">
-        <label for="availabilityRent" class="form-label">Availability</label>
-        <select class="form-select" id="availabilityRent" [(ngModel)]="withinDays">
-          <option value="">Select</option>
-          <option value="2">Immediate</option>
-          <option value="7">1 week</option>
-          <option value="15">15 days</option>
-          <option value="30">30 days</option>
-        </select>
-      </div>
-        
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Availability</label>
+          <select class="form-select" [(ngModel)]="withinDays">
+            <option value="">Select</option>
+            <option value="2">Immediate</option>
+            <option value="7">1 week</option>
+            <option value="15">15 days</option>
+            <option value="30">30 days</option>
+          </select>
+        </div>
 
-      <div class="col-md-6">
-        <label for="bhkTypeRent" class="form-label">BHK Type</label>
-        <select id="bhkType" class="form-select" name="bhkType" [(ngModel)]="bhkType">
-          <option value="">Select</option>
-          <option value="1 BHK">1 BHK</option>
-          <option value="2 BHK">2 BHK</option>
-          <option value="3 BHK">3 BHK</option>
-          <option value="4 BHK">4 BHK</option>
-          <option value="5 BHK">5 BHK</option>
-          <option value="5 BHK+">5+ BHK</option>
-        </select>
-      </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">BHK Type</label>
+          <select class="form-select" [(ngModel)]="bhkType">
+            <option value="">Select</option>
+            <option value="1 BHK">1 BHK</option>
+            <option value="2 BHK">2 BHK</option>
+            <option value="3 BHK">3 BHK</option>
+            <option value="4 BHK">4 BHK</option>
+            <option value="5 BHK">5 BHK</option>
+            <option value="5 BHK+">5+ BHK</option>
+          </select>
+        </div>
 
-       <!-- Looking For -->
-      <div class="col-md-12">
-        <label class="form-label d-block">Looking For</label>
-        <div class="row">
-          <div class="col-6 col-lg-6" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="apartmentType" [id]="'rent-' + i" [value]="type" [(ngModel)]="apartmentType">
-              <label class="form-check-label" [for]="'rent-' + i">{{ type }}</label>
+        <div class="col-md-12">
+          <label class="form-label fw-semibold">Looking For</label>
+          <div class="row">
+            <div class="col-6 col-lg-4 mb-2" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="apartmentType" [id]="'rent-' + i" [value]="type" [(ngModel)]="apartmentType">
+                <label class="form-check-label small text-muted" [for]="'rent-' + i">{{ type }}</label>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
+    </div>
+
+    <!-- Commercial Tab -->
+    <div class="tab-pane fade" id="commercial" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Purpose</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialRent" value="Rent" checked>
+            <label class="form-check-label" for="commercialRent">Rent</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialBuy" value="Buy">
+            <label class="form-check-label" for="commercialBuy">Buy</label>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Property Type</label>
+          <select class="form-select">
+            <option>Select</option>
+            <option>Office</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Availability</label>
+          <select class="form-select">
+            <option>Select</option>
+            <option>Immediate</option>
+            <option>1 week</option>
+            <option>15 days</option>
+            <option>30 days</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Commercial Tab -->
-  <div class="tab-pane fade" id="commercial" role="tabpanel">
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label d-block">Purpose</label>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialRent" value="Rent" checked>
-          <label class="form-check-label" for="commercialRent">Rent</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialBuy" value="Buy">
-          <label class="form-check-label" for="commercialBuy">Buy</label>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label for="propertyTypeCommercial" class="form-label">Property Type</label>
-        <select class="form-select" id="propertyTypeCommercial">
-          <option>Select</option>
-          <option>Office</option>
-          <option>Other</option>
-        </select>
-      </div>
-
-      <div class="col-md-4">
-        <label for="availabilityCommercial" class="form-label">Availability</label>
-        <select class="form-select" id="availabilityCommercial">
-          <option>Select</option>
-          <option>Immediate</option>
-          <option>1 week</option>
-          <option>15 days</option>
-          <option>30 days</option>
-        </select>
-      </div>
-    </div>
-  </div>
-</div>
-
-</div>
-
-  <div class="row align-items-center mb-4">
-    <!-- City Dropdown (20%) -->
-    <div class="col-12 col-md-2 mb-2 mb-md-0">
-      <select class="form-select" [(ngModel)]="localityCity" name="localityCity">
+  <!-- 🔍 Search Section -->
+  <div class="row align-items-center mb-5">
+    <div class="col-12 col-md-3 mb-3 mb-md-0">
+      <select class="form-select shadow-sm" [(ngModel)]="localityCity" name="localityCity">
         <option value="" disabled selected>Select City</option>
         <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
       </select>
     </div>
-
-    <!-- Search Bar (80%) -->
-    <div class="col-12 col-md-10">
-      <div class="input-group">
+    <div class="col-12 col-md-9">
+      <div class="input-group shadow-sm">
         <input type="text" class="form-control" placeholder="Enter location, property type, etc.">
-        <button class="btn btn-primary" (click)="searchProperty(query)">Search</button>
+        <button class="btn btn-primary px-4" (click)="searchProperty(query)">
+          <i class="bi bi-search"></i> Search
+        </button>
       </div>
     </div>
   </div>
 
-  
+  <!-- 🏘 Featured Properties -->
   <div class="featured-properties">
-    <h2 class="mb-3">Featured Properties</h2>
+    <h3 class="fw-bold mb-4 text-primary">✨ Featured Properties</h3>
 
-   <div class="scroll-container"
-     style="height: 80vh; overflow: auto;"
-     infiniteScroll
-     [infiniteScrollDistance]="2"
-     [infiniteScrollThrottle]="300"
-     (scrolled)="onScroll()">
-
- 
-  <div class="row g-3" *ngIf="propertiesList.length; else loading">
-      <div class="col-12 col-md-4" *ngFor="let property of propertiesList">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body plist">
-              <p class="card-text">  <strong> Posted By :</strong>{{ property.postedBy }}</p>
-             <p class="card-text"> <strong>BHK:</strong>{{ property.propertyDetails.bhkType }}</p>
-              <p class="card-text">  <strong> City :</strong>{{ property.localityDetails.city }}</p>
-               <p class="card-text">  <strong> Apartment :</strong>{{ property.propertyDetails.apartmentName }}</p>
-               <p class="card-text">  <strong> Availability Status:</strong>{{ property.propertyDetails.availabilityStatus }}</p>
-               <p class="card-text">  <strong> Posted Date :</strong>{{ property.date }}</p>
-               <p class="card-text">  <strong> Available For :</strong>{{ property.propertyAdsType }}</p>
-                <p class="card-text">  <strong> Deposite: </strong>{{ property.rentalDetails.expectedDeposite}}</p>
-              <p class="card-text">  <strong>Available From:</strong>{{ property.rentalDetails.availableFrom }}</p>
-               <p class="card-text">  <strong> Expected Rent:</strong>{{ property.rentalDetails.expectedRent }}</p>
-               <p class="card-text"> <strong> Type:</strong>{{property.propertyDetails.propertyType }}</p>
-              <p class="card-text fw-bold">Expected Rent{{ property.rentalDetails.expectedRent | currency:'INR' }}</p>
-
-                             &nbsp;&nbsp;&nbsp;       
-            <button type="button" class="btn btn-secondary seemore" data-bs-toggle="modal" data-bs-target="#detailsModal" (click)="getSelectedProperty(property)">
-              Show Details
-            </button>
+    <div
+      class="scroll-container"
+      style="max-height: 70vh; overflow-y: auto;"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="300"
+      (scrolled)="onScroll()"
+    >
+      <div class="row g-4" *ngIf="propertiesList.length; else loading">
+        <div class="col-12 col-md-4" *ngFor="let property of propertiesList">
+          <div class="card shadow-lg border-0 h-100 rounded-4 hover-shadow">
+            <div class="card-body">
+              <h5 class="card-title text-primary mb-2">{{ property.apartmentName || 'Property' }}</h5>
+              <p class="mb-1"><strong>Posted By:</strong> {{ property.postedBy }}</p>
+              <p class="mb-1"><strong>BHK:</strong> {{ property.bhkType }}</p>
+              <p class="mb-1"><strong>City:</strong> {{ property.localityCity }}</p>
+              <p class="mb-1"><strong>Posted Date:</strong> {{ property.propertyPostedDate }}</p>
+              <p class="mb-1"><strong>Available For:</strong> {{ property.preferredTenants[0] }}</p>
+              <p class="mb-1"><strong>Deposit:</strong> {{ property.expectedDeposit | currency:'INR' }}</p>
+              <p class="mb-1"><strong>Expected Rent:</strong> {{ property.expectedRent | currency:'INR' }}</p>
+              <p class="mb-2"><strong>Available From:</strong> {{ property.availableFrom }}</p>
+              <div class="d-grid">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary rounded-pill mt-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#detailsModal"
+                  (click)="getSelectedProperty(property)"
+                >
+                  <i class="bi bi-eye"></i> View Details
+                </button>
+              </div>
+            </div>
           </div>
-
         </div>
-
       </div>
 
-      
-
+      <ng-template #loading>
+        <p class="text-center text-muted py-4">Loading properties...</p>
+      </ng-template>
     </div>
-</div>
-
-
-  
-    <ng-template #loading>
-      <p>Loading properties...</p>
-    </ng-template>
   </div>
 </div>
+
 
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
@@ -230,7 +232,7 @@
         <ul class="list-group mb-3">
           <li class="list-group-item"><strong>Name:</strong> {{ currentSelectedProperty.name }}</li>
           <li class="list-group-item"><strong>Mobile No:</strong> {{ currentSelectedProperty.mobileNo }}</li>
-          <li class="list-group-item"><strong>Date Posted:</strong> {{ currentSelectedProperty.date }}</li>
+          <li class="list-group-item"><strong>Date Posted:</strong> {{ currentSelectedProperty.propertyPostedDate }}</li>
           <li class="list-group-item"><strong>Posted By:</strong> {{ currentSelectedProperty.postedBy }}</li>
           <li class="list-group-item"><strong>Property Type:</strong> {{ currentSelectedProperty.propertyType }}</li>
           <li class="list-group-item"><strong>Available For:</strong> {{ currentSelectedProperty.propertyAdsType }}</li>
@@ -239,64 +241,62 @@
         <!-- Property Details -->
         <h5 class="text-primary">Property Details</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Apartment Type:</strong> {{ currentSelectedProperty.propertyDetails.apartmentType }}</li>
-          <li class="list-group-item"><strong>BHK:</strong> {{ currentSelectedProperty.propertyDetails.bhkType }}</li>
-          <li class="list-group-item"><strong>Total Floor:</strong> {{ currentSelectedProperty.propertyDetails.totalFloor }}</li>
-          <li class="list-group-item"><strong>Property On Floor:</strong> {{ currentSelectedProperty.propertyDetails.floor }}</li>
-          <li class="list-group-item"><strong>Facing:</strong> {{ currentSelectedProperty.propertyDetails.facing }}</li>
-          <li class="list-group-item"><strong>Apartment Name:</strong> {{ currentSelectedProperty.propertyDetails.apartmentName }}</li>
-          <li class="list-group-item"><strong>Property Age:</strong> {{ currentSelectedProperty.propertyDetails.propertyAge }}</li>
-          <li class="list-group-item"><strong>Built Up Area:</strong> {{ currentSelectedProperty.propertyDetails.builtUpArea }} SQFT</li>
-          <li class="list-group-item"><strong>Property Status:</strong> {{ currentSelectedProperty.propertyDetails.propertyStatus }}</li>
-          <li class="list-group-item"><strong>Availability Status:</strong> {{ currentSelectedProperty.propertyDetails.availabilityStatus }}</li>
-          <li class="list-group-item"><strong>Purpose Status:</strong> {{ currentSelectedProperty.propertyDetails.purposeStatus }}</li>
+          <li class="list-group-item"><strong>Apartment Type:</strong> {{ currentSelectedProperty.apartmentType }}</li>
+          <li class="list-group-item"><strong>BHK:</strong> {{ currentSelectedProperty.bhkType }}</li>
+          <li class="list-group-item"><strong>Total Floor:</strong> {{ currentSelectedProperty.totalFloor }}</li>
+          <li class="list-group-item"><strong>Property On Floor:</strong> {{ currentSelectedProperty.floor }}</li>
+          <li class="list-group-item"><strong>Facing:</strong> {{ currentSelectedProperty.facing }}</li>
+          <li class="list-group-item"><strong>Apartment Name:</strong> {{ currentSelectedProperty.apartmentName }}</li>
+          <li class="list-group-item"><strong>Property Age:</strong> {{ currentSelectedProperty.propertyAge }}</li>
+          <li class="list-group-item"><strong>Built Up Area:</strong> {{ currentSelectedProperty.builtUpArea }} SQFT</li>
+          <li class="list-group-item"><strong>Property Status:</strong> {{ currentSelectedProperty.propertyStatus }}</li>
+          <li class="list-group-item"><strong>Availability Status:</strong> {{ currentSelectedProperty.availabilityStatus }}</li>
+          <li class="list-group-item"><strong>Purpose Status:</strong> {{ currentSelectedProperty.purposeStatus }}</li>
         </ul>
 
         <!-- Locality Details -->
         <h5 class="text-primary">Locality Details</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>City:</strong> {{ currentSelectedProperty.localityDetails.city}}</li>
-          <li class="list-group-item"><strong>Locality:</strong> {{ currentSelectedProperty.localityDetails.locality }}</li>
-          <li class="list-group-item"><strong>Landmark Street:</strong> {{ currentSelectedProperty.localityDetails.landmarkStreet }}</li>
+          <li class="list-group-item"><strong>City:</strong> {{ currentSelectedProperty.localityCity}}</li>
+          <li class="list-group-item"><strong>Locality:</strong> {{ currentSelectedProperty.locality }}</li>
+          <li class="list-group-item"><strong>Landmark Street:</strong> {{ currentSelectedProperty.landmark }}</li>
         </ul>
 
         <!-- Rental Details -->
         <h5 class="text-primary">Rental Details</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Rent Type:</strong> {{ currentSelectedProperty.rentalDetails.rentType }}</li>
-          <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.rentalDetails.expectedRent }}</li>
-          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.rentalDetails.expectedDeposite }}</li>
-          <li class="list-group-item"><strong>Rent Negotiable:</strong> {{ currentSelectedProperty.rentalDetails.rentNegotiable ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{ currentSelectedProperty.rentalDetails.monthlyMaintainence }}</li>
-          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.rentalDetails.maintainenceAmount }}</li>
-          <li class="list-group-item"><strong>Available From:</strong> {{ currentSelectedProperty.rentalDetails.availableFrom }}</li>
-          <li class="list-group-item"><strong>Furnishing Status:</strong> {{ currentSelectedProperty.rentalDetails.furnishingStatus }}</li>
-          <li class="list-group-item"><strong>Parking:</strong> {{ currentSelectedProperty.rentalDetails.parking }}</li>
-          <li class="list-group-item"><strong>Preferred Tenants:</strong> {{ currentSelectedProperty.rentalDetails.preferredTenants }}</li>
-          <li class="list-group-item"><strong>Description:</strong> {{ currentSelectedProperty.rentalDetails.description }}</li>
+           <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.expectedRent }}</li>
+          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.expectedDeposit }}</li>
+          <li class="list-group-item"><strong>Rent Negotiable:</strong> {{ currentSelectedProperty.rentNegotiable ? 'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{ currentSelectedProperty.monthlyMaintenance }}</li>
+          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.maintenanceAmount }}</li>
+          <li class="list-group-item"><strong>Available From:</strong> {{ currentSelectedProperty.availableFrom }}</li>
+          <li class="list-group-item"><strong>Furnishing Status:</strong> {{ currentSelectedProperty.furnishing }}</li>
+          <li class="list-group-item"><strong>Parking:</strong> {{ currentSelectedProperty.parking }}</li>
+          <li class="list-group-item"><strong>Preferred Tenants:</strong> {{ currentSelectedProperty.preferredTenants }}</li>
+          <li class="list-group-item"><strong>Description:</strong> {{ currentSelectedProperty.description }}</li>
         </ul>
 
         <!-- Amenities -->
         <h5 class="text-primary">Amenities</h5>
         <ul class="list-group mb-3">
           <li class="list-group-item"><strong>Available Amenities:</strong> {{ currentSelectedProperty.availableAmenities }}</li>
-          <li class="list-group-item"><strong>Bathroom:</strong> {{ currentSelectedProperty.amenities.bathroom }}</li>
-          <li class="list-group-item"><strong>Balcony:</strong> {{ currentSelectedProperty.amenities.balcony }}</li>
-          <li class="list-group-item"><strong>Water Supply:</strong> {{ currentSelectedProperty.amenities.waterSupply }}</li>
-          <li class="list-group-item"><strong>Gym:</strong> {{ currentSelectedProperty.amenities.gym ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Non Veg Allowed:</strong> {{ currentSelectedProperty.amenities.nonvegAllowed ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Gate Security:</strong> {{ currentSelectedProperty.amenities.gateSecurity ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Who Will Show Property:</strong> {{ currentSelectedProperty.amenities.whoWillShowProperty }}</li>
-          <li class="list-group-item"><strong>Property Condition:</strong> {{ currentSelectedProperty.amenities.currentPropertyCondition }}</li>
-          <li class="list-group-item"><strong>Alternate Number:</strong> {{ currentSelectedProperty.amenities.alternateNumber }}</li>
-        </ul>
+          <li class="list-group-item"><strong>Bathroom:</strong> {{ currentSelectedProperty.bathroom }}</li>
+          <li class="list-group-item"><strong>Balcony:</strong> {{ currentSelectedProperty.balcony }}</li>
+          <li class="list-group-item"><strong>Water Supply:</strong> {{ currentSelectedProperty.waterSupply }}</li>
+          <li class="list-group-item"><strong>Gym:</strong> {{ currentSelectedProperty.gym ? 'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Non Veg Allowed:</strong> {{ currentSelectedProperty.nonvegAllowed ? 'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Gate Security:</strong> {{ currentSelectedProperty.gateSecurity ? 'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Who Will Show Property:</strong> {{ currentSelectedProperty.whoWillShowProperty }}</li>
+          <li class="list-group-item"><strong>Property Condition:</strong> {{ currentSelectedProperty.currentPropertyCondition }}</li>
+         </ul>
 
         <!-- Schedule -->
         <h5 class="text-primary">Visit Schedule</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Owner Availability:</strong> {{ currentSelectedProperty.schedule.ownerAvailability }}</li>
-          <li class="list-group-item"><strong>From Time:</strong> {{ formatTimeToDate(currentSelectedProperty.schedule.fromTime) | date:'hh:mm a' }}</li>
-          <li class="list-group-item"><strong>To Time:</strong> {{ formatTimeToDate(currentSelectedProperty.schedule.toTime) | date:'hh:mm a' }}</li>
+          <li class="list-group-item"><strong>Owner Availability:</strong> {{ currentSelectedProperty.ownerAvailability }}</li>
+          <li class="list-group-item"><strong>From Time:</strong> {{ formatTimeToDate(currentSelectedProperty.fromTime) | date:'hh:mm a' }}</li>
+          <li class="list-group-item"><strong>To Time:</strong> {{ formatTimeToDate(currentSelectedProperty.toTime) | date:'hh:mm a' }}</li>
         </ul>
 
         <!-- Gallery -->

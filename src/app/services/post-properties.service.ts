@@ -19,6 +19,14 @@ export class PostPropertiesService {
       
   }
 
+    postResidentialRentAds(formdata: any) {
+    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.httpClient
+      .post(environment.apiUrl + '/residential-rsell', formdata,
+        
+      )
+      
+  }
   getpostAds() {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 

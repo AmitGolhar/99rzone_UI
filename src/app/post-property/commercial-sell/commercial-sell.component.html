@@ -193,7 +193,7 @@
         <!-- Navigation Buttons -->
         <div class="d-flex justify-content-between mt-4">
           <button type="button" class="btn btn-outline-secondary" disabled>Previous</button>
-          <button type="button" (click)="step1Form(formData); nextStep()" class="btn btn-primary">Next</button>
+          <button type="button" [disabled]="propertyForm.invalid"  (click)="step1Form(formData); nextStep()" class="btn btn-primary">Next</button>
         </div>
       </form>
     </div>
@@ -251,7 +251,7 @@
     <!-- Navigation Buttons -->
     <div class="d-flex justify-content-between mt-4">
       <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-      <button type="button" (click)="step2Form(locationData)" class="btn btn-primary" (click)="nextStep()">Next</button>
+      <button type="button"  [disabled]="locationForm.invalid"  (click)="step2Form(locationData)" class="btn btn-primary" (click)="nextStep()">Next</button>
     </div>
   </form>
 </div>
@@ -350,141 +350,251 @@
     <!-- Navigation Buttons -->
     <div class="d-flex justify-content-between mt-4">
       <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-      <button type="button" (click)="step3Form(rentalData)" class="btn btn-primary" (click)="nextStep()">Next</button>
+      <button type="button" [disabled]="rentalForm.invalid"  (click)="step3Form(rentalData)" class="btn btn-primary" (click)="nextStep()">Next</button>
     </div>
   </form>
 </div>
 
 <!-- Step 4: Amenities -->
 <div *ngIf="currentStep === 4">
-  <form (ngSubmit)="step4Form(amenities)" #amenitiesForm="ngForm">
-    <p class="fw-bold mb-3">Amenities</p>
+<form (ngSubmit)="step4Form(amenitiesForm)" #amenitiesForm="ngForm" novalidate>
+  <p class="fw-bold mb-3">Amenities <span class="text-danger">*</span></p>
 
-    <!-- Two Column Grid -->
-    <div class="row g-3">
-      <!-- Left Column -->
-      <div class="col-md-6">
-        <!-- Power Backup -->
-        <div class="mb-3">
-          <label for="powerBackup" class="form-label fw-bold">Power Backup</label>
-          <select id="powerBackup" class="form-select" [(ngModel)]="amenities.powerBackup" name="powerBackup">
-            <option value="">Select</option>
-            <option value="Full">Full</option>
-            <option value="DG Backup">DG Backup</option>
-            <option value="Need To Arrange">Need To Arrange</option>
-          </select>
-        </div>
+  <div class="row g-3">
+    <!-- Left Column -->
+    <div class="col-md-6">
 
-        <!-- Lift -->
-        <div class="mb-3">
-          <label for="lift" class="form-label fw-bold">Lift</label>
-          <select id="lift" class="form-select" [(ngModel)]="amenities.lift" name="lift">
-            <option value="">Select</option>
-            <option value="None">None</option>
-            <option value="Personal">Personal</option>
-            <option value="Common">Common</option>
-          </select>
-        </div>
-
-        <!-- Parking -->
-        <div class="mb-3">
-          <label for="parking" class="form-label fw-bold">Parking</label>
-          <select id="parking" class="form-select" [(ngModel)]="amenities.parking" name="parking">
-            <option value="">Select</option>
-            <option value="None">None</option>
-            <option value="Public">Public</option>
-            <option value="Reserved">Reserved</option>
-          </select>
-        </div>
-
-        <!-- No Of Parking slot -->
-        <div class="mb-3">
-          <label for="noOfAvailableParkingSlot" class="form-label fw-bold">No Of Parking Slots (if Reserved) <span class="text-danger">*</span></label>
-          <input type="number" id="noOfAvailableParkingSlot" class="form-control"
-            [(ngModel)]="amenities.noOfAvailableParkingSlot" name="noOfAvailableParkingSlot" required
-            #noOfAvailableParkingSlotRef="ngModel">
-          <div *ngIf="noOfAvailableParkingSlotRef.invalid && (noOfAvailableParkingSlotRef.dirty || noOfAvailableParkingSlotRef.touched)"
-            class="text-danger mt-1">
-            This field is required
-          </div>
-        </div>
-
-        <!-- Water Storage Facility -->
-        <div class="mb-3">
-          <label for="waterStorageFacility" class="form-label fw-bold">Water Storage Facility</label>
-          <select id="waterStorageFacility" class="form-select" [(ngModel)]="amenities.waterStorageFacility" name="waterStorageFacility">
-            <option value="">Select</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+      <!-- Power Backup -->
+      <div class="mb-3">
+        <label for="powerBackup" class="form-label fw-bold">Power Backup <span class="text-danger">*</span></label>
+        <select
+          id="powerBackup"
+          class="form-select"
+          [(ngModel)]="amenities.powerBackup"
+          name="powerBackup"
+          required
+          #powerBackupRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="Full">Full</option>
+          <option value="DG Backup">DG Backup</option>
+          <option value="Need To Arrange">Need To Arrange</option>
+        </select>
+        <div *ngIf="powerBackupRef.invalid && (powerBackupRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
         </div>
       </div>
 
-      <!-- Right Column -->
-      <div class="col-md-6">
-        <!-- Washroom -->
-        <div class="mb-3">
-          <label for="washrooms" class="form-label fw-bold">Washroom</label>
-          <select id="washrooms" class="form-select" [(ngModel)]="amenities.washrooms" name="washrooms" required>
-            <option value="">Select</option>
-            <option value="Private">Private</option>
-            <option value="Shared">Shared</option>
-            <option value="No Washroom">No Washroom</option>
-          </select>
+      <!-- Lift -->
+      <div class="mb-3">
+        <label for="lift" class="form-label fw-bold">Lift <span class="text-danger">*</span></label>
+        <select
+          id="lift"
+          class="form-select"
+          [(ngModel)]="amenities.lift"
+          name="lift"
+          required
+          #liftRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="None">None</option>
+          <option value="Personal">Personal</option>
+          <option value="Common">Common</option>
+        </select>
+        <div *ngIf="liftRef.invalid && (liftRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
         </div>
+      </div>
 
-        <!-- Current Property Condition -->
-        <div class="mb-3">
-          <label for="currentPropertyCondition" class="form-label fw-bold">Current Property Condition</label>
-          <select id="currentPropertyCondition" class="form-select" [(ngModel)]="amenities.currentPropertyCondition" name="currentPropertyCondition">
-            <option value="">Select</option>
-            <option value="Vacant">Vacant</option>
-            <option value="Under Notice">Under Notice</option>
-            <option value="New Property">New Property</option>
-            <option value="Own Business">Own Business</option>
-          </select>
+      <!-- Parking -->
+      <div class="mb-3">
+        <label for="parking" class="form-label fw-bold">Parking <span class="text-danger">*</span></label>
+        <select
+          id="parking"
+          class="form-select"
+          [(ngModel)]="amenities.parking"
+          name="parking"
+          required
+          #parkingRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="None">None</option>
+          <option value="Public">Public</option>
+          <option value="Reserved">Reserved</option>
+        </select>
+        <div *ngIf="parkingRef.invalid && (parkingRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
         </div>
+      </div>
 
-        <!-- Security -->
-        <div class="mb-3">
-          <label for="security" class="form-label fw-bold">Security</label>
-          <select id="security" class="form-select" [(ngModel)]="amenities.security" name="security">
-            <option value="">Select</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+      <!-- No Of Parking slot -->
+      <div class="mb-3">
+        <label for="noOfAvailableParkingSlot" class="form-label fw-bold">No Of Parking Slots (if Reserved) <span class="text-danger">*</span></label>
+        <input
+          type="number"
+          id="noOfAvailableParkingSlot"
+          class="form-control"
+          [(ngModel)]="amenities.noOfAvailableParkingSlot"
+          name="noOfAvailableParkingSlot"
+          required
+          min="0"
+          #noOfAvailableParkingSlotRef="ngModel"
+        />
+        <div
+          *ngIf="noOfAvailableParkingSlotRef.invalid && (noOfAvailableParkingSlotRef.dirty || noOfAvailableParkingSlotRef.touched || amenitiesForm.submitted)"
+          class="text-danger mt-1"
+        >
+          This field is required
         </div>
+      </div>
 
-           <!-- Wifi -->
-        <div class="mb-3">
-          <label for="wifi" class="form-label fw-bold">Wifi</label>
-          <select id="wifi" class="form-select" [(ngModel)]="amenities.wifi" name="wifi">
-            <option value="">Select</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+      <!-- Water Storage Facility -->
+      <div class="mb-3">
+        <label for="waterStorageFacility" class="form-label fw-bold">Water Storage Facility <span class="text-danger">*</span></label>
+        <select
+          id="waterStorageFacility"
+          class="form-select"
+          [(ngModel)]="amenities.waterStorageFacility"
+          name="waterStorageFacility"
+          required
+          #waterStorageRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <div *ngIf="waterStorageRef.invalid && (waterStorageRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
         </div>
+      </div>
 
-        <!-- Current Running Business -->
-        <div class="mb-3">
-          <label for="currentRunningBusiness" class="form-label fw-bold">What business is currently running?</label>
-          <select id="currentRunningBusiness" class="form-select" [(ngModel)]="amenities.currentRunningBusiness" name="currentRunningBusiness">
-            <option value="">Select</option>
-            <option value="Cafe">Cafe</option>
-            <option value="Restaurant">Restaurant</option>
-            <option value="Salon/Spa">Salon/Spa</option>
-            <option value="Clinic">Clinic</option>
-          </select>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-md-6">
+
+      <!-- Washroom -->
+      <div class="mb-3">
+        <label for="washrooms" class="form-label fw-bold">Washroom <span class="text-danger">*</span></label>
+        <select
+          id="washrooms"
+          class="form-select"
+          [(ngModel)]="amenities.washrooms"
+          name="washrooms"
+          required
+          #washroomsRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="Private">Private</option>
+          <option value="Shared">Shared</option>
+          <option value="No Washroom">No Washroom</option>
+        </select>
+        <div *ngIf="washroomsRef.invalid && (washroomsRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
+        </div>
+      </div>
+
+      <!-- Current Property Condition -->
+      <div class="mb-3">
+        <label for="currentPropertyCondition" class="form-label fw-bold">Current Property Condition <span class="text-danger">*</span></label>
+        <select
+          id="currentPropertyCondition"
+          class="form-select"
+          [(ngModel)]="amenities.currentPropertyCondition"
+          name="currentPropertyCondition"
+          required
+          #conditionRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="Vacant">Vacant</option>
+          <option value="Under Notice">Under Notice</option>
+          <option value="New Property">New Property</option>
+          <option value="Own Business">Own Business</option>
+        </select>
+        <div *ngIf="conditionRef.invalid && (conditionRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="mb-3">
+        <label for="security" class="form-label fw-bold">Security <span class="text-danger">*</span></label>
+        <select
+          id="security"
+          class="form-select"
+          [(ngModel)]="amenities.security"
+          name="security"
+          required
+          #securityRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <div *ngIf="securityRef.invalid && (securityRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
+        </div>
+      </div>
+
+      <!-- Wifi -->
+      <div class="mb-3">
+        <label for="wifi" class="form-label fw-bold">Wifi <span class="text-danger">*</span></label>
+        <select
+          id="wifi"
+          class="form-select"
+          [(ngModel)]="amenities.wifi"
+          name="wifi"
+          required
+          #wifiRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <div *ngIf="wifiRef.invalid && (wifiRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
+        </div>
+      </div>
+
+      <!-- Current Running Business -->
+      <div class="mb-3">
+        <label for="currentRunningBusiness" class="form-label fw-bold">What business is currently running? <span class="text-danger">*</span></label>
+        <select
+          id="currentRunningBusiness"
+          class="form-select"
+          [(ngModel)]="amenities.currentRunningBusiness"
+          name="currentRunningBusiness"
+          required
+          #businessRef="ngModel"
+        >
+          <option value="">Select</option>
+          <option value="NewProperty">New Property</option>
+          <option value="Cafe">Cafe</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Salon/Spa">Salon/Spa</option>
+          <option value="Clinic">Clinic</option>
+          <option value="Other">Other</option>
+        </select>
+        <div *ngIf="businessRef.invalid && (businessRef.touched || amenitiesForm.submitted)" class="text-danger">
+          This field is required
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Navigation Buttons -->
-    <div class="d-flex justify-content-between mt-4">
-      <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-      <button type="button" class="btn btn-primary" (click)="step4Form(amenities); nextStep()">Next</button>
-    </div>
-  </form>
+  <!-- Navigation Buttons -->
+  <div class="d-flex justify-content-between mt-4">
+    <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="amenitiesForm.invalid" (click)="nextStep()" (click)="step4Form(amenitiesForm)"
+    >
+      Next
+    </button>
+  </div>
+</form>
+
 </div>
 
 
@@ -492,42 +602,57 @@
 
       <!-- Gallery Step -->
       <div *ngIf="currentStep === 5">
-        <form (ngSubmit)="step5Form(uploadedPhotos)" #galleryForm="ngForm">
-
-
-          <p>Upload your property’s gallery images…</p>
-
+         <form (ngSubmit)="step5Form(galleryForm)" #galleryForm="ngForm" novalidate>
+      
+          <p class="fw-bold fs-5 mb-3">Upload your property’s gallery images…</p>
+      
           <div class="mb-3">
-            <label for="photoUpload" class="form-label fw-bold">Upload Photos</label>
-
+            <label for="photoUpload" class="form-label fw-bold">
+              Upload Photos <span class="text-danger">*</span>
+            </label>
+      
             <div class="border border-secondary rounded p-4 text-center"
               style="min-height: 150px; cursor: pointer; background-color: #f8f9fa;" (drop)="onFileDrop($event)"
               (dragover)="onFileDragOver($event)" (dragleave)="onFileDragLeave($event)">
-              <input type="file" id="photoUpload" (change)="onFileSelected($event)" multiple hidden [max]="7" />
-
+      
+              <input type="file" id="photoUpload" (change)="onFileSelected($event)" multiple hidden accept="image/*" />
+      
               <div (click)="triggerFileInput()">
                 <i class="bi bi-upload" style="font-size: 2rem;"></i>
                 <p class="mt-2 mb-0 text-muted">
                   Add photos to get <strong>5X more responses.</strong><br>
                   <em>90% tenants contact on properties with photos.</em>
                 </p>
-                <p class="text-primary mt-2 fw-bold">Upload/Drag and Drop</p>
+                <p class="text-primary mt-2 fw-bold">Upload / Drag and Drop</p>
               </div>
             </div>
-          </div>
-
-          <!-- Show uploaded photos as thumbnails (if needed) -->
-          <div class="mt-3 d-flex flex-wrap">
-            <div *ngFor="let photo of uploadedPhotos" class="me-2 mb-2 border rounded overflow-hidden"
-              style="width: 100px; height: 100px;">
-              <img [src]="photo" class="img-fluid w-100 h-100" style="object-fit: cover;" />
+      
+            <!-- Hidden control for validation -->
+            <input type="hidden" name="photoCount" [(ngModel)]="photoCount" #photoCountRef="ngModel" required />
+            <!-- Validation message -->
+            <div class="text-danger mt-2" *ngIf="photoCount < 3  ">
+              Please upload at least <strong>3 photos</strong>.
             </div>
           </div>
-
+      
+          <!-- Thumbnails -->
+          <div class="mt-3 d-flex flex-wrap">
+            <div *ngFor="let photo of uploadedPhotos" class="me-2 mb-2 border rounded overflow-hidden position-relative"
+              style="width: 100px; height: 100px;">
+              <img [src]="photo" class="img-fluid w-100 h-100" style="object-fit: cover;" />
+              <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" style="line-height: 0.5;"
+                (click)="removePhoto(photo)">
+                ×
+              </button>
+            </div>
+          </div>
+      
+          <!-- Navigation -->
           <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-            <button type="button" (click)="step5Form(uploadedPhotos)" class="btn btn-primary"
-              (click)="nextStep()">Next</button>
+            <button type="submit" class="btn btn-primary" [disabled]="photoCount < 3" (click)="nextStep()">
+              Next
+            </button>
           </div>
         </form>
       </div>

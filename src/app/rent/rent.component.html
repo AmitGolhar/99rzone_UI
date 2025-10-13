@@ -96,8 +96,7 @@
         <h5 class="text-primary">Posted By</h5>
         <ul class="list-group mb-3">
           <li class="list-group-item"><strong>Name:</strong> {{ currentSelectedProperty.name }}</li>
-          <li class="list-group-item"><strong>Mobile No:</strong> {{ currentSelectedProperty.mobileNo }}</li>
-          <li class="list-group-item"><strong>Date Posted:</strong> {{ currentSelectedProperty.date }}</li>
+           <li class="list-group-item"><strong>Date Posted:</strong> {{ currentSelectedProperty.propertyPostedDate }}</li>
           <li class="list-group-item"><strong>Posted By:</strong> {{ currentSelectedProperty.postedBy }}</li>
           <li class="list-group-item"><strong>Property Type:</strong> {{ currentSelectedProperty.propertyType }}</li>
           <li class="list-group-item"><strong>Available For:</strong> {{ currentSelectedProperty.propertyAdsType }}</li>
@@ -122,22 +121,21 @@
         <!-- Locality Details -->
         <h5 class="text-primary">Locality Details</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>City:</strong> {{ currentSelectedProperty.city}}</li>
+          <li class="list-group-item"><strong>City:</strong> {{ currentSelectedProperty.localityCity}}</li>
           <li class="list-group-item"><strong>Locality:</strong> {{ currentSelectedProperty.locality }}</li>
-          <li class="list-group-item"><strong>Landmark Street:</strong> {{ currentSelectedProperty.landmarkStreet }}</li>
+          <li class="list-group-item"><strong>Landmark Street:</strong> {{ currentSelectedProperty.landmark }}</li>
         </ul>
 
         <!-- Rental Details -->
         <h5 class="text-primary">Rental Details</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Rent Type:</strong> {{ currentSelectedProperty.rentType }}</li>
-          <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.expectedRent | currency:'INR'}}</li>
-          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.expectedDeposite | currency:'INR' }}</li>
+           <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.expectedRent }}</li>
+          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.expectedDeposit }}</li>
           <li class="list-group-item"><strong>Rent Negotiable:</strong> {{ currentSelectedProperty.rentNegotiable ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{ currentSelectedProperty.monthlyMaintainence | currency:'INR' }}</li>
-          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.maintainenceAmount | currency:'INR' }}</li>
+          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{ currentSelectedProperty.monthlyMaintenance }}</li>
+          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.maintenanceAmount }}</li>
           <li class="list-group-item"><strong>Available From:</strong> {{ currentSelectedProperty.availableFrom }}</li>
-          <li class="list-group-item"><strong>Furnishing Status:</strong> {{ currentSelectedProperty.furnishingStatus }}</li>
+          <li class="list-group-item"><strong>Furnishing Status:</strong> {{ currentSelectedProperty.furnishing }}</li>
           <li class="list-group-item"><strong>Parking:</strong> {{ currentSelectedProperty.parking }}</li>
           <li class="list-group-item"><strong>Preferred Tenants:</strong> {{ currentSelectedProperty.preferredTenants }}</li>
           <li class="list-group-item"><strong>Description:</strong> {{ currentSelectedProperty.description }}</li>
@@ -155,8 +153,7 @@
           <li class="list-group-item"><strong>Gate Security:</strong> {{ currentSelectedProperty.gateSecurity ? 'Yes' : 'No' }}</li>
           <li class="list-group-item"><strong>Who Will Show Property:</strong> {{ currentSelectedProperty.whoWillShowProperty }}</li>
           <li class="list-group-item"><strong>Property Condition:</strong> {{ currentSelectedProperty.currentPropertyCondition }}</li>
-          <li class="list-group-item"><strong>Alternate Number:</strong> {{ currentSelectedProperty.alternateNumber }}</li>
-        </ul>
+         </ul>
 
         <!-- Schedule -->
         <h5 class="text-primary">Visit Schedule</h5>
@@ -166,24 +163,16 @@
           <li class="list-group-item"><strong>To Time:</strong> {{ formatTimeToDate(currentSelectedProperty.toTime) | date:'hh:mm a' }}</li>
         </ul>
 
-           <!-- Contact via WhatsApp -->
-        <h5 class="text-primary">Contact via WhatsApp</h5>
-        <div class="d-flex flex-wrap gap-3 justify-content-start">
-       
-          <button class="btn btn-success" (click)="sendWhatsAppInterest(currentSelectedProperty)">Contact via WhatsApp</button>
-
-        </div>
-
         <!-- Gallery -->
         <h5 class="text-primary">Gallery</h5>
         <div class="d-flex flex-wrap gap-3 justify-content-start">
-          <img *ngIf="currentSelectedProperty.propertyPhotos1" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos1" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.propertyPhotos2" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos2" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.propertyPhotos3" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos3" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.propertyPhotos4" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos4" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.propertyPhotos5" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos5" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.propertyPhotos6" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos6" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.propertyPhotos7" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos7" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos1" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos1" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos2" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos2" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos3" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos3" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos4" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos4" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos5" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos5" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos6" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos6" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos7" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos7" class="img-thumbnail" width="400" height="400" />
         </div>
       </div>
 
