@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
   }
 
   searchProperty(query: string) {
+    console.log(this.selectedTab)
     if (this.selectedTab === 'Buy') {
     //  this.router.navigate(['/buy']);
       this.router.navigate(['/buy',{apartmentType:this.apartmentType, bhkType:this.bhkType, localityCity:this.localityCity, withinDays:this.withinDays}], { relativeTo: this.route });

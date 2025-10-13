@@ -5,8 +5,7 @@ import { RentRoutingModule } from './rent-routing.module';
 import { RentComponent } from './rent.component';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { AppRoutingModule } from '@app/app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+ import { HttpClientModule } from '@angular/common/http';
  import { SharedModule } from '../shared/shared.module';
 
 @NgModule({

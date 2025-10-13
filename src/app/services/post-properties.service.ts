@@ -59,4 +59,23 @@ export class PostPropertiesService {
 return this.httpClient.get<any>( environment.apiUrl + '/residential-rent/property-search', {params}) 
 
   }
+
+    getResellFlats(data:any){
+    console.log(data);
+    const params = new HttpParams()
+  .set('apartmentType', data.apartmentType)
+  .set('bhkType', data.bhkType)  
+  .set('localityCity', data.localityCity)
+  .set('withinDays', data.withinDays);
+  
+    
+return this.httpClient.get<any>( environment.apiUrl + '/api/residential-rsell', {params}) 
+
+  }
+
+   getResellFlatslistOfProperties(page: number, size: number): Observable<any> {
+    return this.httpClient.get<any>(
+      environment.apiUrl + `/residential-rsell/list/all?page=${page}&size=${size}`
+    );
+  }
 }
