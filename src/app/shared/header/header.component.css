@@ -92,3 +92,7 @@ header .navbar-brand {
 .postbtn {
   font-size: 14px !important;
 }
+
+.margin-left {
+  margin-left: 10px;
+}

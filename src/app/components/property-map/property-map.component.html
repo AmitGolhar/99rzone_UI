@@ -1,0 +1,75 @@
+<div class="property-map-wrapper">
+  <!-- Toolbar -->
+  <div class="map-toolbar">
+    <div class="toolbar-inner">
+      <input
+        type="text"
+        class="form-control search-bar"
+        placeholder="Search by city / locality / apartment"
+        [(ngModel)]="searchText"
+        (ngModelChange)="onSearchChange()"
+      />
+
+      <div class="btn-group">
+        <button
+          class="btn"
+          [class.active]="filterAds === 'All'"
+          (click)="onFilterChange('All')"
+        >
+          All
+        </button>
+        <button
+          class="btn"
+          [class.active]="filterAds === 'Rent'"
+          (click)="onFilterChange('Rent')"
+        >
+          Rent
+        </button>
+        <button
+          class="btn"
+          [class.active]="filterAds === 'Sell'"
+          (click)="onFilterChange('Sell')"
+        >
+          Sell
+        </button>
+      </div>
+
+      <!-- 🔘 Mobile toggle button -->
+      <button
+        class="btn btn-toggle-list"
+        (click)="toggleList()"
+        *ngIf="isMobileView"
+      >
+        {{ showList ? 'Hide List' : 'Show List' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Map + Property list -->
+  <div class="map-container">
+    <div
+      class="property-list"
+      [class.hidden-mobile]="!showList && isMobileView"
+    >
+      <div class="list-header">
+        <h6>Properties ({{ filtered.length }})</h6>
+      </div>
+      <div class="property-cards">
+        <div
+          *ngFor="let p of filtered"
+          class="property-card"
+          (click)="zoomToProperty(p)"
+        >
+          <div class="property-title">{{ p.apartmentName }}</div>
+          <div class="property-info small text-muted">
+            {{ p.bhkType }} • {{ p.locality }}, {{ p.city }}
+          </div>
+          <div class="property-price">₹{{ p.expectedPrice | number }}</div>
+          <div class="property-type">{{ p.propertyAdsType }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="property-map" class="map-view"></div>
+  </div>
+</div>

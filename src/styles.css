@@ -633,3 +633,52 @@ form.ng-star-inserted {
 
 
 
+/* fix leaflet marker icons */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+.leaflet-pane img {
+  max-width: none;
+}
+/* ==========================
+   GLOBAL Leaflet Marker Styles
+   ========================== */
+
+.custom-marker {
+       display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    color: #fff;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    transition: all 0.25s ease;
+}
+
+.custom-marker.rent {
+  background-color: #0d6efd; /* Blue for Rent */
+}
+
+.custom-marker.sell {
+  background-color: #28a745; /* Green for Sell */
+}
+
+.custom-marker:hover {
+  transform: scale(1.25);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+.bounce-marker {
+  animation: bounce 1.2s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-20px); }
+  60% { transform: translateY(-10px); }
+}
