@@ -1,0 +1,57 @@
+<div class="card p-3">
+  <h5>🧑‍🤝‍🧑 Team Attendance & Performance</h5>
+  <p class="text-muted">Manage your check-in/check-out and activity logs.</p>
+
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <span class="fw-bold">Employee:</span>
+    <span>{{ employeeName }}</span>
+
+    <div class="ms-auto">
+      <button *ngIf="!isCheckedIn" class="btn btn-success" (click)="checkIn()">✅ Check-In</button>
+      <button *ngIf="isCheckedIn" class="btn btn-danger" (click)="checkOut()">🚪 Check-Out</button>
+    </div>
+  </div>
+
+  <div *ngIf="todayRecord" class="border rounded p-3 bg-light mb-4">
+    <div class="row">
+      <div class="col-md-3"><strong>Date:</strong> {{ todayRecord.date }}</div>
+      <div class="col-md-3"><strong>Check-In:</strong> {{ todayRecord.checkIn || '-' }}</div>
+      <div class="col-md-3"><strong>Check-Out:</strong> {{ todayRecord.checkOut || '-' }}</div>
+      <div class="col-md-3"><strong>Status:</strong> {{ todayRecord.status }}</div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-3"><input type="number" class="form-control" placeholder="Visits done" [(ngModel)]="visits" (change)="updateMetrics()"></div>
+      <div class="col-md-3"><input type="number" class="form-control" placeholder="Tasks closed" [(ngModel)]="tasks" (change)="updateMetrics()"></div>
+      <div class="col-md-3"><strong>Total Hours:</strong> {{ todayRecord.totalHours || '-' }}</div>
+    </div>
+  </div>
+
+  <h6>📅 Attendance History</h6>
+  <table class="table table-sm mt-2 align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Date</th>
+        <th>Employee</th>
+        <th>Check-In</th>
+        <th>Check-Out</th>
+        <th>Visits</th>
+        <th>Tasks</th>
+        <th>Total Hours</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of records">
+        <td>{{ r.date }}</td>
+        <td>{{ r.employee }}</td>
+        <td>{{ r.checkIn }}</td>
+        <td>{{ r.checkOut || '-' }}</td>
+        <td>{{ r.visits || 0 }}</td>
+        <td>{{ r.tasksClosed || 0 }}</td>
+        <td>{{ r.totalHours || '-' }}</td>
+        <td><span [class.badge-success]="r.status==='Checked Out'" [class.badge-warning]="r.status==='Present'" class="badge">{{ r.status }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

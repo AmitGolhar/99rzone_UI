@@ -1,0 +1,59 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="text-primary">💰 Payment Records</h4>
+  <button class="btn btn-success" (click)="openAdd()">➕ Add Payment</button>
+</div>
+
+<div class="mb-3 d-flex justify-content-between">
+  <div>
+    <strong>Total Collected:</strong> ₹{{ totalCollected | number }}
+    <span class="ms-4"><strong>Total Pending:</strong> ₹{{ totalPending | number }}</span>
+  </div>
+  <div>
+    <select class="form-select" [(ngModel)]="filterStatus" style="width:180px">
+      <option value="">All</option>
+      <option value="Pending">Pending</option>
+      <option value="Partial">Partial</option>
+      <option value="Paid">Paid</option>
+    </select>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Client</th>
+      <th>Property</th>
+      <th>Total (₹)</th>
+      <th>Paid (₹)</th>
+      <th>Pending (₹)</th>
+      <th>Status</th>
+      <th>Due Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of payments; let i=index" [hidden]="filterStatus && p.status !== filterStatus">
+      <td>{{ i + 1 }}</td>
+      <td>{{ p.clientName }}</td>
+      <td>{{ p.propertyName }}</td>
+      <td>{{ p.totalAmount | number }}</td>
+      <td>{{ p.paidAmount | number }}</td>
+      <td>{{ p.pendingAmount | number }}</td>
+      <td>
+        <span class="badge"
+          [ngClass]="{
+            'bg-danger': p.status === 'Pending',
+            'bg-warning text-dark': p.status === 'Partial',
+            'bg-success': p.status === 'Paid'
+          }">{{ p.status }}</span>
+      </td>
+      <td>{{ p.nextDueDate || '-' }}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-success me-1" (click)="sendReminder(p)">📱</button>
+        <button class="btn btn-sm btn-outline-primary me-1" (click)="edit(p)">✏️</button>
+        <button class="btn btn-sm btn-outline-danger" (click)="delete(p.id)">🗑️</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

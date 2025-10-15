@@ -1,0 +1,36 @@
+/* src/app/crm/dashboard/crm-dashboard-v2.component.css */
+.crm-dashboard-v2 {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.stat-card {
+  border-top: 6px solid;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.stat-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+
+.card { border-radius: 12px; }
+
+canvas { width: 100% !important; }
+
+.list-group-item { border: 0; padding-left: 0; padding-right: 0; }
+
+.stat-card {
+  border-top: 4px solid;
+  transition: 0.2s;
+}
+.stat-card:hover {
+  transform: scale(1.03);
+}
+.card h6 {
+  font-weight: 600;
+}
+canvas {
+  width: 100% !important;
+  height: 240px !important;
+}
+ 
+ 

@@ -14,25 +14,18 @@
         <div class="card h-100 shadow-sm">
           <div class="card-body plist">
             <p class="card-text"><strong>Posted By:</strong> {{ property.postedBy }}</p>
-            <p class="card-text"><strong>Owner Name:</strong> {{ property.name }}</p>
-            <p class="card-text"><strong>Mobile:</strong> {{ property.mobileNo }}</p>
-            <p class="card-text"><strong>BHK Type:</strong> {{ property.bhkType }}</p>
+              <p class="card-text"><strong>BHK Type:</strong> {{ property.bhkType }}</p>
             <p class="card-text"><strong>City:</strong> {{ property.city || 'Not Available' }}</p>
             <p class="card-text"><strong>Locality:</strong> {{ property.locality }}</p>
             <p class="card-text"><strong>Apartment:</strong> {{ property.apartmentName || 'N/A' }}</p>
-            <p class="card-text"><strong>Ownership Type:</strong> {{ property.ownershipType }}</p>
-            <p class="card-text" *ngIf="property.ownershipType === 'On Lease'">
+             <p class="card-text" *ngIf="property.ownershipType === 'On Lease'">
               <strong>Lease Years:</strong> {{ property.leaseYears }}
             </p>
-            <p class="card-text"><strong>Facing:</strong> {{ property.facing }}</p>
-            <p class="card-text"><strong>Furnishing:</strong> {{ property.furnishing }}</p>
+             <p class="card-text"><strong>Furnishing:</strong> {{ property.furnishing }}</p>
             <p class="card-text"><strong>Floor:</strong> {{ property.floor }} / {{ property.totalFloor }}</p>
-            <p class="card-text"><strong>Built-up Area:</strong> {{ property.builtUpArea }}</p>
-            <p class="card-text"><strong>Carpet Area:</strong> {{ property.carpetArea }}</p>
+             <p class="card-text"><strong>Carpet Area:</strong> {{ property.carpetArea }}</p>
             <p class="card-text"><strong>Expected Price:</strong> {{ property.expectedPrice | currency:'INR' }}</p>
-            <p class="card-text"><strong>Maintenance Cost:</strong> {{ property.maintenanceCost | currency:'INR' }}</p>
-            <p class="card-text"><strong>Price Negotiable:</strong> {{ property.isPriceNegotiable ? 'Yes' : 'No' }}</p>
-            <p class="card-text"><strong>Available From:</strong> {{ property.availableFrom }}</p>
+             <p class="card-text"><strong>Available From:</strong> {{ property.availableFrom }}</p>
             <p class="card-text"><strong>Property Age:</strong> {{ property.propertyAge }}</p>
             <p class="card-text"><strong>Posted Date:</strong> {{ property.propertyPostedDate }}</p>
 
@@ -197,26 +190,26 @@
         <!-- 🖼️ Gallery -->
         <h5 class="text-primary">Gallery</h5>
         <div class="d-flex flex-wrap gap-3 justify-content-start">
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos1"
-            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos1" class="img-thumbnail"
+          <img *ngIf="currentSelectedProperty.propertyPhotos1"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos1" class="img-thumbnail"
             width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos2"
-            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos2" class="img-thumbnail"
+          <img *ngIf="currentSelectedProperty.propertyPhotos2"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos2" class="img-thumbnail"
             width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos3"
-            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos3" class="img-thumbnail"
+          <img *ngIf="currentSelectedProperty.propertyPhotos3"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos3" class="img-thumbnail"
             width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos4"
-            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos4" class="img-thumbnail"
+          <img *ngIf="currentSelectedProperty.propertyPhotos4"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos4" class="img-thumbnail"
             width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos5"
-            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos5" class="img-thumbnail"
+          <img *ngIf="currentSelectedProperty.propertyPhotos5"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos5" class="img-thumbnail"
             width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos6"
-            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos6" class="img-thumbnail"
+          <img *ngIf="currentSelectedProperty.propertyPhotos6"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos6" class="img-thumbnail"
             width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos7"
-            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos7" class="img-thumbnail"
+          <img *ngIf="currentSelectedProperty.propertyPhotos7"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.propertyPhotos7" class="img-thumbnail"
             width="400" height="400" />
         </div>
       </div>

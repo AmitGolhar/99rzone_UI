@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from './shared/shared.module';
 import { PropertyMapComponent } from './components/property-map/property-map.component';
-  
+ 
 @NgModule({
   declarations: [
     AppComponent,

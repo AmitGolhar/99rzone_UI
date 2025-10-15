@@ -1,0 +1,25 @@
+<div class="card p-3">
+  <div class="d-flex justify-content-between">
+    <h5>📅 Follow-Up Automation (2 days before due)</h5>
+    <small class="text-muted">Auto-detect pending payments</small>
+  </div>
+
+  <div class="mt-3">
+    <div *ngIf="candidates.length; else none">
+      <p><strong>{{ candidates.length }}</strong> follow-ups detected. Create tasks?</p>
+      <button class="btn btn-primary" (click)="createTasks()">Create Follow-Up Tasks</button>
+    </div>
+    <ng-template #none>
+      <div class="text-muted">No auto follow-ups detected for now.</div>
+    </ng-template>
+  </div>
+
+  <div class="mt-4" *ngIf="createdTasks.length">
+    <h6>Recently Created Tasks</h6>
+    <ul class="list-group mt-2">
+      <li class="list-group-item" *ngFor="let t of createdTasks">
+        {{ t.clientName }} • ₹{{ t.pendingAmount | number }} • due {{ t.dueDate }} • created {{ t.createdAt | date:'short' }}
+      </li>
+    </ul>
+  </div>
+</div>

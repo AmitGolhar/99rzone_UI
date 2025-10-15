@@ -35,8 +35,8 @@ export class RentComponent implements OnInit {
  
     });
 
-    this.getSearchQueryListOfProperties();
-    
+   // this.getSearchQueryListOfProperties();
+    this.loadProperties();
   }
 
   getSearchQueryListOfProperties(){
@@ -70,7 +70,7 @@ export class RentComponent implements OnInit {
   }
 
   onScroll() {
-   // this.loadProperties();
+    this.loadProperties();
   }
   formatTimeToDate(time: string): Date {
     const [hours, minutes, seconds] = time.split(':').map(Number);

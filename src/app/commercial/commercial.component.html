@@ -1,22 +1,227 @@
+ 
+<app-loader [isLoading]="pageLoading"></app-loader>
+
+
 <div class="container py-4">
-  <h2>Commercial Properties</h2>
-  <form>
-    <div class="mb-3">
-      <label for="propertyType" class="form-label">Property Type</label>
-      <select class="form-select" id="propertyType">
-        <option>Office</option>
-        <option>Shop</option>
-        <option>Warehouse</option>
-      </select>
+  <h3>Available Commercial Properties</h3> <br>
+ 
+
+
+   
+<div class="scroll-container"
+     infiniteScroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="300"
+     (scrolled)="onScroll()">
+
+  <!-- 🏢 Property Cards -->
+  <div class="row g-3" *ngIf="propertiesList.length; else loading">
+    <div class="col-12 col-md-4" *ngFor="let property of propertiesList">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body plist">
+          <h5 class="card-title text-primary">{{ property.propertyType }} for {{ property.propertyAdsType }}</h5>
+          <p class="text-muted small mb-2">
+            <i class="bi bi-calendar"></i> Posted on {{ property.propertyPostedDate }}
+          </p>
+
+          <!-- 👤 Owner Details -->
+          <p class="card-text"><strong>Posted By:</strong> {{ property.postedBy }}</p>
+ 
+          <!-- 🏢 Property Details -->
+          <p class="card-text" *ngIf="property.buildingType"><strong>Building Type:</strong> {{ property.buildingType }}</p>
+           <p class="card-text" *ngIf="property.superBuiltUpArea"><strong>Super Built-up Area:</strong> {{ property.superBuiltUpArea }}</p>
+          <p class="card-text" *ngIf="property.furnishing"><strong>Furnishing:</strong> {{ property.furnishing }}</p>
+          <p class="card-text" *ngIf="property.ageOfProperty"><strong>Age of Property:</strong> {{ property.ageOfProperty }}</p>
+
+          <!-- 📍 Location -->
+          <p class="card-text"><strong>City:</strong> {{ property.localityCity || 'Not Available' }}</p>
+          <p class="card-text"><strong>Locality:</strong> {{ property.locality }}</p>
+ 
+          <!-- 💰 Rent & Deposit -->
+          <hr>
+          <p class="card-text fw-bold text-success fs-6">
+            <i class="bi bi-cash-coin"></i> Rent ₹{{ property.expectedRent | number }} / month
+          </p>
+          <p class="card-text" *ngIf="property.deposit"><strong>Deposit:</strong> ₹{{ property.deposit | number }}</p>
+           
+
+          <!-- 🔄 Lease Info -->
+          <p class="card-text" *ngIf="property.leaseDuration">
+            <strong>Lease Duration:</strong> {{ property.leaseDuration }} year(s)
+          </p>
+          <p class="card-text" *ngIf="property.lockinPeriod">
+            <strong>Lock-in Period:</strong> {{ property.lockinPeriod }} year(s)
+          </p>
+
+          <!-- 🧩 Amenities -->
+          <hr>
+          <p class="card-text" *ngIf="property.idealFor?.length">
+            <strong>Ideal For:</strong> {{ property.idealFor.join(', ') }}
+          </p>
+         
+          <p class="card-text"><strong>Parking:</strong> {{ property.parking || 'N/A' }}</p>
+          <p class="card-text" *ngIf="property.lift"><strong>Lift:</strong> {{ property.lift }}</p>
+ 
+          <!-- 📅 Availability -->
+          <p class="card-text"><strong>Available From:</strong> {{ property.availableFrom }}</p>
+ 
+          <!-- 📝 Description -->
+          <p class="card-text" *ngIf="property.propertyDescription">
+            <strong>Description:</strong> {{ property.propertyDescription | slice:0:100 }}...
+          </p>
+
+          <hr>
+
+          <!-- 🔘 Actions -->
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <button type="button"
+                    class="btn btn-secondary seemore"
+                    data-bs-toggle="modal"
+                    data-bs-target="#detailsModal"
+                    (click)="getSelectedProperty(property)">
+              <i class="bi bi-eye"></i> View Details
+            </button>
+
+            <button class="btn btn-success" (click)="sendWhatsAppInterest(property)">
+              <i class="bi bi-whatsapp"></i> Contact via WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="budget" class="form-label">Budget</label>
-      <input type="number" class="form-control" id="budget" placeholder="Enter budget">
+  </div>
+
+  <!-- 🧾 No Data -->
+  <ng-template #noData>
+    <div class="text-center text-danger mt-4">
+      No commercial properties found.
     </div>
-    <div class="mb-3">
-      <label for="location" class="form-label">Location</label>
-      <input type="text" class="form-control" id="location" placeholder="Enter location">
+  </ng-template>
+
+  <!-- ⏳ Loading -->
+  <ng-template #loading>
+    <div class="text-center mt-4">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">Loading properties...</p>
     </div>
-    <button class="btn btn-primary">Search</button>
-  </form>
+  </ng-template>
 </div>
+
+
+</div>
+ 
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title text-primary">Commercial Property Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body" *ngIf="currentSelectedProperty">
+
+        <!-- 🧾 Basic Info -->
+        <h5 class="text-primary">Basic Information</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item"><strong>Owner Name:</strong> {{ currentSelectedProperty.name }}</li>
+          <li class="list-group-item"><strong>Email:</strong> {{ currentSelectedProperty.email }}</li>
+          <li class="list-group-item"><strong>Mobile Number:</strong> {{ currentSelectedProperty.mobileNo }}</li>
+          <li class="list-group-item"><strong>Posted By:</strong> {{ currentSelectedProperty.postedBy }}</li>
+          <li class="list-group-item"><strong>Posted Date:</strong> {{ currentSelectedProperty.propertyPostedDate }}</li>
+          <li class="list-group-item"><strong>Property Type:</strong> {{ currentSelectedProperty.propertyType }}</li>
+          <li class="list-group-item"><strong>Listing Category:</strong> {{ currentSelectedProperty.propertyAdsType }}</li>
+        </ul>
+
+        <!-- 🏢 Commercial Property Details -->
+        <h5 class="text-primary">Property Details</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item" *ngIf="currentSelectedProperty.buildingType"><strong>Building Type:</strong> {{ currentSelectedProperty.buildingType }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.ageOfProperty"><strong>Age of Property:</strong> {{ currentSelectedProperty.ageOfProperty }}</li>
+          <li class="list-group-item"><strong>Floor:</strong> {{ currentSelectedProperty.floor }}</li>
+          <li class="list-group-item"><strong>Total Floors:</strong> {{ currentSelectedProperty.totalFloor }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.superBuiltUpArea"><strong>Super Built-up Area:</strong> {{ currentSelectedProperty.superBuiltUpArea }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.furnishing"><strong>Furnishing:</strong> {{ currentSelectedProperty.furnishing }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.otherFeatures?.length">
+            <strong>Other Features:</strong> {{ currentSelectedProperty.otherFeatures.join(', ') }}
+          </li>
+        </ul>
+
+        <!-- 📍 Locality Details -->
+        <h5 class="text-primary">Locality Details</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item"><strong>City:</strong> {{ currentSelectedProperty.localityCity || 'N/A' }}</li>
+          <li class="list-group-item"><strong>Locality:</strong> {{ currentSelectedProperty.locality }}</li>
+          <li class="list-group-item"><strong>Landmark:</strong> {{ currentSelectedProperty.landmark }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.addDirectionsTip"><strong>Directions Tip:</strong> {{ currentSelectedProperty.addDirectionsTip }}</li>
+        </ul>
+
+        <!-- 💰 Rent & Payment Info -->
+        <h5 class="text-primary">Rent & Payment Details</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item"><strong>Expected Rent:</strong> ₹{{ currentSelectedProperty.expectedRent | number }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.monthlyMaintenance"><strong>Maintenance:</strong> ₹{{ currentSelectedProperty.monthlyMaintenance | number }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.deposit"><strong>Deposit:</strong> ₹{{ currentSelectedProperty.deposit | number }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.leaseDuration"><strong>Lease Duration:</strong> {{ currentSelectedProperty.leaseDuration }} year(s)</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.lockinPeriod"><strong>Lock-in Period:</strong> {{ currentSelectedProperty.lockinPeriod }} year(s)</li>
+          <li class="list-group-item"><strong>Rent Negotiable:</strong> {{ currentSelectedProperty.isRentNegotiable ? 'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Maintenance Extra:</strong> {{ currentSelectedProperty.isMaintenanceExtra ? 'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Deposit Negotiable:</strong> {{ currentSelectedProperty.depositNegotiable ? 'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Available From:</strong> {{ currentSelectedProperty.availableFrom }}</li>
+        </ul>
+
+        <!-- 🧱 Amenities / Facilities -->
+        <h5 class="text-primary">Facilities & Amenities</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item" *ngIf="currentSelectedProperty.idealFor?.length"><strong>Ideal For:</strong> {{ currentSelectedProperty.idealFor.join(', ') }}</li>
+          <li class="list-group-item"><strong>Power Backup:</strong> {{ currentSelectedProperty.powerBackup }}</li>
+          <li class="list-group-item"><strong>Lift:</strong> {{ currentSelectedProperty.lift }}</li>
+          <li class="list-group-item"><strong>Parking:</strong> {{ currentSelectedProperty.parking }}</li>
+          <li class="list-group-item"><strong>Available Parking Slots:</strong> {{ currentSelectedProperty.noOfAvailableParkingSlot }}</li>
+          <li class="list-group-item"><strong>Washrooms:</strong> {{ currentSelectedProperty.washrooms }}</li>
+          <li class="list-group-item"><strong>Water Storage Facility:</strong> {{ currentSelectedProperty.waterStorageFacility }}</li>
+          <li class="list-group-item"><strong>Security:</strong> {{ currentSelectedProperty.security }}</li>
+          <li class="list-group-item"><strong>Current Property Condition:</strong> {{ currentSelectedProperty.currentPropertyCondition }}</li>
+          <li class="list-group-item"><strong>Current Running Business:</strong> {{ currentSelectedProperty.currentRunningBusiness }}</li>
+        </ul>
+
+        <!-- 📝 Additional Info -->
+        <h5 class="text-primary">Additional Information</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item" *ngIf="currentSelectedProperty.propertyDescription"><strong>Description:</strong> {{ currentSelectedProperty.propertyDescription }}</li>
+          <li class="list-group-item" *ngIf="currentSelectedProperty.previousOccupancy"><strong>Previous Occupancy:</strong> {{ currentSelectedProperty.previousOccupancy }}</li>
+          <li class="list-group-item"><strong>Who Will Show Property:</strong> {{ currentSelectedProperty.whoShowProperty }}</li>
+          <li class="list-group-item"><strong>Property Painted:</strong> {{ currentSelectedProperty.propertyPainted }}</li>
+          <li class="list-group-item"><strong>Property Cleaned:</strong> {{ currentSelectedProperty.propertyCleaned }}</li>
+        </ul>
+
+        <!-- 📅 Visit Schedule -->
+        <h5 class="text-primary">Visit Schedule</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item"><strong>Owner Availability:</strong> {{ currentSelectedProperty.ownerAvailability }}</li>
+          <li class="list-group-item"><strong>From Time:</strong> {{ currentSelectedProperty.fromTime }}</li>
+          <li class="list-group-item"><strong>To Time:</strong> {{ currentSelectedProperty.toTime }}</li>
+        </ul>
+
+        <!-- 🖼️ Gallery -->
+        <h5 class="text-primary">Gallery</h5>
+        <div class="d-flex flex-wrap gap-3 justify-content-start">
+          <ng-container *ngFor="let i of [1,2,3,4,5,6,7]">
+            <img *ngIf="currentSelectedProperty['propertyPhotos' + i]"
+                 [src]="'data:image/jpeg;base64,' + currentSelectedProperty['propertyPhotos' + i]"
+                 class="img-thumbnail"
+                 width="350" height="350" />
+          </ng-container>
+          <p *ngIf="!currentSelectedProperty.propertyPhotos1 && !currentSelectedProperty.propertyPhotos2">No images uploaded</p>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

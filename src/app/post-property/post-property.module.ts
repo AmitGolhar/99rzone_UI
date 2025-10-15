@@ -28,7 +28,7 @@ import { SharedModule } from '@app/shared/shared.module';
   imports: [
     CommonModule,
      FormsModule,
-    PostPropertyRoutingModule,
+     PostPropertyRoutingModule,
      SharedModule
     ],
 })

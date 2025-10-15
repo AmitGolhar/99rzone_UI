@@ -35,7 +35,7 @@ export class BuyComponent implements OnInit {
  
     });
 
-    this.getSearchQueryListOfProperties();
+   // this.getSearchQueryListOfProperties();
     this.loadProperties();
   }
 
@@ -70,7 +70,7 @@ export class BuyComponent implements OnInit {
   }
 
   onScroll() {
-   // this.loadProperties();
+  this.loadProperties();
   }
   formatTimeToDate(time: string): Date {
     const [hours, minutes, seconds] = time.split(':').map(Number);

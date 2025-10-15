@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
  import { Property2 } from '@app/models/property2.model';
+import { PropertyTask } from '@app/models/property.model copy';
 
 @Injectable({ providedIn: 'root' })
 export class PropertyService {
@@ -206,8 +207,145 @@ export class PropertyService {
   }
 ];
 
+
     // return mock for now
     return of(mock);
     // return this.http.get<Property[]>(this.apiUrl);
   }
+
+    private propertyTasks: PropertyTask[] = [
+    {
+      id: 1,
+      taskType: 'Property Onboarding',
+      propertyName: 'Sunshine Residency',
+      propertyCode: 'PROP101',
+      location: 'Pune',
+      assignedTo: 'Ravi Deshmukh',
+      status: 'Pending',
+      dueDate: '2025-10-12',
+      notes: 'Collect ownership docs before listing'
+    },
+    {
+      id: 2,
+      taskType: 'Property Onboarding',
+      propertyName: 'Green Valley Apartments',
+      propertyCode: 'PROP102',
+      location: 'Mumbai',
+      assignedTo: 'Amit Golhar',
+      status: 'In Progress',
+      dueDate: '2025-10-13',
+      notes: 'Awaiting verification of builder NOC'
+    },
+    {
+      id: 3,
+      taskType: 'Property Onboarding',
+      propertyName: 'Palm Heights',
+      propertyCode: 'PROP103',
+      location: 'Bangalore',
+      assignedTo: 'Neha Sharma',
+      status: 'Completed',
+      dueDate: '2025-10-09',
+      notes: 'Listing published successfully'
+    },
+    {
+      id: 4,
+      taskType: 'Property Onboarding',
+      propertyName: 'Skyline Towers',
+      propertyCode: 'PROP104',
+      location: 'Hyderabad',
+      assignedTo: 'Karan Joshi',
+      status: 'Pending',
+      dueDate: '2025-10-14',
+      notes: 'Need high-quality property photos'
+    },
+    {
+      id: 5,
+      taskType: 'Property Onboarding',
+      propertyName: 'Lakeview Villas',
+      propertyCode: 'PROP105',
+      location: 'Chandigarh',
+      assignedTo: 'Rahul Verma',
+      status: 'In Progress',
+      dueDate: '2025-10-11',
+      notes: 'Verify title deed and property age'
+    },
+    {
+      id: 6,
+      taskType: 'Property Onboarding',
+      propertyName: 'Dreamland Residency',
+      propertyCode: 'PROP106',
+      location: 'Delhi',
+      assignedTo: 'Pooja Patil',
+      status: 'Completed',
+      dueDate: '2025-10-10',
+      notes: 'All documents uploaded and verified'
+    },
+    {
+      id: 7,
+      taskType: 'Property Onboarding',
+      propertyName: 'Garden City Phase II',
+      propertyCode: 'PROP107',
+      location: 'Nashik',
+      assignedTo: 'Ravi Kulkarni',
+      status: 'Pending',
+      dueDate: '2025-10-15',
+      notes: 'Pending RERA approval confirmation'
+    },
+    {
+      id: 8,
+      taskType: 'Property Onboarding',
+      propertyName: 'Elite Enclave',
+      propertyCode: 'PROP108',
+      location: 'Nagpur',
+      assignedTo: 'Amit Golhar',
+      status: 'In Progress',
+      dueDate: '2025-10-13',
+      notes: 'Photoshoot scheduled for tomorrow'
+    },
+    {
+      id: 9,
+      taskType: 'Property Onboarding',
+      propertyName: 'Harmony Homes',
+      propertyCode: 'PROP109',
+      location: 'Ahmedabad',
+      assignedTo: 'Neha Sharma',
+      status: 'Pending',
+      dueDate: '2025-10-14',
+      notes: 'Owner verification pending'
+    },
+    {
+      id: 10,
+      taskType: 'Property Onboarding',
+      propertyName: 'Silverline Heights',
+      propertyCode: 'PROP110',
+      location: 'Thane',
+      assignedTo: 'Rahul Verma',
+      status: 'Completed',
+      dueDate: '2025-10-10',
+      notes: 'Listed on portal with approved pricing'
+    }
+  ]
+
+
+  getAll(): Observable<PropertyTask[]> {
+    return of(this.propertyTasks);
+  }
+
+  add(task: PropertyTask): Observable<PropertyTask> {
+    task.id = this.propertyTasks.length + 1;
+    this.propertyTasks.push(task);
+    return of(task);
+  }
+
+  update(task: PropertyTask): Observable<PropertyTask> {
+    const idx = this.propertyTasks.findIndex(t => t.id === task.id);
+    if (idx !== -1) this.propertyTasks[idx] = task;
+    return of(task);
+  }
+
+  delete(id: number): Observable<boolean> {
+    this.propertyTasks = this.propertyTasks.filter(t => t.id !== id);
+    return of(true);
+  }
+
 }

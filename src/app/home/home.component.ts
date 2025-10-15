@@ -29,6 +29,17 @@ export class HomeComponent implements OnInit {
   bhkType:string =''
   localityCity:string = ''
   withinDays: string =''
+  propertyType:string =   '';
+
+ 
+    propertyAdsType:string =   '';
+   
+      commercialPropertyType:string =   '';
+       buildingType:string =   '';
+        city:string =   '';
+         locality:string =   '';
+minPrice:string =   '';
+         maxPrice:string =   '';
 
   constructor(
     private propertyService: PropertyService,
@@ -44,21 +55,59 @@ export class HomeComponent implements OnInit {
   }
 
   searchProperty(query: string) {
-    console.log(this.selectedTab)
     if (this.selectedTab === 'Buy') {
-    //  this.router.navigate(['/buy']);
-      this.router.navigate(['/buy',{apartmentType:this.apartmentType, bhkType:this.bhkType, localityCity:this.localityCity, withinDays:this.withinDays}], { relativeTo: this.route });
+      //  this.router.navigate(['/buy']);
+      this.router.navigate(
+        [
+          '/buy',
+          {
+            apartmentType: this.apartmentType,
+            bhkType: this.bhkType,
+            localityCity: this.localityCity,
+            withinDays: this.withinDays,
+          },
+        ],
+        { relativeTo: this.route }
+      );
     } else if (this.selectedTab === 'Rent') {
-
-        this.router.navigate(['/rent',{apartmentType:this.apartmentType, bhkType:this.bhkType, localityCity:this.localityCity, withinDays:this.withinDays}], { relativeTo: this.route });
+      this.router.navigate(
+        [
+          '/Rent',
+          {
+            apartmentType: this.apartmentType,
+            bhkType: this.bhkType,
+            localityCity: this.localityCity,
+            withinDays: this.withinDays,
+          },
+        ],
+        { relativeTo: this.route }
+      );
     } else if (this.selectedTab === 'Commercial') {
-       this.router.navigate(['/commercial',{apartmentType:this.apartmentType, bhkType:this.bhkType, localityCity:this.localityCity, withinDays:this.withinDays}], { relativeTo: this.route });
+      this.router.navigate(['/commercial'], {
+        queryParams: {
+          propertyType: this.propertyType || 'Commercial',
+          propertyAdsType: this.propertyAdsType || 'Sale',
+          commercialPropertyType: this.commercialPropertyType || '',
+          buildingType: this.buildingType || '',
+          city: this.city || '',
+          locality: this.locality || '',
+          minPrice: this.minPrice ?? '',
+          maxPrice: this.maxPrice ?? '',
+          withinDays: this.withinDays ?? '',
+        },
+      });
     }
   }
 
+  onPurposeChange(value: string) {
+  this.propertyAdsType = value;
+  console.log('Purpose selected:', value);
+ 
+}
+
   onTabClick(tab: string) {
     this.selectedTab = tab;
-   
+      console.log(this.selectedTab)
     // You can now call any logic here based on selected tab
   }
 

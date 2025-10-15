@@ -13,10 +13,11 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     RentRoutingModule,
     InfiniteScrollModule,
     HttpClientModule,
-    SharedModule
+     
   ],
 })
 export class RentModule {}

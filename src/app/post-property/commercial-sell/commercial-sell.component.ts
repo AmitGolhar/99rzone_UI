@@ -5,55 +5,49 @@ import { PostPropertiesService } from '@app/services/post-properties.service';
 @Component({
   selector: 'app-commercial-sell',
   templateUrl: './commercial-sell.component.html',
-  styleUrls: ['./commercial-sell.component.css']
+  styleUrls: ['./commercial-sell.component.css'],
 })
 export class CommercialSellComponent implements OnInit {
   currentStep = 1;
   // Step list
   steps: string[] = [
-    'Property Sell Details',
+    'Property Rent Details',
     'Locality Details',
     'Rental Details',
     'Amenities',
     'Gallery',
     'Schedule',
   ];
-featureOptions: string[] = [
-  'On Main Road',
-  'Corner Property',
-  'Park Facing',
-  'Near Metro',
-  'East Facing'
-];
-idealForOptions: string[] = [
-  'Bank',
-  'Service Center',
-  'ATM',
-  'Retail',
-  'Show Room'
-];
- otherFeatures!: [];
- idealFor!:[];
+  featureOptions: string[] = [
+    'On Main Road',
+    'Corner Property',
+    'Park Facing',
+    'Near Metro',
+    'East Facing',
+  ];
+  idealForOptions: string[] = [
+    'Bank',
+    'Service Center',
+    'ATM',
+    'Retail',
+    'Show Room',
+  ];
+  otherFeatures!: [];
+  idealFor!: [];
 
   formData = {
+    propertyType: 'Commercial',
+    propertyAdsType: '',
+    commercialPropertyType: '',
     buildingType: '',
-    bhkType: '',
+    ageOfProperty: '',
     floor: '',
     totalFloor: '',
-    ageOfProperty: '',
-    facing: '',
     superBuiltUpArea: '',
-    carpetArea:'',
-    apartmentName: '',
-    propertyType: '',
-    propertyStatus: '',
-    rentalType: '',
-    availabilityStatus: '',
-    purposeStatus: '',
-    commercialPropertyType: '',
-    buyPropertyType:'',
-    otherFeatures:[] as string[],
-    idealFor:[] as string[]
+    carpetArea: '',
+    furnishing: '',
+    otherFeatures: [] as string[],
+    idealFor: [] as string[],
   };
 
   floors: number[] = Array.from({ length: 40 }, (_, i) => i + 1);
@@ -70,58 +64,17 @@ idealForOptions: string[] = [
     'Godrej Hillside',
     'Godrej Hill Retreat',
     'Godrej Meadows',
-    'Godrej Green Cove'
+    'Godrej Green Cove',
   ];
 
   cities: string[] = [
-     'Pune',
+    'Pune',
     'Bangalore',
     'Mumbai',
     'Delhi',
     'Chennai',
     'Hyderabad',
   ];
-
-  locationData = {
-    localityCity: '',
-    locality: '',
-    landmark: '',
-  };
-
-  rentalData: {
-    rentType: string;
-    expectedRent: string;
-    expectedDeposite: string;
-    isRentNegotiable: boolean;
-    leaseDuration: string;
-    maintainenceAmount: string;
-    availableFrom: string;
-    preferredTenants: string[]; // <-- explicitly typed as an array of strings
-    furnishingStatus: string;
-    parking: string;
-    description: string;
-    deposit:string;
-    lockinPeriod:string;
-    depositNegotiable:boolean;
-   
-  } = {
-    rentType: '',
-    expectedRent: '',
-    expectedDeposite: '',
-    isRentNegotiable: false,
-    leaseDuration: '',
-    maintainenceAmount: '',
-    availableFrom: '',
-    preferredTenants: [], // <-- initialized as empty array
-    furnishingStatus: '',
-    parking: '',
-    description: '',
-    deposit:'',
-    lockinPeriod:'',
-    depositNegotiable:false
-    
-  };
-
   tenantOptions = [
     { label: 'Anyone', value: 'Anyone' },
     { label: 'Family', value: 'Family' },
@@ -129,21 +82,6 @@ idealForOptions: string[] = [
     { label: 'Bachelor Male', value: 'Bachelor Male' },
     { label: 'Company', value: 'Company' },
   ];
-
-  amenities = {
-    lift: '',
-    parking: '',
-    powerBackup: '',
-    waterStorageFacility: '',
-    currentRunningBusiness: '',
-    security: '',
-    wifi:'',
-    washrooms: '',
-    currentPropertyCondition: '',
-    noOfAvailableParkingSlot: '',
-    availableAmenities: [] as string[], //
-  };
-   photoCount = 0;
 
   amenitiesList: string[] = [
     'Lift',
@@ -164,67 +102,109 @@ idealForOptions: string[] = [
     'Power Backup',
     'Visitor Parking',
   ];
+// 🏙️ Step 2 - Location Data
+locationData = {
+  city: '',
+  locality: '',
+  street: '',
+  landmark: '',
+};
+
+// 💰 Step 3 - Pricing & Availability Data
+priceData = {
+  expectedPrice: null,
+  ownershipType: '',
+  priceNegotiable: false,
+  availableFrom: '',
+  idealFor: [] as string[],
+};
+
+// 🧱 Step 4 - Amenities Data
+amenities = {
+  powerBackup: '',
+  lift: '',
+  parking: '',
+  noOfParkingSlots: '', // ✅ Matches backend field name
+  washrooms: '',
+  waterStorageFacility: '',
+  security: '',
+  wifi: '',
+  currentPropertyCondition: '',
+  currentRunningBusiness: '',
+  addDirectionsTip: '',
+};
+
+// 🕒 Step 6 - Schedule Data
+scheduleData = {
+  propertyDescription: '',
+  previousOccupancy: '',
+  whoWillShowProperty: '', // ✅ matches backend: whoWillShowProperty
+  propertyPainted: '',
+  propertyCleaned: '',
+  ownerAvailability: '',
+  fromTime: '',
+  toTime: '',
+};
 
   uploadedPhotos: string[] = []; // stores Base64 or URLs of uploaded photos
-
-  scheduleData = {
-    ownerAvailability: '',
-    fromTime: '',
-    toTime: '',
-    previousOccupancy:'',
-    whoShowProperty:'',
-  propertyPainted:'',
-  propertyCleaned:'',
-  propertyDescription:''
-  };
   postPropertyParentForm: any;
 
-  formObject: any = {
+formObject: any = {
     name: '',
     email: '',
-    date: '',
     mobileNo: '',
+    secondaryNumber: '',
     postedBy: '',
-    propertyType: '',
+    propertyPostedDate: '',
+
+    propertyType: 'Commercial',
     propertyAdsType: '',
-    buyPropertyType: '',
-    rentalType: '',
     commercialPropertyType: '',
-    apartmentType: '',
-    bhkType: '',
+    buildingType: '',
+    ageOfProperty: '',
     floor: '',
-    facing: '',
-    apartmentName: ' ',
     totalFloor: '',
-    propertyAge: '',
-    builtUpArea: '',
-    propertyStatus: '',
-    availabilityStatus: '',
-    purposeStatus: '',
-    localityCity: '',
+    superBuiltUpArea: '',
+    carpetArea: '',
+    furnishing: '',
+    otherFeatures: [] as string[],
+
+    city: '',
     locality: '',
-    landmarkStreet: '',
-    rentType: '',
-    expectedRent: '',
-    expectedDeposite: '',
-    isRentNegotiable: '',
-    monthlyMaintainence: '',
-    maintainenceAmount: '',
+    street: '',
+    landmark: '',
+
+    expectedPrice: null,
+    ownershipType: '',
+    priceNegotiable: false,
     availableFrom: '',
-    furnishingStatus: '',
-    preferredTenants: [],
+    idealFor: [] as string[],
+
+    powerBackup: '',
+    lift: '',
     parking: '',
-    description: '',
-    bathroom: '',
-    balcony: '',
-    waterSupply: '',
-    gym: '',
-    nonvegAllowed: '',
-    gateSecurity: '',
-    whoWillShowProperty: '',
+    noOfParkingSlots: '',
+    washrooms: '',
+    waterStorageFacility: '',
+    security: '',
+    wifi: '',
     currentPropertyCondition: '',
-    alternateNumber: '',
-    availableAmenities: [],
+    currentRunningBusiness: '',
+    addDirectionsTip: '',
+
+    propertyPhotos1: null,
+    propertyPhotos2: null,
+    propertyPhotos3: null,
+    propertyPhotos4: null,
+    propertyPhotos5: null,
+    propertyPhotos6: null,
+    propertyPhotos7: null,
+
+    propertyDescription: '',
+    previousOccupancy: '',
+    whoWillShowProperty: '',
+    propertyPainted: '',
+    propertyCleaned: '',
     ownerAvailability: '',
     fromTime: '',
     toTime: '',
@@ -245,14 +225,32 @@ idealForOptions: string[] = [
   propertyPhotos6: any;
   propertyPhotos7: any;
 
-  
+    photoCount = 0;
+    
   constructor(
     private route: ActivatedRoute,
     private postPropertiesService: PostPropertiesService,
-        private router: Router,  // ✅ Add this
-
+    private router: Router // ✅ Add this
   ) {}
 
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
+      this.postPropertyParentForm = params;
+      const postdate = new Date();
+      const formattedDate = postdate.toISOString().split('T')[0];
+
+      this.formObject = {
+        name: this.postPropertyParentForm.name,
+        email: this.postPropertyParentForm.email,
+        date: formattedDate,
+        mobileNo: this.postPropertyParentForm.mobileNo,
+        postedBy: this.postPropertyParentForm.postedBy,
+        propertyType: this.postPropertyParentForm.propertyType || 'Residential',
+        propertyAdsType: this.postPropertyParentForm.propertyAdsType,
+      };
+      console.log(this.formObject);
+    });
+  }
 
   isScheduleValid(): boolean {
     const s = this.scheduleData;
@@ -261,95 +259,53 @@ idealForOptions: string[] = [
       !!s.fromTime &&
       !!s.toTime &&
       !!s.previousOccupancy &&
-      !!s.whoShowProperty &&
+      !!s.whoWillShowProperty &&
       !!s.propertyPainted &&
       !!s.propertyCleaned &&
       !!s.propertyDescription
-
     );
   }
   removePhoto(photo: string) {
-    this.uploadedPhotos = this.uploadedPhotos.filter(p => p !== photo);
+    this.uploadedPhotos = this.uploadedPhotos.filter((p) => p !== photo);
     this.photoCount = this.uploadedPhotos.length;
   }
 
-
   toggleFeature(feature: string): void {
-  const index = this.formData.otherFeatures.indexOf(feature);
-  if (index === -1) {
-   this.formData.otherFeatures.push(feature);
-  } else {
-    this.formData.otherFeatures.splice(index, 1);
+    const index = this.formData.otherFeatures.indexOf(feature);
+    if (index === -1) {
+      this.formData.otherFeatures.push(feature);
+    } else {
+      this.formData.otherFeatures.splice(index, 1);
+    }
   }
-}
 
-isFeatureSelected(feature: string): boolean {
-  return this.formData.otherFeatures.includes(feature);
-}
+  isFeatureSelected(feature: string): boolean {
+    return this.formData.otherFeatures.includes(feature);
+  }
 
-    ideltoggleFeature(idel: string): void {
+  ideltoggleFeature(idel: string): void {
     const index = this.formData.idealFor.indexOf(idel);
     if (index === -1) {
-    this.formData.idealFor.push(idel);
+      this.formData.idealFor.push(idel);
     } else {
       this.formData.idealFor.splice(index, 1);
     }
   }
 
-  isideleSelected(idel: string): boolean {
-    return this.formData.idealFor.includes(idel);
-  }
-
-  ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.postPropertyParentForm = params;
-      const postdate = new Date();
-      const formattedDate = postdate.toISOString().split('T')[0];
-
-      this.formObject= {
-        name:  this.postPropertyParentForm.name,
-        email: this.postPropertyParentForm.email,
-        date: formattedDate,
-        mobileNo: this.postPropertyParentForm.mobileNo,
-        postedBy: this.postPropertyParentForm.postedBy,
-        propertyType: this.postPropertyParentForm.propertyType || 'Residential',
-        propertyAdsType: this.postPropertyParentForm.propertyAdsType,
-      
-      }
-console.log(this.formObject)
-    });
-  }
+ isideleSelected(idel: string): boolean {
+  return this.formData.idealFor.includes(idel);
+}
 
   setAvailability(value: string) {
     this.scheduleData.ownerAvailability = value;
   }
+ 
 
-  onAmenityChange(event: any) {
-    const amenity = event.target.value;
-    if (event.target.checked) {
-      this.amenities.availableAmenities.push(amenity);
-    } else {
-      const index = this.amenities.availableAmenities.indexOf(amenity);
-      if (index > -1) {
-        this.amenities.availableAmenities.splice(index, 1);
-      }
-    }
-  }
-
-  onTenantChange(event: any) {
-    const tenant: any = event.target.value;
-    if (event.target.checked) {
-      this.rentalData.preferredTenants.push(tenant);
-    } else {
-      this.rentalData.preferredTenants =
-        this.rentalData.preferredTenants.filter((t) => t !== tenant);
-    }
-  }
+ 
 
   goToStep(step: number) {
     this.currentStep = step;
- console.log(this.formObject)
-    
+    console.log(this.formObject);
   }
 
   nextStep() {
@@ -364,8 +320,6 @@ console.log(this.formObject)
     }
   }
 
- 
-
   triggerFileInput() {
     const fileInput = document.getElementById(
       'photoUpload'
@@ -374,8 +328,8 @@ console.log(this.formObject)
   }
 
   onFileSelected(event: any) {
-     const files = event.target.files;
-     this.readFiles(files);
+    const files = event.target.files;
+    this.readFiles(files);
 
     const file1 = (event.target as HTMLInputElement).files?.[0];
     const file2 = (event.target as HTMLInputElement).files?.[1];
@@ -415,168 +369,184 @@ console.log(this.formObject)
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.uploadedPhotos.push(e.target.result);
-         this.photoCount = this.uploadedPhotos.length;
+        this.photoCount = this.uploadedPhotos.length;
       };
       reader.readAsDataURL(files[i]);
     }
   }
+
   step1Form(data: any) {
-  
-    this.formObject.apartmentName = data.apartmentName;
-    this.formObject.apartmentType = data.apartmentType;
-    this.formObject.availabilityStatus = data.availabilityStatus;
-    this.formObject.bhkType = data.bhkType;
-    this.formObject.builtUpArea = data.builtUpArea;
     this.formObject.commercialPropertyType = data.commercialPropertyType;
-    this.formObject.buyPropertyType = data.buyPropertyType;
-    this.formObject.facing = data.facing;
+    this.formObject.buildingType = data.buildingType;
+    this.formObject.ageOfProperty = data.ageOfProperty;
     this.formObject.floor = data.floor;
-    this.formObject.propertyAge = data.propertyAge;
-    this.formObject.propertyStatus = data.propertyStatus;
-    this.formObject.purposeStatus = data.purposeStatus; // going wrong value while posting
-    this.formObject.rentalType = data.rentalType;
     this.formObject.totalFloor = data.totalFloor;
-      console.log(this.formObject)
+    this.formObject.superBuiltUpArea = data.superBuiltUpArea;
+    this.formObject.furnishing = data.furnishing;
+    this.formObject.otherFeatures = data.otherFeatures;
+    console.log('✅ Step 1:', this.formObject);
   }
 
   step2Form(data: any) {
-    this.formObject.localityCity = data.localityCity;
-    this.formObject.landmark = data.landmark;
+    this.formObject.city = data.city;
     this.formObject.locality = data.locality;
-
-       console.log(this.formObject)
-
+    this.formObject.street = data.street;
+    this.formObject.landmark = data.landmark;
+    console.log('✅ Step 2:', this.formObject);
   }
+
   step3Form(data: any) {
+    this.formObject.expectedPrice = data.expectedPrice;
+    this.formObject.ownershipType = data.ownershipType;
+    this.formObject.priceNegotiable = data.priceNegotiable;
     this.formObject.availableFrom = data.availableFrom;
-    this.formObject.description = data.description;
-    this.formObject.expectedDeposite = data.expectedDeposite;
-    this.formObject.expectedRent = data.expectedRent;
-    this.formObject.furnishingStatus = data.furnishingStatus;
-    this.formObject.maintainenceAmount = data.maintainenceAmount;
-    this.formObject.maintenanceType = data.maintenanceType;
-    this.formObject.parking = data.parking;
-    this.formObject.preferredTenants = data.preferredTenants;
-    this.formObject.isRentNegotiable = data.isRentNegotiable;
-    this.formObject.rentType = data.rentType;
-      console.log(this.formObject)
+    this.formObject.idealFor = data.idealFor;
+    console.log('✅ Step 3:', this.formObject);
   }
-  step4Form(data: any) {
-    this.formObject.balcony = data.balcony;
-    this.formObject.bathroom = data.bathroom;
-    this.formObject.gateSecurity = data.gateSecurity;
-    this.formObject.gym = data.gym;
-    this.formObject.nonvegAllowed = data.nonvegAllowed;
-    this.formObject.currentPropertyCondition = data.currentPropertyCondition;
-    this.formObject.alternateNumber = data.alternateNumber;
-    this.formObject.availableAmenities = data.availableAmenities;
-    this.formObject.whoWillShowProperty = data.whoWillShowProperty;
-    this.formObject.waterSupply = data.waterSupply;
-      console.log(this.formObject)
-  }
-  step5Form(data: any) {
 
+  step4Form(data: any) {
+    this.formObject.powerBackup = data.powerBackup;
+    this.formObject.lift = data.lift;
+    this.formObject.parking = data.parking;
+    this.formObject.noOfParkingSlots = data.noOfAvailableParkingSlot;
+    this.formObject.washrooms = data.washrooms;
+    this.formObject.waterStorageFacility = data.waterStorageFacility;
+    this.formObject.security = data.security;
+    this.formObject.wifi = data.wifi;
+    this.formObject.currentPropertyCondition = data.currentPropertyCondition;
+    this.formObject.currentRunningBusiness = data.currentRunningBusiness;
+    this.formObject.addDirectionsTip = data.addDirectionsTip;
+    console.log('✅ Step 4:', this.formObject);
   }
+
+  step5Form(data: any) {
+    // Example: data.uploadedPhotos = [File, File, File...]
+    this.formObject.propertyPhotos1 = data.photos[0] || null;
+    this.formObject.propertyPhotos2 = data.photos[1] || null;
+    this.formObject.propertyPhotos3 = data.photos[2] || null;
+    this.formObject.propertyPhotos4 = data.photos[3] || null;
+    this.formObject.propertyPhotos5 = data.photos[4] || null;
+    this.formObject.propertyPhotos6 = data.photos[5] || null;
+    this.formObject.propertyPhotos7 = data.photos[6] || null;
+    console.log('✅ Step 5:', this.formObject);
+  }
+
   step6Form(data: any) {
-     this.formObject.ownerAvailability = data.ownerAvailability;
-      this.formObject.fromTime = data.fromTime;
-       this.formObject.toTime = data.toTime;
-    console.log(this.formObject)
+    this.formObject.propertyDescription = data.propertyDescription;
+    this.formObject.previousOccupancy = data.previousOccupancy;
+    this.formObject.whoWillShowProperty = data.whoWillShowProperty;
+    this.formObject.propertyPainted = data.propertyPainted;
+    this.formObject.propertyCleaned = data.propertyCleaned;
+    this.formObject.ownerAvailability = data.ownerAvailability;
+    this.formObject.fromTime = data.fromTime;
+    this.formObject.toTime = data.toTime;
+
+    console.log('✅ Step 6:', this.formObject);
     this.submitForm();
   }
 
   submitForm() {
-    const formData = new FormData();
- 
-    // Required form fields
-    formData.append('name', this.formObject.name);
-    formData.append('email', this.formObject.email);
-    formData.append('date', this.formObject.date);
-    formData.append('mobileNo', this.formObject.mobileNo);
-    formData.append('postedBy', this.formObject.postedBy);
-    formData.append('propertyType', this.formObject.propertyType);
-    formData.append('propertyAdsType', this.formObject.propertyAdsType);
+  const formData = new FormData();
 
-    // PropertyDetails
-    formData.append('buyPropertyType', this.formObject.buyPropertyType);
-    formData.append('rentalType', this.formObject.rentalType);
-    formData.append('commercialPropertyType', this.formObject.commercialPropertyType);
-    formData.append('apartmentType', this.formObject.apartmentType);
-    formData.append('bhkType', this.formObject.bhkType);
-    formData.append('floor', this.formObject.floor);
-    formData.append('facing', this.formObject.facing);
-    formData.append('apartmentName', this.formObject.apartmentName);
-    formData.append('totalFloor', this.formObject.totalFloor);
-    formData.append('propertyAge', this.formObject.propertyAge);
-    formData.append('builtUpArea', this.formObject.builtUpArea);
-    formData.append('propertyStatus', this.formObject.propertyStatus);
-    formData.append('availabilityStatus', this.formObject.availabilityStatus);
-    formData.append('purposeStatus', this.formObject.purposeStatus);
+  // 🧾 Basic Info
+  formData.append('name', this.formObject.name || '');
+  formData.append('email', this.formObject.email || '');
+  formData.append('propertyPostedDate', this.formObject.propertyPostedDate || '');
+  formData.append('mobileNo', this.formObject.mobileNo?.toString() || '');
+  formData.append('secondaryNumber', this.formObject.secondaryNumber?.toString() || '');
+  formData.append('postedBy', this.formObject.postedBy || '');
+  formData.append('propertyType', this.formObject.propertyType || 'Commercial');
+  formData.append('propertyAdsType', this.formObject.propertyAdsType || 'Sell');
 
-    // LocalityDetails
-    formData.append('localityCity', this.formObject.localityCity);
-    formData.append('locality', this.formObject.locality);
-    formData.append('landmarkStreet', this.formObject.landmarkStreet);
+  // 🏢 Property Details
+  formData.append('commercialPropertyType', this.formObject.commercialPropertyType || '');
+  formData.append('buildingType', this.formObject.buildingType || '');
+  formData.append('ageOfProperty', this.formObject.ageOfProperty || '');
+  formData.append('floor', this.formObject.floor || '');
+  formData.append('totalFloor', this.formObject.totalFloor || '');
+  formData.append('superBuiltUpArea', this.formObject.superBuiltUpArea || '');
+  formData.append('carpetArea', this.formObject.carpetArea || '');
+  formData.append('furnishing', this.formObject.furnishing || '');
 
-    // RentalDetails
-    formData.append('rentType', this.formObject.rentType);
-    formData.append('expectedRent', this.formObject.expectedRent);
-    formData.append('expectedDeposite', this.formObject.expectedDeposite);
-    formData.append('isRentNegotiable', this.formObject.isRentNegotiable);
-    formData.append('monthlyMaintainence', this.formObject.monthlyMaintainence);
-    formData.append('maintainenceAmount', this.formObject.maintainenceAmount || '');
-    formData.append('availableFrom', this.formObject.availableFrom);
-    formData.append('furnishingStatus', this.formObject.furnishingStatus);
-    formData.append('parking', this.formObject.parking);
-    formData.append('description', this.formObject.description);
-    formData.append('preferredTenants',  this.formObject.preferredTenants)
-    formData.append('availableAmenities',  this.formObject.availableAmenities)
- 
-    // Amenities
-    formData.append('bathroom', this.formObject.bathroom);
-    formData.append('balcony', this.formObject.balcony);
-    formData.append('waterSupply', this.formObject.waterSupply);
-    formData.append('gym', this.formObject.gym);
-    formData.append('nonvegAllowed', this.formObject.nonvegAllowed);
-    formData.append('gateSecurity', this.formObject.gateSecurity);
-    formData.append('whoWillShowProperty', this.formObject.whoWillShowProperty);
-    formData.append('currentPropertyCondition', this.formObject.currentPropertyCondition);
-    formData.append('alternateNumber', this.formObject.alternateNumber || '');
-
-    // Schedule
-    formData.append('ownerAvailability', this.formObject.ownerAvailability);
-    formData.append('fromTime', this.formObject.fromTime);
-    formData.append('toTime', this.formObject.toTime);
-
-    // Optional: Gallery image files
-
-    formData.append('propertyPhotos1', this.propertyPhotos1);
-    formData.append('propertyPhotos2', this.propertyPhotos2);
-    formData.append('propertyPhotos3', this.propertyPhotos3);
-    formData.append('propertyPhotos4', this.propertyPhotos4);
-    formData.append('propertyPhotos5', this.propertyPhotos5);
-    formData.append('propertyPhotos6', this.propertyPhotos6);
-    formData.append('propertyPhotos7', this.propertyPhotos7);
-  
-
-/*     this.http.post('http://localhost:8082/api/post-ads', formData).subscribe({
-      next: (res) => console.log('Success:', res),
-      error: (err) => console.error('Error:', err),
-    }); */
-    this.postPropertiesService.postAds(formData).subscribe({
-        next: (response) => {
-          // Handle success (HTTP 200)
-          console.log('Post successful:', response);
-          this.router.navigate(['/']); // Redirect to home
-        },
-        error: (error) => {
-          // Handle error
-          console.error('Post failed:', error);
-        }
-});
+  // Handle List: otherFeatures
+  if (Array.isArray(this.formObject.otherFeatures)) {
+    this.formObject.otherFeatures.forEach((feature: string) => formData.append('otherFeatures', feature));
+  } else {
+    formData.append('otherFeatures', '');
   }
+
+  // 📍 Locality Details
+  formData.append('city', this.formObject.city || '');
+  formData.append('locality', this.formObject.locality || '');
+  formData.append('street', this.formObject.street || '');
+  formData.append('landmark', this.formObject.landmark || '');
+
+  // 💰 Selling Details
+  formData.append('expectedPrice', this.formObject.expectedPrice?.toString() || '');
+  formData.append('ownershipType', this.formObject.ownershipType || '');
+  formData.append('priceNegotiable', this.formObject.priceNegotiable?.toString() || 'false');
+  formData.append('availableFrom', this.formObject.availableFrom || '');
+
+  // Handle List: idealFor
+  if (Array.isArray(this.formObject.idealFor)) {
+    this.formObject.idealFor.forEach((v: string) => formData.append('idealFor', v));
+  } else {
+    formData.append('idealFor', '');
+  }
+
+  // 🧱 Amenities
+  formData.append('powerBackup', this.formObject.powerBackup || '');
+  formData.append('lift', this.formObject.lift || '');
+  formData.append('parking', this.formObject.parking || '');
+  formData.append('noOfParkingSlots', this.formObject.noOfParkingSlots || '');
+  formData.append('washrooms', this.formObject.washrooms || '');
+  formData.append('waterStorageFacility', this.formObject.waterStorageFacility || '');
+  formData.append('security', this.formObject.security || '');
+  formData.append('wifi', this.formObject.wifi || '');
+  formData.append('currentPropertyCondition', this.formObject.currentPropertyCondition || '');
+  formData.append('currentRunningBusiness', this.formObject.currentRunningBusiness || '');
+  formData.append('addDirectionsTip', this.formObject.addDirectionsTip || '');
+
+  // 🗓 Schedule / Visit Details
+  formData.append('propertyDescription', this.formObject.propertyDescription || '');
+  formData.append('previousOccupancy', this.formObject.previousOccupancy || '');
+  formData.append('whoWillShowProperty', this.formObject.whoWillShowProperty || '');
+  formData.append('propertyPainted', this.formObject.propertyPainted || '');
+  formData.append('propertyCleaned', this.formObject.propertyCleaned || '');
+  formData.append('ownerAvailability', this.formObject.ownerAvailability || '');
+  formData.append('fromTime', this.formObject.fromTime || '');
+  formData.append('toTime', this.formObject.toTime || '');
+
+  // 📸 Gallery Images (Optional)
+  const photoFields = [
+    'propertyPhotos1',
+    'propertyPhotos2',
+    'propertyPhotos3',
+    'propertyPhotos4',
+    'propertyPhotos5',
+    'propertyPhotos6',
+    'propertyPhotos7',
+  ];
+  photoFields.forEach((field) => {
+    const file = (this as any)[field];
+    if (file) {
+      formData.append(field, file);
+    }
+  });
+
+  // 📤 Submit to API
+  this.postPropertiesService.postcommercialSellAds(formData).subscribe({
+    next: (response) => {
+      console.log('✅ Post successful:', response);
+      this.router.navigate(['/']); // redirect to home or dashboard
+    },
+    error: (error) => {
+      console.error('❌ Post failed:', error);
+    },
+  });
+}
+
 }
 
 //monthlyMaintainence
 //landmarkStreet
-

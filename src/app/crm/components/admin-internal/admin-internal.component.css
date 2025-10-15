@@ -1,0 +1,15 @@
+.table-hover tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.btn {
+  border-radius: 6px;
+}
+
+input.form-control, select.form-select, textarea.form-control {
+  border-radius: 6px;
+}

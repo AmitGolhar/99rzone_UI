@@ -1,0 +1,122 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="text-primary">🤖 Custom / Smart Automation Tasks</h4>
+  <button class="btn btn-success" (click)="openAddModal()">➕ Add Task</button>
+</div>
+
+<div class="mb-3">
+  <input type="text" class="form-control" placeholder="Search by type, trigger, or automation..."
+         [(ngModel)]="searchText">
+</div>
+
+<table class="table table-hover align-middle">
+  <thead class="table-primary">
+    <tr>
+      <th>#</th>
+      <th>Task Type</th>
+      <th>Trigger Source</th>
+      <th>Automation Type</th>
+      <th>Assigned To</th>
+      <th>Status</th>
+      <th>Due Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of smartTasks | filter: searchText; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ task.taskType }}</td>
+      <td>{{ task.triggerSource }}</td>
+      <td>{{ task.automationType }}</td>
+      <td>{{ task.assignedTo }}</td>
+      <td>
+        <span class="badge"
+              [ngClass]="{
+                'bg-warning': task.status === 'Pending',
+                'bg-info': task.status === 'Triggered',
+                'bg-success': task.status === 'Executed',
+                'bg-secondary': task.status === 'Resolved'
+              }">
+          {{ task.status }}
+        </span>
+      </td>
+      <td>{{ task.dueDate | date:'mediumDate' }}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(task)">✏️</button>
+        <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.id)">🗑️</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="smartModal" tabindex="-1" aria-labelledby="smartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="smartModalLabel">
+          {{ isEditing ? '✏️ Edit Task' : '➕ Add New Smart Task' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Task Type</label>
+              <select class="form-select" [(ngModel)]="selectedTask.taskType" name="taskType" required>
+                <option value="">Select...</option>
+                <option *ngFor="let type of taskTypes">{{ type }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Trigger Source</label>
+              <select class="form-select" [(ngModel)]="selectedTask.triggerSource" name="triggerSource" required>
+                <option value="">Select...</option>
+                <option *ngFor="let source of triggerSources">{{ source }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Automation Type</label>
+              <select class="form-select" [(ngModel)]="selectedTask.automationType" name="automationType" required>
+                <option value="">Select...</option>
+                <option *ngFor="let auto of automationTypes">{{ auto }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Assigned To</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedTask.assignedTo" name="assignedTo">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" [(ngModel)]="selectedTask.status" name="status">
+                <option *ngFor="let s of statuses">{{ s }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Due Date</label>
+              <input type="date" class="form-control" [(ngModel)]="selectedTask.dueDate" name="dueDate" required>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Notes</label>
+              <textarea class="form-control" rows="2" [(ngModel)]="selectedTask.notes" name="notes"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" (click)="saveTask()">
+          {{ isEditing ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

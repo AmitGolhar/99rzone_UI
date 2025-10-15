@@ -36,24 +36,17 @@ idealForOptions: string[] = [
  idealFor!:[];
 
   formData = {
+    commercialPropertyType: '',
     buildingType: '',
-    bhkType: '',
+    ageOfProperty: '',
     floor: '',
     totalFloor: '',
-    propertyAge: '',
-    facing: '',
     superBuiltUpArea: '',
-    apartmentName: '',
-    propertyType: '',
-    propertyStatus: '',
-    rentalType: '',
-    availabilityStatus: '',
-    purposeStatus: '',
-    commercialPropertyType: '',
-    buyPropertyType:'',
-    otherFeatures:[] as string[],
-    idealFor:[] as string[]
+    furnishing: '',
+    otherFeatures: [] as string[],
+
   };
+
 
   floors: number[] = Array.from({ length: 40 }, (_, i) => i + 1);
 
@@ -87,41 +80,38 @@ idealForOptions: string[] = [
     landmark: '',
   };
 
+ 
+ 
   rentalData: {
-    rentType: string;
+
     expectedRent: string;
-    expectedDeposite: string;
     isRentNegotiable: boolean;
-    isMaintenanceExtra:boolean;
+    expectedDeposite: string;
+    monthlyMaintenance: string;
+    deposit: string;
     leaseDuration: string;
-    maintainenceAmount: string;
+    lockinPeriod: string;
+    depositNegotiable: boolean;
     availableFrom: string;
-    preferredTenants: string[]; // <-- explicitly typed as an array of strings
-    furnishingStatus: string;
-    parking: string;
-    description: string;
-    deposit:string;
-    lockinPeriod:string;
-    depositNegotiable:boolean;
-   
-  } = {
-    rentType: '',
-    expectedRent: '',
-    expectedDeposite: '',
-    isRentNegotiable: false,
-    isMaintenanceExtra:false,
-    leaseDuration: '',
-    maintainenceAmount: '',
-    availableFrom: '',
-    preferredTenants: [], // <-- initialized as empty array
-    furnishingStatus: '',
-    parking: '',
-    description: '',
-    deposit:'',
-    lockinPeriod:'',
-    depositNegotiable:false
+    idealFor: string[];
+    furnishingStatus:string
+    isMaintenanceExtra:string
     
-  };
+  } = {
+
+      expectedRent: '',
+      expectedDeposite: '',
+      isRentNegotiable: false,
+       monthlyMaintenance: '',
+      leaseDuration: '',
+      availableFrom: '',
+      deposit: '',
+      lockinPeriod: '',
+      depositNegotiable: false,
+      idealFor: [] as string[],
+      furnishingStatus:'',
+      isMaintenanceExtra:''
+    };
 
   tenantOptions = [
     { label: 'Anyone', value: 'Anyone' },
@@ -132,18 +122,20 @@ idealForOptions: string[] = [
   ];
 
   amenities = {
-    lift: '',
-    parking: '',
-    powerBackup: '',
-    waterStorageFacility: '',
-    currentRunningBusiness: '',
-    security: '',
-    washrooms: '',
-    currentPropertyCondition: '',
-    noOfAvailableParkingSlot: '',
-    availableAmenities: [] as string[], //
+     powerBackup:'',
+    lift:'',
+    parking:'',
+    washrooms:'',
+    noOfAvailableParkingSlot:'',
+    waterStorageFacility:'',
+    security:'',
+    currentPropertyCondition:'',
+    currentRunningBusiness:'',
+    addDirectionsTip:'',
+ 
   };
  
+
 
   amenitiesList: string[] = [
     'Lift',
@@ -171,13 +163,19 @@ idealForOptions: string[] = [
     ownerAvailability: '',
     fromTime: '',
     toTime: '',
-  previousOccupancy: '',
-  whoShowProperty: '',
-  propertyPainted: '',
-  propertyCleaned: '',
-  propertyDescription: ''
+    previousOccupancy: '',
+    whoShowProperty: '',
+    propertyPainted: '',
+    propertyCleaned: '',
+    propertyDescription: ''
   };
+
+ 
   postPropertyParentForm: any;
+
+ 
+ 
+   
 
   formObject: any = {
     name: '',
@@ -187,47 +185,57 @@ idealForOptions: string[] = [
     postedBy: '',
     propertyType: '',
     propertyAdsType: '',
-    buyPropertyType: '',
-    rentalType: '',
+
+ 
     commercialPropertyType: '',
-    apartmentType: '',
-    bhkType: '',
+    buildingType:'',
+    ageOfProperty:'',
     floor: '',
-    facing: '',
-    apartmentName: ' ',
     totalFloor: '',
-    propertyAge: '',
-    builtUpArea: '',
-    propertyStatus: '',
-    availabilityStatus: '',
-    purposeStatus: '',
+    superBuiltUpArea:'',
+    furnishing:'',
+    otherFeatures:[] as string[],
+ 
     localityCity: '',
     locality: '',
-    landmarkStreet: '',
-    rentType: '',
+    landmark: '',
+
     expectedRent: '',
-    expectedDeposite: '',
     isRentNegotiable: '',
-    monthlyMaintainence: '',
-    maintainenceAmount: '',
-    availableFrom: '',
-    furnishingStatus: '',
-    preferredTenants: [],
-    parking: '',
-    description: '',
-    bathroom: '',
-    balcony: '',
-    waterSupply: '',
-    gym: '',
-    nonvegAllowed: '',
-    gateSecurity: '',
-    whoWillShowProperty: '',
-    currentPropertyCondition: '',
-    alternateNumber: '',
-    availableAmenities: [],
-    ownerAvailability: '',
-    fromTime: '',
-    toTime: '',
+    expectedDeposite: '',
+    monthlyMaintenance:'',
+    deposit:'',
+    leaseDuration:'',
+    lockinPeriod:'',
+    depositNegotiable:'',
+    availableFrom:'',
+    idealFor: [] as string[],
+    furnishingStatus:'',
+    isMaintenanceExtra:'',
+
+
+    powerBackup:'',
+    lift:'',
+    parking:'',
+    washrooms:'',
+    noOfAvailableParkingSlot:'',
+    waterStorageFacility:'',
+    security:'',
+    currentPropertyCondition:'',
+    currentRunningBusiness:'',
+    addDirectionsTip:'',
+    
+
+    propertyDescription:'',
+    previousOccupancy:'',
+    whoShowProperty:'',
+    propertyPainted:'',
+    propertyCleaned:'',
+    ownerAvailability:'',
+    fromTime:'',
+    toTime:''
+
+  
   };
 
   propertyForm: any;
@@ -245,7 +253,7 @@ idealForOptions: string[] = [
   propertyPhotos6: any;
   propertyPhotos7: any;
 
-    photoCount = 0;
+  photoCount = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -288,16 +296,16 @@ isFeatureSelected(feature: string): boolean {
 }
 
     ideltoggleFeature(idel: string): void {
-    const index = this.formData.idealFor.indexOf(idel);
+    const index = this.formData.otherFeatures.indexOf(idel);
     if (index === -1) {
-    this.formData.idealFor.push(idel);
+    this.formData.otherFeatures.push(idel);
     } else {
-      this.formData.idealFor.splice(index, 1);
+      this.formData.otherFeatures.splice(index, 1);
     }
   }
 
   isideleSelected(idel: string): boolean {
-    return this.formData.idealFor.includes(idel);
+    return this.formData.otherFeatures.includes(idel);
   }
 
   ngOnInit() {
@@ -309,11 +317,11 @@ isFeatureSelected(feature: string): boolean {
       this.formObject= {
         name:  this.postPropertyParentForm.name,
         email: this.postPropertyParentForm.email,
-        date: formattedDate,
+         propertyPostedDate: formattedDate,
         mobileNo: this.postPropertyParentForm.mobileNo,
         postedBy: this.postPropertyParentForm.postedBy,
-        propertyType: this.postPropertyParentForm.propertyType || 'Residential',
-        propertyAdsType: this.postPropertyParentForm.propertyAdsType,
+        propertyType: this.postPropertyParentForm.propertyType || 'Commercial',
+        propertyAdsType: this.postPropertyParentForm.propertyAdsType || 'Rent',
       
       }
 console.log(this.formObject)
@@ -327,25 +335,15 @@ isEndTimeValid(): boolean {
   if (!this.scheduleData.fromTime || !this.scheduleData.toTime) return true;
   return this.scheduleData.toTime > this.scheduleData.fromTime;
 }
-  onAmenityChange(event: any) {
-    const amenity = event.target.value;
-    if (event.target.checked) {
-      this.amenities.availableAmenities.push(amenity);
-    } else {
-      const index = this.amenities.availableAmenities.indexOf(amenity);
-      if (index > -1) {
-        this.amenities.availableAmenities.splice(index, 1);
-      }
-    }
-  }
+ 
 
   onTenantChange(event: any) {
     const tenant: any = event.target.value;
     if (event.target.checked) {
-      this.rentalData.preferredTenants.push(tenant);
+      this.rentalData.idealFor.push(tenant);
     } else {
-      this.rentalData.preferredTenants =
-        this.rentalData.preferredTenants.filter((t) => t !== tenant);
+      this.rentalData.idealFor =
+        this.rentalData.idealFor.filter((t) => t !== tenant);
     }
   }
 
@@ -425,20 +423,14 @@ isEndTimeValid(): boolean {
   }
   step1Form(data: any) {
   
-    this.formObject.apartmentName = data.apartmentName;
-    this.formObject.apartmentType = data.apartmentType;
-    this.formObject.availabilityStatus = data.availabilityStatus;
-    this.formObject.bhkType = data.bhkType;
-    this.formObject.builtUpArea = data.builtUpArea;
     this.formObject.commercialPropertyType = data.commercialPropertyType;
-    this.formObject.buyPropertyType = data.buyPropertyType;
-    this.formObject.facing = data.facing;
+    this.formObject.buildingType = data.buildingType;
+    this.formObject.ageOfProperty = data.ageOfProperty;
     this.formObject.floor = data.floor;
-    this.formObject.propertyAge = data.propertyAge;
-    this.formObject.propertyStatus = data.propertyStatus;
-    this.formObject.purposeStatus = data.purposeStatus; // going wrong value while posting
-    this.formObject.rentalType = data.rentalType;
     this.formObject.totalFloor = data.totalFloor;
+    this.formObject.superBuiltUpArea = data.superBuiltUpArea;
+    this.formObject.furnishing = data.furnishing;
+    this.formObject.otherFeatures = data.otherFeatures;
       console.log(this.formObject)
   }
 
@@ -451,40 +443,54 @@ isEndTimeValid(): boolean {
 
   }
   step3Form(data: any) {
-    this.formObject.availableFrom = data.availableFrom;
-    this.formObject.description = data.description;
-    this.formObject.expectedDeposite = data.expectedDeposite;
     this.formObject.expectedRent = data.expectedRent;
-    this.formObject.furnishingStatus = data.furnishingStatus;
-    this.formObject.maintainenceAmount = data.maintainenceAmount;
-    this.formObject.maintenanceType = data.maintenanceType;
-    this.formObject.parking = data.parking;
-    this.formObject.preferredTenants = data.preferredTenants;
     this.formObject.isRentNegotiable = data.isRentNegotiable;
-    this.formObject.rentType = data.rentType;
+    this.formObject.expectedDeposite = data.expectedDeposite;
+    this.formObject.monthlyMaintenance = data.monthlyMaintenance;
+    this.formObject.deposit = data.deposit;
+    this.formObject.leaseDuration = data.leaseDuration;
+    this.formObject.lockinPeriod = data.lockinPeriod;
+    this.formObject.depositNegotiable = data.depositNegotiable;
+    this.formObject.availableFrom = data.availableFrom;
+    this.formObject.idealFor = data.idealFor;
+    this.formObject.furnishingStatus = data.furnishingStatus;
+    this.formObject.isMaintenanceExtra = data.isMaintenanceExtra;
+
       console.log(this.formObject)
   }
   step4Form(data: any) {
-    this.formObject.balcony = data.balcony;
-    this.formObject.bathroom = data.bathroom;
-    this.formObject.gateSecurity = data.gateSecurity;
-    this.formObject.gym = data.gym;
-    this.formObject.nonvegAllowed = data.nonvegAllowed;
+    this.formObject.powerBackup = data.powerBackup;
+    this.formObject.lift = data.lift;
+    this.formObject.parking = data.parking;
+    this.formObject.washrooms = data.washrooms;
+    this.formObject.noOfAvailableParkingSlot = data.noOfAvailableParkingSlot;
+    this.formObject.waterStorageFacility = data.waterStorageFacility;
+    this.formObject.security = data.security;
     this.formObject.currentPropertyCondition = data.currentPropertyCondition;
-    this.formObject.alternateNumber = data.alternateNumber;
-    this.formObject.availableAmenities = data.availableAmenities;
-    this.formObject.whoWillShowProperty = data.whoWillShowProperty;
-    this.formObject.waterSupply = data.waterSupply;
+    this.formObject.currentRunningBusiness = data.currentRunningBusiness;
+    this.formObject.addDirectionsTip = data.addDirectionsTip;
       console.log(this.formObject)
+
+
   }
   step5Form(data: any) {
 
   }
   step6Form(data: any) {
-     this.formObject.ownerAvailability = data.ownerAvailability;
-      this.formObject.fromTime = data.fromTime;
-       this.formObject.toTime = data.toTime;
+
+    this.formObject.propertyDescription = data.propertyDescription;
+    this.formObject.previousOccupancy = data.previousOccupancy;
+    this.formObject.whoShowProperty = data.whoShowProperty;
+    this.formObject.propertyPainted = data.propertyPainted;
+    this.formObject.propertyCleaned = data.propertyCleaned
+    this.formObject.ownerAvailability = data.ownerAvailability;
+    this.formObject.fromTime = data.fromTime;
+    this.formObject.toTime = data.toTime;
+
+
+       
     console.log(this.formObject)
+
     this.submitForm();
   }
 
@@ -494,62 +500,73 @@ isEndTimeValid(): boolean {
     // Required form fields
     formData.append('name', this.formObject.name);
     formData.append('email', this.formObject.email);
-    formData.append('date', this.formObject.date);
+    formData.append('propertyPostedDate', this.formObject.propertyPostedDate);
     formData.append('mobileNo', this.formObject.mobileNo);
     formData.append('postedBy', this.formObject.postedBy);
     formData.append('propertyType', this.formObject.propertyType);
     formData.append('propertyAdsType', this.formObject.propertyAdsType);
 
+
     // PropertyDetails
-    formData.append('buyPropertyType', this.formObject.buyPropertyType);
-    formData.append('rentalType', this.formObject.rentalType);
     formData.append('commercialPropertyType', this.formObject.commercialPropertyType);
-    formData.append('apartmentType', this.formObject.apartmentType);
-    formData.append('bhkType', this.formObject.bhkType);
+    formData.append('buildingType', this.formObject.buildingType);
+    formData.append('ageOfProperty', this.formObject.ageOfProperty);
     formData.append('floor', this.formObject.floor);
-    formData.append('facing', this.formObject.facing);
-    formData.append('apartmentName', this.formObject.apartmentName);
     formData.append('totalFloor', this.formObject.totalFloor);
-    formData.append('propertyAge', this.formObject.propertyAge);
-    formData.append('builtUpArea', this.formObject.builtUpArea);
-    formData.append('propertyStatus', this.formObject.propertyStatus);
-    formData.append('availabilityStatus', this.formObject.availabilityStatus);
-    formData.append('purposeStatus', this.formObject.purposeStatus);
+    formData.append('superBuiltUpArea', this.formObject.superBuiltUpArea);
+    formData.append('furnishing', this.formObject.furnishing);
+    formData.append('otherFeatures', this.formObject.otherFeatures);
+ 
+ 
 
     // LocalityDetails
     formData.append('localityCity', this.formObject.localityCity);
     formData.append('locality', this.formObject.locality);
-    formData.append('landmarkStreet', this.formObject.landmarkStreet);
+    formData.append('landmark', this.formObject.landmark);
 
-    // RentalDetails
-    formData.append('rentType', this.formObject.rentType);
-    formData.append('expectedRent', this.formObject.expectedRent);
-    formData.append('expectedDeposite', this.formObject.expectedDeposite);
-    formData.append('isRentNegotiable', this.formObject.isRentNegotiable);
-    formData.append('monthlyMaintainence', this.formObject.monthlyMaintainence);
-    formData.append('maintainenceAmount', this.formObject.maintainenceAmount || '');
-    formData.append('availableFrom', this.formObject.availableFrom);
-    formData.append('furnishingStatus', this.formObject.furnishingStatus);
-    formData.append('parking', this.formObject.parking);
-    formData.append('description', this.formObject.description);
-    formData.append('preferredTenants',  this.formObject.preferredTenants)
-    formData.append('availableAmenities',  this.formObject.availableAmenities)
  
+    // RentalDetails
+    formData.append('expectedRent', this.formObject.expectedRent);
+    formData.append('isRentNegotiable', this.formObject.isRentNegotiable);
+    formData.append('expectedDeposite', this.formObject.expectedDeposite);
+    formData.append('monthlyMaintenance', this.formObject.monthlyMaintenance);
+    formData.append('deposit', this.formObject.deposit);
+    formData.append('leaseDuration', this.formObject.leaseDuration || '');
+    formData.append('lockinPeriod', this.formObject.lockinPeriod);
+    formData.append('depositNegotiable', this.formObject.depositNegotiable);
+    formData.append('availableFrom', this.formObject.availableFrom);
+    formData.append('idealFor', this.formObject.idealFor);
+    formData.append('furnishingStatus',  this.formObject.furnishingStatus)
+    formData.append('isMaintenanceExtra',  this.formObject.isMaintenanceExtra)
+ 
+
+  
+
     // Amenities
-    formData.append('bathroom', this.formObject.bathroom);
-    formData.append('balcony', this.formObject.balcony);
-    formData.append('waterSupply', this.formObject.waterSupply);
-    formData.append('gym', this.formObject.gym);
-    formData.append('nonvegAllowed', this.formObject.nonvegAllowed);
-    formData.append('gateSecurity', this.formObject.gateSecurity);
-    formData.append('whoWillShowProperty', this.formObject.whoWillShowProperty);
+    formData.append('powerBackup', this.formObject.powerBackup);
+    formData.append('lift', this.formObject.lift);
+    formData.append('parking', this.formObject.parking);
+    formData.append('washrooms', this.formObject.washrooms);
+    formData.append('noOfAvailableParkingSlot', this.formObject.noOfAvailableParkingSlot);
+    formData.append('waterStorageFacility', this.formObject.waterStorageFacility);
+    formData.append('security', this.formObject.security);
     formData.append('currentPropertyCondition', this.formObject.currentPropertyCondition);
-    formData.append('alternateNumber', this.formObject.alternateNumber || '');
+    formData.append('currentRunningBusiness', this.formObject.currentRunningBusiness || '');
+    formData.append('addDirectionsTip', this.formObject.addDirectionsTip || '');
+
+
 
     // Schedule
+    formData.append('propertyDescription', this.formObject.propertyDescription);
+    formData.append('previousOccupancy', this.formObject.previousOccupancy);
+    formData.append('whoShowProperty', this.formObject.whoShowProperty);
+    formData.append('propertyPainted', this.formObject.propertyPainted);
+    formData.append('propertyCleaned', this.formObject.propertyCleaned);
     formData.append('ownerAvailability', this.formObject.ownerAvailability);
     formData.append('fromTime', this.formObject.fromTime);
     formData.append('toTime', this.formObject.toTime);
+
+ 
 
     // Optional: Gallery image files
 
@@ -566,7 +583,7 @@ isEndTimeValid(): boolean {
       next: (res) => console.log('Success:', res),
       error: (err) => console.error('Error:', err),
     }); */
-    this.postPropertiesService.postAds(formData).subscribe({
+    this.postPropertiesService.postcommercialAds(formData).subscribe({
         next: (response) => {
           // Handle success (HTTP 200)
           console.log('Post successful:', response);

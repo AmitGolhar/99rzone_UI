@@ -35,7 +35,6 @@
                 <select id="commercialPropertyType" class="form-select" [(ngModel)]="formData.commercialPropertyType"
                   name="commercialPropertyType" required #commercialRef="ngModel">
                   <option value="">Select</option>
-                  <option value="NA">NA</option>
                   <option value="Full House">Office</option>
                   <option value="PG/Hostel">Shop</option>
                   <option value="Flatmates">ShowRoom</option>
@@ -101,18 +100,18 @@
           <div class="col-md-6">
               <!-- Property Age -->
             <div class="mb-3">
-              <label for="propertyAge" class="form-label">
+              <label for="ageOfProperty" class="form-label">
                 Property Age <span class="text-danger">*</span>
               </label>
-              <select id="propertyAge" class="form-select" [(ngModel)]="formData.propertyAge" name="propertyAge" required
-                #propertyAgeRef="ngModel">
+              <select id="ageOfProperty" class="form-select" [(ngModel)]="formData.ageOfProperty" name="ageOfProperty" required
+                #ageOfPropertyRef="ngModel">
                 <option value="">Select</option>
                 <option value="0-1 year">0-1 year</option>
                 <option value="1-5 years">1-5 years</option>
                 <option value="5-10 years">5-10 years</option>
                 <option value="10+ years">10+ years</option>
               </select>
-              <div class="text-danger" *ngIf="propertyAgeRef.invalid && (propertyAgeRef.dirty || propertyAgeRef.touched)">
+              <div class="text-danger" *ngIf="ageOfPropertyRef.invalid && (ageOfPropertyRef.dirty || ageOfPropertyRef.touched)">
                 This field is required</div>
             </div>
     
@@ -263,10 +262,10 @@
 
       <!-- Monthly Maintenance -->
       <div class="col-md-6">
-        <label for="expectedDeposite" class="form-label">Monthly Maintenance <span class="text-danger">*</span></label>
-        <input type="number" id="expectedDeposite" class="form-control" [(ngModel)]="rentalData.expectedDeposite"
-          name="expectedDeposite" required #expectedDepositeRef="ngModel">
-        <div *ngIf="expectedDepositeRef.invalid && (expectedDepositeRef.dirty || expectedDepositeRef.touched)"
+        <label for="monthlyMaintenance" class="form-label">Monthly Maintenance <span class="text-danger">*</span></label>
+        <input type="number" id="monthlyMaintenance" class="form-control" [(ngModel)]="rentalData.monthlyMaintenance"
+          name="monthlyMaintenance" required #monthlyMaintenanceRef="ngModel">
+        <div *ngIf="monthlyMaintenanceRef.invalid && (monthlyMaintenanceRef.dirty || monthlyMaintenanceRef.touched)"
           class="text-danger mt-1">
           This field is required
         </div>
@@ -342,7 +341,7 @@
       <!-- Deposit * -->
    
       <div class="col-md-6" >
-        <label for="deposit" class="form-label">Deposit * <span class="text-danger">*</span></label>
+        <label for="deposit" class="form-label">Expected Deposit * <span class="text-danger">*</span></label>
         <input type="number" id="deposit" class="form-control"
           [(ngModel)]="rentalData.deposit" name="deposit" required
           #depositRef="ngModel">
@@ -411,7 +410,7 @@
 
 <!-- Step 4: Amenities -->
 <div *ngIf="currentStep === 4">
-<form (ngSubmit)="step4Form(amenitiesForm)" #amenitiesForm="ngForm" novalidate>
+<form (ngSubmit)="step4Form(amenitiesForm)" #amenitiesForm="ngForm" >
   <p class="fw-bold mb-3">
     Amenities <span class="text-danger">*</span>
   </p>
@@ -438,7 +437,6 @@
         <label for="lift" class="form-label fw-bold">Lift <span class="text-danger">*</span></label>
         <select id="lift" class="form-select" [(ngModel)]="amenities.lift" name="lift" required #liftRef="ngModel">
           <option value="">Select</option>
-          <option value="None">None</option>
           <option value="Personal">Personal</option>
           <option value="Common">Common</option>
         </select>
@@ -452,7 +450,6 @@
         <label for="parking" class="form-label fw-bold">Parking <span class="text-danger">*</span></label>
         <select id="parking" class="form-select" [(ngModel)]="amenities.parking" name="parking" required #parkingRef="ngModel">
           <option value="">Select</option>
-          <option value="None">None</option>
           <option value="Public">Public</option>
           <option value="Reserved">Reserved</option>
         </select>
@@ -552,7 +549,6 @@
         <label for="currentRunningBusiness" class="form-label fw-bold">What business is currently running? <span class="text-danger">*</span></label>
         <select id="currentRunningBusiness" class="form-select" [(ngModel)]="amenities.currentRunningBusiness" name="currentRunningBusiness" required #businessRef="ngModel">
           <option value="">Select</option>
-          <option value="NA">NA</option>
           <option value="Cafe">Cafe</option>
           <option value="Restaurant">Restaurant</option>
           <option value="Salon/Spa">Salon/Spa</option>
@@ -569,13 +565,8 @@
   <!-- Navigation Buttons -->
   <div class="d-flex justify-content-between mt-4">
     <button type="button" class="btn btn-outline-secondary" (click)="prevStep()">Previous</button>
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="amenitiesForm.invalid"
-    >
-      Next
-    </button>
+    <button type="button" [disabled]="amenitiesForm.invalid"  (click)="step4Form(amenities)" class="btn btn-primary" (click)="nextStep()">Next</button>
+
   </div>
 </form>
 
@@ -586,7 +577,7 @@
 
       <!-- Gallery Step -->
       <div *ngIf="currentStep === 5">
-        <form (ngSubmit)="step5Form(galleryForm)" #galleryForm="ngForm" novalidate>
+        <form (ngSubmit)="step5Form(galleryForm)" #galleryForm="ngForm" >
       
           <p class="fw-bold fs-5 mb-3">Upload your property’s gallery images…</p>
       
@@ -637,6 +628,7 @@
             <button type="submit" class="btn btn-primary" [disabled]="photoCount < 3" (click)="nextStep()">
               Next
             </button>
+            
           </div>
         </form>
       
@@ -647,7 +639,7 @@
 
   <!-- Schedule Step -->
 <div *ngIf="currentStep === 6">
- <form (ngSubmit)="step6Form(scheduleForm)" #scheduleForm="ngForm" novalidate>
+ <form (ngSubmit)="step6Form(scheduleForm)" #scheduleForm="ngForm" >
 
   <h4 class="fw-bold mb-3">Schedule</h4>
   <p class="text-muted">Schedule property visits here</p>

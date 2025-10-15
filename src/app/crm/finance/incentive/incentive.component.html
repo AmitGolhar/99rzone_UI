@@ -1,0 +1,47 @@
+<div class="card p-3">
+  <div class="d-flex justify-content-between">
+    <h5>🏆 Incentive Module</h5>
+    <button class="btn btn-sm btn-success" (click)="openAddModal('incentiveModal')">➕ Add Incentive</button>
+  </div>
+
+  <table class="table mt-3">
+    <thead><tr><th>#</th><th>Employee</th><th>Deal</th><th>Amount</th><th>Comm %</th><th>Payout</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr *ngFor="let it of incentives; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ it.employee }}</td>
+        <td>{{ it.dealId }}</td>
+        <td>₹{{ it.amount | number }}</td>
+        <td>{{ it.commissionPct }}%</td>
+        <td>₹{{ it.computedPayout | number }}</td>
+        <td>{{ it.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="incentiveModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">➕ Add Incentive</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-6"><input class="form-control" placeholder="Employee" [(ngModel)]="model.employee"></div>
+          <div class="col-6"><input class="form-control" placeholder="Deal ID" [(ngModel)]="model.dealId"></div>
+          <div class="col-6"><input type="number" class="form-control" placeholder="Amount" [(ngModel)]="model.amount"></div>
+          <div class="col-6"><input type="number" class="form-control" placeholder="Commission %" [(ngModel)]="model.commissionPct"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" (click)="add()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

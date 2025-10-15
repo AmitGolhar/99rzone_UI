@@ -103,7 +103,7 @@
       </div>
 
     <!-- Submit [disabled]="!postPropertyForm.form.valid" [disabled]="postPropertyForm.invalid" -->
-    <button type="submit" class="btn btn-success mt-3"   >
+    <button type="submit" class="btn btn-success mt-3"  [disabled]="postPropertyForm.invalid"  >
       Post Property
     </button>
   </form>

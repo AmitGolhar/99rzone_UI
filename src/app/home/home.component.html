@@ -10,19 +10,23 @@
   </div>
 
   <!-- 🧭 Property Type Tabs -->
-  <ul class="nav nav-pills justify-content-center shadow-sm rounded-pill bg-light p-2 mb-4" id="propertyTab" role="tablist">
+  <ul class="nav nav-pills justify-content-center shadow-sm rounded-pill bg-light p-2 mb-4" id="propertyTab"
+    role="tablist">
     <li class="nav-item" role="presentation" (click)="onTabClick('Buy')">
-      <button class="nav-link px-4 rounded-pill" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">
+      <button class="nav-link px-4 rounded-pill" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button"
+        role="tab">
         🏡 Buy
       </button>
     </li>
     <li class="nav-item" role="presentation" (click)="onTabClick('Rent')">
-      <button class="nav-link active px-4 rounded-pill" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">
+      <button class="nav-link active px-4 rounded-pill" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent"
+        type="button" role="tab">
         🏠 Rent
       </button>
     </li>
     <li class="nav-item" role="presentation" (click)="onTabClick('Commercial')">
-      <button class="nav-link px-4 rounded-pill" id="commercial-tab" data-bs-toggle="tab" data-bs-target="#commercial" type="button" role="tab">
+      <button class="nav-link px-4 rounded-pill" id="commercial-tab" data-bs-toggle="tab" data-bs-target="#commercial"
+        type="button" role="tab">
         🏢 Commercial
       </button>
     </li>
@@ -37,7 +41,8 @@
         <div class="col-md-4">
           <label class="form-label fw-semibold">Looking For</label>
           <div class="row">
-            <div class="col-6" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
+            <div class="col-6"
+              *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="buyPropertyType" [id]="'buy-' + i" [value]="type">
                 <label class="form-check-label small text-muted" [for]="'buy-' + i">{{ type }}</label>
@@ -99,9 +104,11 @@
         <div class="col-md-12">
           <label class="form-label fw-semibold">Looking For</label>
           <div class="row">
-            <div class="col-6 col-lg-4 mb-2" *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
+            <div class="col-6 col-lg-4 mb-2"
+              *ngFor="let type of ['Flat', 'Villa', 'Penthouse', 'Studio Apartment', 'Duplex Apartment', 'Serviced Apartment', 'Row House', 'Co-living/PG']; let i = index">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="apartmentType" [id]="'rent-' + i" [value]="type" [(ngModel)]="apartmentType">
+                <input class="form-check-input" type="radio" name="apartmentType" [id]="'rent-' + i" [value]="type"
+                  [(ngModel)]="apartmentType">
                 <label class="form-check-label small text-muted" [for]="'rent-' + i">{{ type }}</label>
               </div>
             </div>
@@ -116,29 +123,38 @@
       <div class="row g-3">
         <div class="col-md-4">
           <label class="form-label fw-semibold">Purpose</label>
+
+          <!-- Rent -->
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialRent" value="Rent" checked>
+            <input class="form-check-input" type="radio" name="propertyAdsType" id="propertyAdsType" value="Rent"
+              [(ngModel)]="propertyAdsType" (change)="onPurposeChange('Rent')" checked />
             <label class="form-check-label" for="commercialRent">Rent</label>
           </div>
+
+          <!-- Buy -->
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="commercialPurpose" id="commercialBuy" value="Buy">
+            <input class="form-check-input" type="radio" name="propertyAdsType" id="propertyAdsType" value="Sale"
+              [(ngModel)]="propertyAdsType" (change)="onPurposeChange('Sale')" />
             <label class="form-check-label" for="commercialBuy">Buy</label>
           </div>
         </div>
 
+
         <div class="col-md-4">
           <label class="form-label fw-semibold">Property Type</label>
           <select class="form-select">
-            <option>Select</option>
-            <option>Office</option>
-            <option>Other</option>
+            <option value="">Select</option>
+            <option value="Office">Office</option>
+            <option value="Shop">Shop</option>
+            <option value="ShowRoom">ShowRoom</option>
+            <option value="Co-Working">Co-Working</option>
           </select>
         </div>
 
         <div class="col-md-4">
           <label class="form-label fw-semibold">Availability</label>
           <select class="form-select">
-            <option>Select</option>
+            <option value="">Select</option>
             <option>Immediate</option>
             <option>1 week</option>
             <option>15 days</option>
@@ -171,14 +187,8 @@
   <div class="featured-properties">
     <h3 class="fw-bold mb-4 text-primary">✨ Featured Properties</h3>
 
-    <div
-      class="scroll-container"
-      style="max-height: 70vh; overflow-y: auto;"
-      infiniteScroll
-      [infiniteScrollDistance]="2"
-      [infiniteScrollThrottle]="300"
-      (scrolled)="onScroll()"
-    >
+    <div class="scroll-container" style="max-height: 70vh; overflow-y: auto;" infiniteScroll
+      [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll()">
       <div class="row g-4" *ngIf="propertiesList.length; else loading">
         <div class="col-12 col-md-4" *ngFor="let property of propertiesList">
           <div class="card shadow-lg border-0 h-100 rounded-4 hover-shadow">
@@ -193,13 +203,8 @@
               <p class="mb-1"><strong>Expected Rent:</strong> {{ property.expectedRent | currency:'INR' }}</p>
               <p class="mb-2"><strong>Available From:</strong> {{ property.availableFrom }}</p>
               <div class="d-grid">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary rounded-pill mt-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#detailsModal"
-                  (click)="getSelectedProperty(property)"
-                >
+                <button type="button" class="btn btn-outline-primary rounded-pill mt-2" data-bs-toggle="modal"
+                  data-bs-target="#detailsModal" (click)="getSelectedProperty(property)">
                   <i class="bi bi-eye"></i> View Details
                 </button>
               </div>
@@ -231,7 +236,8 @@
         <ul class="list-group mb-3">
           <li class="list-group-item"><strong>Name:</strong> {{ currentSelectedProperty.name }}</li>
           <li class="list-group-item"><strong>Mobile No:</strong> {{ currentSelectedProperty.mobileNo }}</li>
-          <li class="list-group-item"><strong>Date Posted:</strong> {{ currentSelectedProperty.propertyPostedDate }}</li>
+          <li class="list-group-item"><strong>Date Posted:</strong> {{ currentSelectedProperty.propertyPostedDate }}
+          </li>
           <li class="list-group-item"><strong>Posted By:</strong> {{ currentSelectedProperty.postedBy }}</li>
           <li class="list-group-item"><strong>Property Type:</strong> {{ currentSelectedProperty.propertyType }}</li>
           <li class="list-group-item"><strong>Available For:</strong> {{ currentSelectedProperty.propertyAdsType }}</li>
@@ -247,9 +253,12 @@
           <li class="list-group-item"><strong>Facing:</strong> {{ currentSelectedProperty.facing }}</li>
           <li class="list-group-item"><strong>Apartment Name:</strong> {{ currentSelectedProperty.apartmentName }}</li>
           <li class="list-group-item"><strong>Property Age:</strong> {{ currentSelectedProperty.propertyAge }}</li>
-          <li class="list-group-item"><strong>Built Up Area:</strong> {{ currentSelectedProperty.builtUpArea }} SQFT</li>
-          <li class="list-group-item"><strong>Property Status:</strong> {{ currentSelectedProperty.propertyStatus }}</li>
-          <li class="list-group-item"><strong>Availability Status:</strong> {{ currentSelectedProperty.availabilityStatus }}</li>
+          <li class="list-group-item"><strong>Built Up Area:</strong> {{ currentSelectedProperty.builtUpArea }} SQFT
+          </li>
+          <li class="list-group-item"><strong>Property Status:</strong> {{ currentSelectedProperty.propertyStatus }}
+          </li>
+          <li class="list-group-item"><strong>Availability Status:</strong> {{
+            currentSelectedProperty.availabilityStatus }}</li>
           <li class="list-group-item"><strong>Purpose Status:</strong> {{ currentSelectedProperty.purposeStatus }}</li>
         </ul>
 
@@ -264,50 +273,77 @@
         <!-- Rental Details -->
         <h5 class="text-primary">Rental Details</h5>
         <ul class="list-group mb-3">
-           <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.expectedRent }}</li>
-          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.expectedDeposit }}</li>
-          <li class="list-group-item"><strong>Rent Negotiable:</strong> {{ currentSelectedProperty.rentNegotiable ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{ currentSelectedProperty.monthlyMaintenance }}</li>
-          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.maintenanceAmount }}</li>
+          <li class="list-group-item"><strong>Expected Rent:</strong> {{ currentSelectedProperty.expectedRent }}</li>
+          <li class="list-group-item"><strong>Expected Deposit:</strong> {{ currentSelectedProperty.expectedDeposit }}
+          </li>
+          <li class="list-group-item"><strong>Rent Negotiable:</strong> {{ currentSelectedProperty.rentNegotiable ?
+            'Yes' : 'No' }}</li>
+          <li class="list-group-item"><strong>Monthly Maintenance:</strong> {{
+            currentSelectedProperty.monthlyMaintenance }}</li>
+          <li class="list-group-item"><strong>Maintenance Amount:</strong> {{ currentSelectedProperty.maintenanceAmount
+            }}</li>
           <li class="list-group-item"><strong>Available From:</strong> {{ currentSelectedProperty.availableFrom }}</li>
           <li class="list-group-item"><strong>Furnishing Status:</strong> {{ currentSelectedProperty.furnishing }}</li>
           <li class="list-group-item"><strong>Parking:</strong> {{ currentSelectedProperty.parking }}</li>
-          <li class="list-group-item"><strong>Preferred Tenants:</strong> {{ currentSelectedProperty.preferredTenants }}</li>
+          <li class="list-group-item"><strong>Preferred Tenants:</strong> {{ currentSelectedProperty.preferredTenants }}
+          </li>
           <li class="list-group-item"><strong>Description:</strong> {{ currentSelectedProperty.description }}</li>
         </ul>
 
         <!-- Amenities -->
         <h5 class="text-primary">Amenities</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Available Amenities:</strong> {{ currentSelectedProperty.availableAmenities }}</li>
+          <li class="list-group-item"><strong>Available Amenities:</strong> {{
+            currentSelectedProperty.availableAmenities }}</li>
           <li class="list-group-item"><strong>Bathroom:</strong> {{ currentSelectedProperty.bathroom }}</li>
           <li class="list-group-item"><strong>Balcony:</strong> {{ currentSelectedProperty.balcony }}</li>
           <li class="list-group-item"><strong>Water Supply:</strong> {{ currentSelectedProperty.waterSupply }}</li>
           <li class="list-group-item"><strong>Gym:</strong> {{ currentSelectedProperty.gym ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Non Veg Allowed:</strong> {{ currentSelectedProperty.nonvegAllowed ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Gate Security:</strong> {{ currentSelectedProperty.gateSecurity ? 'Yes' : 'No' }}</li>
-          <li class="list-group-item"><strong>Who Will Show Property:</strong> {{ currentSelectedProperty.whoWillShowProperty }}</li>
-          <li class="list-group-item"><strong>Property Condition:</strong> {{ currentSelectedProperty.currentPropertyCondition }}</li>
-         </ul>
+          <li class="list-group-item"><strong>Non Veg Allowed:</strong> {{ currentSelectedProperty.nonvegAllowed ? 'Yes'
+            : 'No' }}</li>
+          <li class="list-group-item"><strong>Gate Security:</strong> {{ currentSelectedProperty.gateSecurity ? 'Yes' :
+            'No' }}</li>
+          <li class="list-group-item"><strong>Who Will Show Property:</strong> {{
+            currentSelectedProperty.whoWillShowProperty }}</li>
+          <li class="list-group-item"><strong>Property Condition:</strong> {{
+            currentSelectedProperty.currentPropertyCondition }}</li>
+        </ul>
 
         <!-- Schedule -->
         <h5 class="text-primary">Visit Schedule</h5>
         <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Owner Availability:</strong> {{ currentSelectedProperty.ownerAvailability }}</li>
-          <li class="list-group-item"><strong>From Time:</strong> {{ formatTimeToDate(currentSelectedProperty.fromTime) | date:'hh:mm a' }}</li>
-          <li class="list-group-item"><strong>To Time:</strong> {{ formatTimeToDate(currentSelectedProperty.toTime) | date:'hh:mm a' }}</li>
+          <li class="list-group-item"><strong>Owner Availability:</strong> {{ currentSelectedProperty.ownerAvailability
+            }}</li>
+          <li class="list-group-item"><strong>From Time:</strong> {{ formatTimeToDate(currentSelectedProperty.fromTime)
+            | date:'hh:mm a' }}</li>
+          <li class="list-group-item"><strong>To Time:</strong> {{ formatTimeToDate(currentSelectedProperty.toTime) |
+            date:'hh:mm a' }}</li>
         </ul>
 
         <!-- Gallery -->
         <h5 class="text-primary">Gallery</h5>
         <div class="d-flex flex-wrap gap-3 justify-content-start">
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos1" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos1" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos2" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos2" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos3" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos3" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos4" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos4" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos5" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos5" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos6" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos6" class="img-thumbnail" width="400" height="400" />
-          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos7" [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos7" class="img-thumbnail" width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos1"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos1" class="img-thumbnail"
+            width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos2"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos2" class="img-thumbnail"
+            width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos3"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos3" class="img-thumbnail"
+            width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos4"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos4" class="img-thumbnail"
+            width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos5"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos5" class="img-thumbnail"
+            width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos6"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos6" class="img-thumbnail"
+            width="400" height="400" />
+          <img *ngIf="currentSelectedProperty.gallery.propertyPhotos7"
+            [src]="'data:image/jpeg;base64,' + currentSelectedProperty.gallery.propertyPhotos7" class="img-thumbnail"
+            width="400" height="400" />
         </div>
       </div>
 
@@ -320,10 +356,4 @@
 
 
 
- 
-
-
-
- 
-
- 
+<app-property-map></app-property-map>

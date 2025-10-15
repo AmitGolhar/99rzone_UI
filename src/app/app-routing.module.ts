@@ -9,8 +9,8 @@ const routes: Routes = [
   { path: 'rent', loadChildren: () => import('./rent/rent.module').then(m => m.RentModule) },
   { path: 'commercial', loadChildren: () => import('./commercial/commercial.module').then(m => m.CommercialModule) },
   { path: 'post-property', loadChildren: () => import('./post-property/post-property.module').then(m => m.PostPropertyModule) },
-
-    { path: 'check_on_map', component: PropertyMapComponent },
+  { path: 'crm', loadChildren: () => import('./crm/crm.module').then(m => m.CrmModule) },
+  { path: 'check_on_map', component: PropertyMapComponent },
 
   { path: '**', redirectTo: '' }
 ];
