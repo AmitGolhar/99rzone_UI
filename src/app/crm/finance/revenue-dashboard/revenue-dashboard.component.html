@@ -1,19 +1,45 @@
-<div class="card p-3">
-  <div class="d-flex justify-content-between">
-    <h5>📈 Revenue Dashboard</h5>
-    <small class="text-muted">Collection vs Target</small>
+<div class="card shadow-sm p-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+      <h5 class="mb-0 text-primary">📈 Revenue Dashboard</h5>
+      <small class="text-muted">Collection vs Target Overview</small>
+    </div>
+
+    <button class="btn btn-outline-primary btn-sm" (click)="buildCharts()">
+      🔄 Refresh
+    </button>
   </div>
 
-  <div class="row g-3 mt-3">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-4">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-muted">Loading revenue data...</p>
+  </div>
+
+  <!-- Charts Row -->
+  <div *ngIf="!loading" class="row g-4 mt-1">
+    <!-- Bar Chart -->
     <div class="col-md-8">
-      <div style="height:300px;">
-        <canvas id="revBar"></canvas>
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="fw-semibold mb-3 text-secondary">Monthly Collection vs Target</h6>
+          <div style="height:300px;">
+            <canvas id="revBar"></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Pie Chart -->
     <div class="col-md-4">
-      <div style="height:300px;">
-        <canvas id="revPie"></canvas>
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="fw-semibold mb-3 text-secondary">Revenue by Agent</h6>
+          <div style="height:300px;">
+            <canvas id="revPie"></canvas>
+          </div>
+        </div>
       </div>
     </div>
   </div>

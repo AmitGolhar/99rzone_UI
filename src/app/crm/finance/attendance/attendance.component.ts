@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AttendanceRecord } from '../modal/attendance.model';
-import { FinanceService } from '../services/finance.service';
+ import { AttendanceService } from '../services/attendance.service';
  
 
 @Component({
@@ -9,17 +9,20 @@ import { FinanceService } from '../services/finance.service';
   styleUrls: ['./attendance.component.css']
 })
 export class AttendanceComponent implements OnInit {
-  employeeName = 'Amit Golhar'; // Logged-in user mock
+  employeeName = 'Amit'; // Logged-in user mock
   records: AttendanceRecord[] = [];
   todayRecord?: AttendanceRecord;
   visits = 0;
   tasks = 0;
   isCheckedIn = false;
 
-  constructor(private svc: FinanceService) {}
+  constructor(private svc: AttendanceService) {}
 
   ngOnInit(): void {
     this.load();
+    this.svc.connectStream().subscribe((records) => {
+    this.records = records.sort((a, b) => b.id - a.id);
+  });
   }
 
   load(): void {

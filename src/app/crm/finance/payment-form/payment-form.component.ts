@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from '../payment.service';
 import { Payment } from '../modal/payment.model';
+import { finalize } from 'rxjs/operators';
 
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-payment-form',
@@ -16,10 +18,13 @@ export class PaymentFormComponent implements OnInit {
     totalAmount: 0,
     paidAmount: 0,
     pendingAmount: 0,
-    status: 'Pending'
+    status: 'Pending',
+    paymentMode: 'Cash'
   };
 
   isEditMode = false;
+  loading = false;
+  error = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -36,35 +41,73 @@ export class PaymentFormComponent implements OnInit {
   }
 
   loadPayment(id: number): void {
-    this.svc.getAll().subscribe(payments => {
-      const found = payments.find(p => p.id === id);
-      if (found) {
-        this.payment = { ...found };
-      } else {
-        alert('Payment not found');
-        this.router.navigate(['/crm/payments']);
-      }
-    });
+    this.loading = true;
+    this.svc
+      .getAll()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (payments) => {
+          const found = payments.find((p) => p.id === id);
+          if (found) {
+            this.payment = { ...found };
+          } else {
+            this.showToast('❌ Payment not found');
+            this.router.navigate(['/crm/payments']);
+          }
+        },
+        error: (err) => {
+          console.error('Error loading payment:', err);
+          this.showToast('⚠️ Failed to load payment details');
+          this.router.navigate(['/crm/payments']);
+        }
+      });
   }
 
   calculatePending(): void {
-    this.payment.pendingAmount = this.payment.totalAmount - this.payment.paidAmount;
-    if (this.payment.paidAmount === 0) this.payment.status = 'Pending';
-    else if (this.payment.paidAmount < this.payment.totalAmount) this.payment.status = 'Partial';
+    this.payment.pendingAmount =
+      (this.payment.totalAmount || 0) - (this.payment.paidAmount || 0);
+
+    if (this.payment.paidAmount === 0)
+      this.payment.status = 'Pending';
+    else if (this.payment.paidAmount < this.payment.totalAmount)
+      this.payment.status = 'Partial';
     else this.payment.status = 'Paid';
   }
 
   save(): void {
-    if (this.isEditMode) {
-      this.svc.update(this.payment).subscribe(() => {
-        alert('Payment updated successfully!');
-        this.router.navigate(['/crm/payments']);
-      });
-    } else {
-      this.svc.add(this.payment).subscribe(() => {
-        alert('Payment added successfully!');
-        this.router.navigate(['/crm/payments']);
-      });
+    if (!this.payment.clientName || !this.payment.totalAmount) {
+      this.showToast('⚠️ Please fill all required fields');
+      return;
+    }
+
+    this.loading = true;
+    const action = this.isEditMode
+      ? this.svc.update(this.payment)
+      : this.svc.add(this.payment);
+
+    action.pipe(finalize(() => (this.loading = false))).subscribe({
+      next: () => {
+        this.showToast(
+          this.isEditMode
+            ? '✅ Payment updated successfully'
+            : '💰 Payment added successfully'
+        );
+        setTimeout(() => this.router.navigate(['/crm/payments']), 1000);
+      },
+      error: (err) => {
+        console.error('Error saving payment:', err);
+        this.showToast('❌ Failed to save payment');
+      }
+    });
+  }
+
+  // 🔹 Toast message utility
+  showToast(message: string): void {
+    const toastEl = document.getElementById('toastMessage');
+    if (toastEl) {
+      toastEl.querySelector('.toast-body')!.textContent = message;
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
     }
   }
 }

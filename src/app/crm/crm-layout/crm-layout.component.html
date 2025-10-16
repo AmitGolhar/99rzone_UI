@@ -1,45 +1,44 @@
-<div class="crm-container d-flex">
+<div class="crm-wrapper">
+  <!-- Mobile Menu Toggle -->
+  <button class="btn btn-outline-primary d-md-none m-2" (click)="toggleMenu()">
+    ☰ CRM Menu
+  </button>
+
   <!-- Sidebar -->
-  <nav class="crm-sidebar bg-light p-3">
-    <h5 class="text-primary mb-4">🏠 CRM Menu</h5>
-    <ul class="nav flex-column">
-      <li class="nav-item"><a routerLink="dashboard" routerLinkActive="active" class="nav-link">Dashboard</a></li>
-      <li class="nav-item"><a routerLink="lead-management" routerLinkActive="active" class="nav-link">Lead
-          Management</a></li>
-      <li class="nav-item"><a routerLink="property-listing" routerLinkActive="active" class="nav-link">Property
-          Listing</a></li>
-      <li class="nav-item"><a routerLink="client-interaction" routerLinkActive="active" class="nav-link">Client
-          Interaction</a></li>
-      <li class="nav-item"><a routerLink="marketing-outreach" routerLinkActive="active" class="nav-link">Marketing &
-          Outreach</a></li>
-      <li class="nav-item"><a routerLink="legal-documentation" routerLinkActive="active" class="nav-link">Legal &
-          Documentation</a></li>
-      <li class="nav-item"><a routerLink="client-support" routerLinkActive="active" class="nav-link">Client Support &
-          After Sales</a></li>
-      <li class="nav-item"><a routerLink="admin-internal" routerLinkActive="active" class="nav-link">Admin &
-          Internal</a></li>
-      <li class="nav-item"><a routerLink="custom-smart" routerLinkActive="active" class="nav-link">Custom / Smart
-          Tasks</a></li>
-      <li class="nav-item"><a routerLink="payments" routerLinkActive="active" class="nav-link">Payments</a></li>
-      <li class="nav-item"><a routerLink="payments/add" routerLinkActive="active" class="nav-link">Payments Add</a></li>
-      <li class="nav-item"><a routerLink="finance/aging" routerLinkActive="active" class="nav-link">Aging</a></li>
-      <li class="nav-item"><a routerLink="finance/revenue" routerLinkActive="active" class="nav-link">Revenue</a></li>
-      <li class="nav-item"><a routerLink="finance/attendance" routerLinkActive="active" class="nav-link">Attendance</a>
-      </li>
-      <li class="nav-item"><a routerLink="finance/followups" routerLinkActive="active" class="nav-link">Followups</a>
-      </li>
-      <li class="nav-item"><a routerLink="finance/incentives" routerLinkActive="active" class="nav-link">Incentives</a>
-      </li>
-      <li class="nav-item"><a routerLink="finance/expenses" routerLinkActive="active" class="nav-link">Expenses</a></li>
-<li class="nav-item"><a routerLink="tasks" routerLinkActive="active" class="nav-link">Task</a></li>
+  <nav class="crm-sidebar" [class.open]="menuOpen">
+    <div class="sidebar-header d-flex justify-content-between align-items-center mb-3">
+      <h5 class="text-primary fw-bold mb-0">🏠 CRM Menu</h5>
+      <button
+        class="btn-close d-md-none"
+        (click)="toggleMenu()"
+        aria-label="Close"
+      ></button>
+    </div>
 
- 
-
+    <ul class="nav flex-column gap-1">
+      <li class="nav-item"><a routerLink="dashboard" routerLinkActive="active" class="nav-link" (click)="closeMenu()">📊 Dashboard</a></li>
+      <li class="nav-item"><a routerLink="lead-management" routerLinkActive="active" class="nav-link" (click)="closeMenu()">👥 Lead Management</a></li>
+      <li class="nav-item"><a routerLink="property-listing" routerLinkActive="active" class="nav-link" (click)="closeMenu()">🏘 Property Listing</a></li>
+      <li class="nav-item"><a routerLink="client-interaction" routerLinkActive="active" class="nav-link" (click)="closeMenu()">💬 Client Interaction</a></li>
+      <li class="nav-item"><a routerLink="marketing-outreach" routerLinkActive="active" class="nav-link" (click)="closeMenu()">📣 Marketing & Outreach</a></li>
+      <li class="nav-item"><a routerLink="legal-documentation" routerLinkActive="active" class="nav-link" (click)="closeMenu()">📑 Legal & Documentation</a></li>
+      <li class="nav-item"><a routerLink="client-support" routerLinkActive="active" class="nav-link" (click)="closeMenu()">🧰 Client Support & After Sales</a></li>
+      <li class="nav-item"><a routerLink="admin-internal" routerLinkActive="active" class="nav-link" (click)="closeMenu()">🏢 Admin & Internal</a></li>
+      <li class="nav-item"><a routerLink="custom-smart" routerLinkActive="active" class="nav-link" (click)="closeMenu()">🤖 Custom / Smart Tasks</a></li>
+      <li class="nav-item"><a routerLink="payments" routerLinkActive="active" class="nav-link" (click)="closeMenu()">💰 Payments</a></li>
+      <li class="nav-item"><a routerLink="payments/add" routerLinkActive="active" class="nav-link" (click)="closeMenu()">➕ Payments Add</a></li>
+      <li class="nav-item"><a routerLink="finance/revenue" routerLinkActive="active" class="nav-link" (click)="closeMenu()">📈 Revenue</a></li>
+      <li class="nav-item"><a routerLink="finance/attendance" routerLinkActive="active" class="nav-link" (click)="closeMenu()">🕒 Attendance</a></li>
+      <li class="nav-item"><a routerLink="finance/incentives" routerLinkActive="active" class="nav-link" (click)="closeMenu()">🎯 Incentives</a></li>
+      <li class="nav-item"><a routerLink="finance/expenses" routerLinkActive="active" class="nav-link" (click)="closeMenu()">💳 Expenses</a></li>
+      <li class="nav-item"><a routerLink="tasks" routerLinkActive="active" class="nav-link" (click)="closeMenu()">📋 Task</a></li>
+      <li class="nav-item"><a routerLink="finance/aging" routerLinkActive="active" class="nav-link" (click)="closeMenu()">⏳ Aging</a></li>
+      <li class="nav-item"><a routerLink="finance/followups" routerLinkActive="active" class="nav-link" (click)="closeMenu()">🔔 Followups</a></li>
     </ul>
   </nav>
 
   <!-- Main Content -->
-  <div class="crm-content flex-fill p-4">
+  <main class="crm-content p-3">
     <router-outlet></router-outlet>
-  </div>
+  </main>
 </div>

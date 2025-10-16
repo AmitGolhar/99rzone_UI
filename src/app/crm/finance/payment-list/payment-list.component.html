@@ -1,59 +1,80 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <h4 class="text-primary">💰 Payment Records</h4>
-  <button class="btn btn-success" (click)="openAdd()">➕ Add Payment</button>
-</div>
-
-<div class="mb-3 d-flex justify-content-between">
+  <h4 class="text-primary">💳 Payments</h4>
   <div>
-    <strong>Total Collected:</strong> ₹{{ totalCollected | number }}
-    <span class="ms-4"><strong>Total Pending:</strong> ₹{{ totalPending | number }}</span>
-  </div>
-  <div>
-    <select class="form-select" [(ngModel)]="filterStatus" style="width:180px">
-      <option value="">All</option>
-      <option value="Pending">Pending</option>
-      <option value="Partial">Partial</option>
-      <option value="Paid">Paid</option>
-    </select>
+    <button class="btn btn-success me-2" (click)="openAdd()">➕ Add</button>
+    <button class="btn btn-outline-secondary" (click)="loadPayments()" [disabled]="loading">
+      🔁 Refresh
+    </button>
   </div>
 </div>
 
-<table class="table table-hover">
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<div class="row mb-3">
+  <div class="col-md-4">
+    <input class="form-control" placeholder="Filter status (Pending / Partial / Paid)" [(ngModel)]="filterStatus" />
+  </div>
+  <div class="col-md-8 text-end">
+    <small class="text-muted me-3">Collected: <strong>{{ formatAmount(totalCollected) }}</strong></small>
+    <small class="text-muted">Pending: <strong>{{ formatAmount(totalPending) }}</strong></small>
+  </div>
+</div>
+
+<div *ngIf="loading" class="text-center my-5">
+  <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+</div>
+
+<table *ngIf="!loading && filteredPayments.length > 0" class="table table-hover align-middle">
   <thead class="table-light">
     <tr>
       <th>#</th>
       <th>Client</th>
+      <th>Phone</th>
       <th>Property</th>
-      <th>Total (₹)</th>
-      <th>Paid (₹)</th>
-      <th>Pending (₹)</th>
+      <th>Collected</th>
+      <th>Pending</th>
       <th>Status</th>
-      <th>Due Date</th>
+      <th>Next Due</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let p of payments; let i=index" [hidden]="filterStatus && p.status !== filterStatus">
+    <tr *ngFor="let p of filteredPayments; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ p.clientName }}</td>
-      <td>{{ p.propertyName }}</td>
-      <td>{{ p.totalAmount | number }}</td>
-      <td>{{ p.paidAmount | number }}</td>
-      <td>{{ p.pendingAmount | number }}</td>
+      <td>{{ p.clientPhone || '—' }}</td>
+      <td>{{ p.propertyName || '—' }}</td>
+      <td>{{ formatAmount(p.paidAmount) }}</td>
+      <td>{{ formatAmount(p.pendingAmount) }}</td>
       <td>
         <span class="badge"
-          [ngClass]="{
-            'bg-danger': p.status === 'Pending',
-            'bg-warning text-dark': p.status === 'Partial',
-            'bg-success': p.status === 'Paid'
-          }">{{ p.status }}</span>
+              [ngClass]="{
+                'bg-warning text-dark': p.status === 'Pending',
+                'bg-info text-dark': p.status === 'Partial',
+                'bg-success': p.status === 'Paid'
+              }">
+          {{ p.status }}
+        </span>
       </td>
-      <td>{{ p.nextDueDate || '-' }}</td>
+      <td>{{ p.nextDueDate || '—' }}</td>
       <td>
-        <button class="btn btn-sm btn-outline-success me-1" (click)="sendReminder(p)">📱</button>
         <button class="btn btn-sm btn-outline-primary me-1" (click)="edit(p)">✏️</button>
-        <button class="btn btn-sm btn-outline-danger" (click)="delete(p.id)">🗑️</button>
+        <button class="btn btn-sm btn-outline-danger me-1" (click)="delete(p.id)">🗑️</button>
+        <button class="btn btn-sm btn-outline-success" (click)="sendReminder(p)">📩</button>
       </td>
     </tr>
   </tbody>
 </table>
+
+<div *ngIf="!loading && filteredPayments.length === 0" class="text-center text-muted my-4">
+  No records found.
+</div>
+<!-- 🔹 Toast Notification -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1200;">
+  <div id="toastMessage" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">Message</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>

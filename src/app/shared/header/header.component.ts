@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
+declare var bootstrap:any
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -22,5 +22,11 @@ export class HeaderComponent {
     // Optional: show a message
     console.log('User logged out successfully');
   }
-
+ closeNavbar(): void {
+    const navbar = document.getElementById('navbarNav');
+    if (navbar && navbar.classList.contains('show')) {
+      const bsCollapse = bootstrap.Collapse.getInstance(navbar) || new bootstrap.Collapse(navbar);
+      bsCollapse.hide();
+    }
+  }
 }

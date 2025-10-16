@@ -27,3 +27,26 @@
   border-left: 5px solid #dc3545;
   background-color: #fff5f5;
 }
+.kanban {
+  flex-wrap: nowrap;
+  scroll-behavior: smooth;
+}
+
+.kanban-card {
+  transition: transform 0.15s;
+  cursor: grab;
+}
+
+.kanban-card:hover {
+  transform: scale(1.02);
+  background: #f8f9fa;
+}
+
+.overdue {
+  border-color: #dc3545 !important;
+  background: #fff5f5;
+}
+
+.modal-content {
+  border-radius: 12px;
+}

@@ -1,40 +1,36 @@
 <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
   <div class="container-fluid">
-    <a class="navbar-brand fw-bold margin-left" routerLink="/">Local Briks🏠 </a>
-     
-  
+    <a class="navbar-brand fw-bold margin-left" routerLink="/">Local Briks🏠</a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/buy" routerLinkActive="active" (click)="closeNavbar()">Buy</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/rent" routerLinkActive="active" (click)="closeNavbar()">Rent</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/commercial" routerLinkActive="active" (click)="closeNavbar()">Commercial</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/post-property" routerLinkActive="active" (click)="closeNavbar()">Post Property</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/check_on_map" routerLinkActive="active" (click)="closeNavbar()">Check On Map</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/crm" routerLinkActive="active" (click)="closeNavbar()">CRM</a>
+        </li>
+      </ul>
       
-    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/buy" routerLinkActive="active">Buy</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/rent" routerLinkActive="active">Rent</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/commercial" routerLinkActive="active">Commercial</a>
-        </li> 
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/post-property" routerLinkActive="active">Post Property</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/check_on_map" routerLinkActive="active">Check On Map</a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" routerLink="/crm" routerLinkActive="active">CRM</a>
-        </li>
-      </ul>  
       <div>
-         
-        
         <button class="btn btn-primary" (click)="logout()">Logout</button>
-    
       </div>
     </div>
   </div>

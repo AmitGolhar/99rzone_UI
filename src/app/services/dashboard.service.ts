@@ -39,7 +39,8 @@ export class DashboardService {
     { title: 'Legal & Documentation', count: 18, route: '/crm/legal-documentation', color: '#6f42c1', icon: '⚖️' },
     { title: 'Client Support', count: 22, route: '/crm/client-support', color: '#fd7e14', icon: '🛠️' },
     { title: 'Admin & Internal', count: 10, route: '/crm/admin-internal', color: '#20c997', icon: '🏢' },
-    { title: 'Custom / Smart', count: 8, route: '/crm/custom-smart', color: '#dc3545', icon: '🤖' }
+    { title: 'Custom / Smart', count: 8, route: '/crm/custom-smart', color: '#dc3545', icon: '🤖' },
+    
   ];
 
   // Mock tasks (mix of modules)

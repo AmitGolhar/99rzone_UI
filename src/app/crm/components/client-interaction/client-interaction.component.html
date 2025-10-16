@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <h4 class="text-primary">🤝 Client Interaction Tasks</h4>
+  <h4 class="text-primary">👥 Client Interaction Tasks</h4>
   <button class="btn btn-success" (click)="openAddModal()">➕ Add Task</button>
 </div>
 
@@ -8,12 +8,19 @@
          [(ngModel)]="searchText">
 </div>
 
-<table class="table table-hover align-middle">
+<div *ngIf="isLoading" class="text-center text-muted p-3">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="mt-2">Loading client tasks...</p>
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+<table *ngIf="!isLoading" class="table table-striped table-hover align-middle">
   <thead class="table-primary">
     <tr>
       <th>#</th>
       <th>Task Type</th>
-      <th>Client Name</th>
+      <th>Client</th>
       <th>Property</th>
       <th>Assigned To</th>
       <th>Status</th>
@@ -38,7 +45,7 @@
           {{ task.status }}
         </span>
       </td>
-      <td>{{ task.dueDate | date:'mediumDate' }}</td>
+      <td>{{ task.dueDate | date: 'mediumDate' }}</td>
       <td>
         <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(task)">✏️</button>
         <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.id)">🗑️</button>
@@ -52,9 +59,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="clientModalLabel">
-          {{ isEditing ? '✏️ Edit Task' : '➕ Add New Task' }}
-        </h5>
+        <h5 class="modal-title">{{ isEditing ? '✏️ Edit Task' : '➕ Add New Task' }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
@@ -76,7 +81,7 @@
 
             <div class="col-md-6">
               <label class="form-label">Contact Number</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedTask.contactNumber" name="contactNumber" required>
+              <input type="text" class="form-control" [(ngModel)]="selectedTask.contactNumber" name="contactNumber">
             </div>
 
             <div class="col-md-6">
@@ -98,7 +103,7 @@
 
             <div class="col-md-3">
               <label class="form-label">Due Date</label>
-              <input type="date" class="form-control" [(ngModel)]="selectedTask.dueDate" name="dueDate" required>
+              <input type="date" class="form-control" [(ngModel)]="selectedTask.dueDate" name="dueDate">
             </div>
 
             <div class="col-12">
@@ -113,6 +118,16 @@
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button class="btn btn-primary" (click)="saveTask()">{{ isEditing ? 'Update' : 'Save' }}</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+  <div id="toastMessage" class="toast align-items-center text-bg-primary border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body">Message</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
     </div>
   </div>
 </div>

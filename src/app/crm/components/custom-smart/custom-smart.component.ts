@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SmartTask } from '@app/models/smart.model';
 import { SmartService } from '@app/services/smart.service';
- 
+import { finalize } from 'rxjs/operators';
 
 declare var bootstrap: any;
 
@@ -15,6 +15,8 @@ export class CustomSmartComponent implements OnInit {
   selectedTask: SmartTask = this.initTask();
   searchText = '';
   isEditing = false;
+  isLoading = false;
+  errorMessage = '';
 
   taskTypes: string[] = [
     'SLA Breach Alert',
@@ -52,38 +54,67 @@ export class CustomSmartComponent implements OnInit {
     this.loadTasks();
   }
 
+  /** 🔹 Load Smart Automation Tasks */
   loadTasks(): void {
-    this.smartService.getAll().subscribe(tasks => this.smartTasks = tasks);
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.smartService.getAll()
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (tasks) => (this.smartTasks = tasks),
+        error: () =>
+          (this.errorMessage =
+            '⚠️ Failed to load smart automation tasks. Please try again later.')
+      });
   }
 
+  /** 🔹 Open Add Modal */
   openAddModal(): void {
     this.isEditing = false;
     this.selectedTask = this.initTask();
     new bootstrap.Modal(document.getElementById('smartModal')).show();
   }
 
+  /** 🔹 Open Edit Modal */
   openEditModal(task: SmartTask): void {
     this.isEditing = true;
     this.selectedTask = { ...task };
     new bootstrap.Modal(document.getElementById('smartModal')).show();
   }
 
+  /** 🔹 Save or Update Automation Task */
   saveTask(): void {
-    if (this.isEditing) {
-      this.smartService.update(this.selectedTask).subscribe(() => this.loadTasks());
-    } else {
-      this.smartService.add(this.selectedTask).subscribe(() => this.loadTasks());
-    }
-    const modal = bootstrap.Modal.getInstance(document.getElementById('smartModal'));
-    modal?.hide();
+    const modalEl = document.getElementById('smartModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+
+    const operation = this.isEditing
+      ? this.smartService.update(this.selectedTask)
+      : this.smartService.add(this.selectedTask);
+
+    operation.subscribe({
+      next: () => {
+        this.showToast(this.isEditing ? '✅ Task updated successfully!' : '🎯 New smart automation added!');
+        modal?.hide();
+        this.loadTasks();
+      },
+      error: () => this.showToast('❌ Failed to save task. Please retry.')
+    });
   }
 
+  /** 🔹 Delete Automation Task */
   deleteTask(id?: number): void {
     if (id && confirm('Are you sure you want to delete this automation task?')) {
-      this.smartService.delete(id).subscribe(() => this.loadTasks());
+      this.smartService.delete(id).subscribe({
+        next: () => {
+          this.showToast('🗑️ Automation task deleted successfully');
+          this.loadTasks();
+        },
+        error: () => this.showToast('❌ Failed to delete automation task.')
+      });
     }
   }
 
+  /** 🔹 Default Empty Task Object */
   initTask(): SmartTask {
     return {
       taskType: '',
@@ -94,5 +125,15 @@ export class CustomSmartComponent implements OnInit {
       dueDate: '',
       notes: ''
     };
+  }
+
+  /** 🔹 Show Toast Notification */
+  showToast(message: string): void {
+    const toastEl = document.getElementById('toastMessage');
+    if (toastEl) {
+      toastEl.querySelector('.toast-body')!.textContent = message;
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
+    }
   }
 }

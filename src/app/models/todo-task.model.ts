@@ -7,7 +7,8 @@ export type ModuleType =
   | 'CLIENT_INTERACTION'
   | 'ADMIN'
   | 'AFTER_SALES'
-  | 'OTHER';
+  | 'OTHER'
+  | 'GENERAL'; 
 
 export type Priority = 'Low' | 'Medium' | 'High' | 'Critical';
 export type Status = 'Pending' | 'In Progress' | 'On Hold' | 'Completed' | 'Cancelled';

@@ -1,153 +1,94 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '@app/environment/environment';
 import { TodoTask } from '@app/models/todo-task.model';
- 
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
-  private tasks: TodoTask[] = [];
+  private baseUrl = `${environment.apiUrl}/todo-task-board`;
+  private tasks$ = new BehaviorSubject<TodoTask[]>([]);
 
-  constructor() {
-    this.tasks = this.tasks = [
-  {
-    id: 1,
-    title: 'Call lead - Rohan',
-    moduleType: 'RESELL',
-    priority: 'High',
-    status: 'Pending',
-    category: 'Lead Follow-Up',
-    assignedTo: 'Neha Sharma',
-    createdBy: 'System',
-    dueDate: this.addDaysISO(1)
-  },
-  {
-    id: 2,
-    title: 'Upload photos - Green Meadows',
-    moduleType: 'RENT',
-    priority: 'Medium',
-    status: 'In Progress',
-    category: 'Property Visit',
-    assignedTo: 'Ravi Deshmukh',
-    createdBy: 'Admin',
-    dueDate: this.addDaysISO(3)
-  },
-  {
-    id: 3,
-    title: 'Collect payment proof - Tower 5 Flat 303',
-    moduleType: 'PAYMENT',
-    priority: 'Critical',
-    status: 'Pending',
-    category: 'Payment Reminder',
-    assignedTo: 'Amit Golhar',
-    createdBy: 'Finance Bot',
-    dueDate: this.addDaysISO(-2)
-  },
-  {
-    id: 4,
-    title: 'Draft rent agreement - Patel Residency',
-    moduleType: 'LEGAL',
-    priority: 'High',
-    status: 'In Progress',
-    category: 'Agreement Draft',
-    assignedTo: 'Sneha Patil',
-    createdBy: 'Legal Admin',
-    dueDate: this.addDaysISO(2)
-  },
-  {
-    id: 5,
-    title: 'Schedule Facebook Ad Campaign - Sunrise Heights',
-    moduleType: 'MARKETING',
-    priority: 'Medium',
-    status: 'Pending',
-    category: 'Marketing Campaign',
-    assignedTo: 'Ankit Verma',
-    createdBy: 'Marketing Manager',
-    dueDate: this.addDaysISO(5)
-  },
-  {
-    id: 6,
-    title: 'Client feedback call - Mr. Desai',
-    moduleType: 'CLIENT_INTERACTION',
-    priority: 'Low',
-    status: 'Pending',
-    category: 'Customer Feedback',
-    assignedTo: 'Priya Nair',
-    createdBy: 'CRM System',
-    dueDate: this.addDaysISO(1)
-  },
-  {
-    id: 7,
-    title: 'Internal review meeting - Sales Team Q4',
-    moduleType: 'ADMIN',
-    priority: 'Medium',
-    status: 'On Hold',
-    category: 'Internal Review',
-    assignedTo: 'Admin Team',
-    createdBy: 'Director',
-    dueDate: this.addDaysISO(4)
-  },
-  {
-    id: 8,
-    title: 'Electricity name transfer - Pearl Residency',
-    moduleType: 'AFTER_SALES',
-    priority: 'High',
-    status: 'Pending',
-    category: 'After Sales Service',
-    assignedTo: 'Ravi Deshmukh',
-    createdBy: 'Support',
-    dueDate: this.addDaysISO(2)
-  },
-  {
-    id: 9,
-    title: 'Society NOC follow-up - Lakeview Apartments',
-    moduleType: 'LEGAL',
-    priority: 'High',
-    status: 'In Progress',
-    category: 'Document Collection',
-    assignedTo: 'Sneha Patil',
-    createdBy: 'Legal Bot',
-    dueDate: this.addDaysISO(1)
-  },
-  {
-    id: 10,
-    title: 'Generate agent incentive report - October',
-    moduleType: 'ADMIN',
-    priority: 'Medium',
-    status: 'Completed',
-    category: 'Commission / Incentive',
-    assignedTo: 'Finance Dept',
-    createdBy: 'System',
-    dueDate: this.addDaysISO(-1)
-  }
-];
-
+  constructor(private http: HttpClient, private zone: NgZone) {
+    this.loadAll();
+    this.initSSE();
   }
 
-  private addDaysISO(days: number): string {
-    const d = new Date();
-    d.setDate(d.getDate() + days);
-    return d.toISOString().slice(0, 10);
+  /** ✅ Load initial data */
+  private loadAll(): void {
+    this.http.get<TodoTask[]>(this.baseUrl).subscribe({
+      next: (data) => this.tasks$.next(data),
+      error: (err) => console.error('Failed to load tasks:', err)
+    });
   }
 
+  /** ✅ SSE real-time stream */
+  private initSSE(): void {
+    const eventSource = new EventSource(`${this.baseUrl}/stream`);
+    eventSource.onmessage = (event) => {
+      this.zone.run(() => {
+        try {
+          const data: TodoTask[] = JSON.parse(event.data);
+          this.tasks$.next(data);
+        } catch (e) {
+          console.error('Invalid SSE data', e);
+        }
+      });
+    };
+    eventSource.onerror = (err) => {
+      console.warn('SSE connection lost. Retrying...', err);
+      eventSource.close();
+      setTimeout(() => this.initSSE(), 4000);
+    };
+  }
+
+  /** ✅ Subscribe to real-time data */
+  listen(): Observable<TodoTask[]> {
+    return this.tasks$.asObservable();
+  }
+
+  /** ✅ Add task (auto-fill backend-required fields) */
+  add(task: Partial<TodoTask>): Observable<TodoTask> {
+    const fullTask: TodoTask = {
+      id: undefined,
+      title: task.title || 'Untitled',
+      description: task.description || '',
+      moduleType: task.moduleType || 'GENERAL',
+      priority: task.priority || 'Medium',
+      status: task.status || 'Pending',
+      category: task.category || 'General Task',
+      assignedTo: task.assignedTo || 'Unassigned',
+      createdBy: 'System',
+      dueDate: task.dueDate || new Date().toISOString().slice(0, 10),
+      reminderDate: task.reminderDate || undefined,
+      notes: task.notes || '',
+      attachments: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    return this.http.post<TodoTask>(this.baseUrl, fullTask);
+  }
+
+  /** ✅ Update task (partial update safe) */
+  update(task: Partial<TodoTask>): Observable<TodoTask> {
+    if (!task.id) throw new Error('Task ID is required for update.');
+
+    const updatedTask = {
+      ...task,
+      updatedAt: new Date().toISOString()
+    };
+
+    return this.http.put<TodoTask>(`${this.baseUrl}/${task.id}`, updatedTask);
+  }
+
+  /** ✅ Delete */
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  /** ✅ Manual load (fallback) */
   getAll(): Observable<TodoTask[]> {
-    return of([...this.tasks]);
-  }
-
-  add(task: TodoTask): Observable<TodoTask> {
-    const id = this.tasks.length ? Math.max(...this.tasks.map(t => t.id || 0)) + 1 : 1;
-    const copy = { ...task, id, createdAt: new Date().toISOString() };
-    this.tasks.push(copy);
-    return of(copy);
-  }
-
-  update(task: TodoTask): Observable<TodoTask> {
-    const i = this.tasks.findIndex(t => t.id === task.id);
-    if (i !== -1) this.tasks[i] = { ...task, updatedAt: new Date().toISOString() };
-    return of(task);
-  }
-
-  delete(id: number): Observable<boolean> {
-    this.tasks = this.tasks.filter(t => t.id !== id);
-    return of(true);
+    return this.http.get<TodoTask[]>(this.baseUrl);
   }
 }

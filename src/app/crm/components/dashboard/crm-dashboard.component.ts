@@ -3,6 +3,7 @@ import { Chart } from 'chart.js/auto';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AggregatedStat, MiniTask, Performer, DashboardService } from '@app/services/dashboard.service';
+import { CrmStatsService } from '@app/services/crm-stats.service';
  
 declare var window: any;
 
@@ -58,10 +59,14 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private employeeChartRef: any;
   private expenseChartRef: any;
 
-  constructor(private router: Router, private svc: DashboardService) {}
+    stats: AggregatedStat[] = [];
+
+
+  constructor(private router: Router, private svc: DashboardService, private crmStatsService: CrmStatsService) {}
 
   ngOnInit(): void {
     this.refreshAll();
+    this.crmStatsService.getAll().subscribe(res => (this.stats = res));
   }
 
   ngAfterViewInit(): void {
