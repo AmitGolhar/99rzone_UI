@@ -1,0 +1,112 @@
+/* ===========================
+   🌈 THEME-AWARE COMPONENTS
+   =========================== */
+
+/* 🧩 Cards */
+.card {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 6%, transparent);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color) 15%, transparent);
+}
+
+/* 🧾 Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: var(--card-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+table thead {
+  background-color: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-weight: 600;
+}
+
+table th,
+table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  color: var(--text-color);
+  cursor: pointer;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color) 10%, transparent);
+}
+
+/* 🏷️ Badges */
+.badge {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+
+/* Default badge */
+.badge.bg-light {
+  background: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+  color: var(--accent-color);
+  border: 1px solid color-mix(in srgb, var(--accent-color) 20%, var(--card-bg));
+}
+
+/* Success badge */
+.badge.bg-success {
+  background: linear-gradient(135deg, #22c55e, color-mix(in srgb, var(--accent-color) 15%, #16a34a));
+  color: #fff;
+  border: none;
+}
+
+/* Warning badge */
+.badge.bg-warning {
+  background: linear-gradient(135deg, #facc15, color-mix(in srgb, var(--accent-color) 10%, #eab308));
+  color: #000;
+}
+
+/* Danger badge */
+.badge.bg-danger {
+  background: linear-gradient(135deg, #ef4444, color-mix(in srgb, var(--accent-color) 10%, #dc2626));
+  color: #fff;
+}
+
+/* 🌀 Spinner */
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
+  color: var(--accent-color);
+  border-width: 3px;
+  border-top-color: transparent;
+  transition: color 0.3s ease;
+}
+
+/* ===========================
+   🌙 Dark Mode Adjustments
+   =========================== */
+[data-theme="dark"] .card {
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 20%, black);
+}
+
+[data-theme="dark"] table thead {
+  background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+}
+
+[data-theme="dark"] .badge.bg-light {
+  background: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+  color: var(--accent-color);
+  border-color: color-mix(in srgb, var(--accent-color) 25%, var(--card-bg));
+}

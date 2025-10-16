@@ -1,0 +1,125 @@
+/* ================================
+   🌈 THEME-AWARE TABLE & MODAL UI
+   ================================ */
+
+/* 🧾 Table Base Styling */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Keep table cells compact & aligned */
+.table th,
+.table td {
+  white-space: nowrap;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Head styling with subtle accent tone */
+.table thead th {
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent-color) 25%, var(--border-color));
+}
+
+/* 🪄 Hover effect for better UX */
+.table-hover tbody tr {
+  transition: background-color 0.3s ease, box-shadow 0.25s ease;
+}
+
+.table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-color) 12%, transparent);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+/* Optional zebra striping for readability */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: color-mix(in srgb, var(--border-color) 8%, var(--card-bg));
+}
+
+/* 🏷️ Modals */
+.modal-content {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color) 15%, transparent);
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Header inside modal */
+.modal-header {
+  background: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+/* Close button and title style */
+.modal-title {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.btn-close {
+  filter: brightness(0) invert(var(--is-dark, 0));
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* Footer inside modal */
+.modal-footer {
+  border-top: 1px solid var(--border-color);
+  background: var(--card-bg);
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+/* ================================
+   🌙 DARK MODE ENHANCEMENTS
+   ================================ */
+[data-theme="dark"] .table thead th {
+  background: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+  border-bottom-color: color-mix(in srgb, var(--accent-color) 30%, var(--border-color));
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 20%, var(--card-bg));
+}
+
+[data-theme="dark"] .modal-content {
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color) 30%, black);
+}
+
+/* ================================
+   📱 Responsive Enhancements
+   ================================ */
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.85rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .modal-content {
+    border-radius: 0.75rem;
+  }
+}

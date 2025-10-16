@@ -1,36 +1,102 @@
-/* src/app/crm/dashboard/crm-dashboard-v2.component.css */
+/* ===== Dashboard Wrapper ===== */
 .crm-dashboard-v2 {
-  background: #f8f9fa;
+  background: var(--bg-color);
   min-height: 100vh;
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 1.5rem;
 }
 
+/* ===== Stat Cards ===== */
 .stat-card {
-  border-top: 6px solid;
-  border-radius: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-top: 5px solid var(--accent-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 8%, transparent);
+  padding: 1rem 1.25rem;
   cursor: pointer;
-  transition: transform .15s ease, box-shadow .15s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
-.stat-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
 
-.card { border-radius: 12px; }
-
-canvas { width: 100% !important; }
-
-.list-group-item { border: 0; padding-left: 0; padding-right: 0; }
-
-.stat-card {
-  border-top: 4px solid;
-  transition: 0.2s;
-}
 .stat-card:hover {
-  transform: scale(1.03);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color) 18%, transparent);
+  border-top-color: color-mix(in srgb, var(--accent-color) 80%, black);
 }
+
+/* Optional hover glow */
+.stat-card.active {
+  border-top-color: var(--accent-color);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent-color) 25%, transparent);
+}
+
+/* ===== Inner Card Styling ===== */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
 .card h6 {
   font-weight: 600;
+  color: var(--text-color);
 }
+
+.card p {
+  color: var(--muted-color);
+}
+
+/* ===== Chart Area ===== */
 canvas {
   width: 100% !important;
   height: 240px !important;
+  border-radius: 8px;
+  background: var(--card-bg);
 }
- 
- 
+
+/* ===== List Items ===== */
+.list-group-item {
+  border: 0;
+  background: transparent;
+  color: var(--text-color);
+  padding: 0.75rem 0;
+  transition: background-color 0.25s ease;
+}
+
+.list-group-item:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+}
+
+/* ===== Section Headings ===== */
+.section-title {
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+  letter-spacing: 0.3px;
+}
+
+/* ===== Dark Mode Enhancements ===== */
+[data-theme="dark"] .stat-card {
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 12%, black);
+}
+
+[data-theme="dark"] .list-group-item:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .crm-dashboard-v2 {
+    padding: 1rem;
+  }
+
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+
+  canvas {
+    height: 200px !important;
+  }
+}

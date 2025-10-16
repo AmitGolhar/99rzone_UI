@@ -19,6 +19,7 @@ import { FollowupAutomationComponent } from './finance/followup-automation/follo
 import { IncentiveComponent } from './finance/incentive/incentive.component';
 import { ExpenseTrackerComponent } from './finance/expense-tracker/expense-tracker.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
+import { MagicBricksLeadsComponent } from './components/magicbricks-leads/magicbricks-leads.component';
 
 const routes: Routes = [
   {
@@ -53,7 +54,9 @@ const routes: Routes = [
       { path: 'finance/incentives', component: IncentiveComponent },
       { path: 'finance/expenses', component: ExpenseTrackerComponent },
       { path: 'tasks', component: TodoListComponent },
-
+      { path: 'magicbricks-leads',component: MagicBricksLeadsComponent},
+      { path: '99acres-leads',component: MagicBricksLeadsComponent},
+    
       { path: '**', redirectTo: 'dashboard' },
     ],
   },

@@ -1,1 +1,39 @@
-.card { border-radius: 10px; }
+/* 🌈 Smart Card Styling */
+.card {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color) 6%, transparent);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
+}
+
+/* 🪶 Hover lift effect */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-color) 15%, transparent);
+}
+
+/* 🧾 Optional Card Header */
+.card-header {
+  background: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+  border-bottom: 1px solid var(--border-color);
+  color: var(--accent-color);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-radius: 10px 10px 0 0;
+}
+
+/* 📄 Optional Card Body */
+.card-body {
+  padding: 1rem 1.25rem;
+}
+
+/* 🌙 Dark theme boost */
+[data-theme='dark'] .card {
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 20%, black);
+}

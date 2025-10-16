@@ -1,98 +1,122 @@
-.header {
+/* ==========================================================
+   🧭 SMART NAVBAR (Theme Adaptive)
+   ========================================================== */
+.smart-navbar {
+  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--navbar-bg) 80%, transparent);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-color) 8%, transparent);
+  padding: 0.8rem 1.2rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.smart-navbar:hover {
+  background: color-mix(in srgb, var(--navbar-bg) 95%, var(--accent-color) 3%);
+}
+
+/* ==========================================================
+   🏷️ BRAND TEXT
+   ========================================================== */
+.brand-text {
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
+  color: var(--accent-color);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #fff;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  gap: 6px;
+  font-weight: 600;
+  transition: color 0.3s ease;
 }
 
-.header .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.header nav ul {
-  display: flex;
-  list-style: none;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-}
-
-.header nav ul li a {
+.brand-text:hover {
   text-decoration: none;
-  color: #333;
+  color: color-mix(in srgb, var(--accent-color) 80%, white);
+}
+
+/* ==========================================================
+   🔗 NAV LINKS
+   ========================================================== */
+.modern-link {
+  position: relative;
+  color: var(--text-color);
   font-weight: 500;
+  padding: 0.6rem 1rem;
+  transition: color 0.3s ease, background 0.3s ease;
+  border-radius: 6px;
 }
 
-.header .actions button {
-  background: #ff5722;
+.modern-link:hover {
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+}
+
+.modern-link.active {
+  color: #fff !important;
+  background: linear-gradient(
+    90deg,
+    var(--accent-color),
+    color-mix(in srgb, var(--accent-color) 60%, black)
+  );
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color) 40%, transparent);
+}
+
+/* ==========================================================
+   🎨 BUTTONS
+   ========================================================== */
+.btn-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--accent-color),
+    color-mix(in srgb, var(--accent-color) 70%, black)
+  );
   color: #fff;
+  font-weight: 500;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
- 
- /* Overall header panel with real estate theme */
-header.navbar {
-  background: linear-gradient(135deg, #4CAF50, #2E7D32);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  border-radius: 0 0 10px 10px; /* slight rounded edges at bottom */
-}
-
-header .navbar-brand {
- 
-  font-weight: 700;
-  font-size: 16px;
-}
-
-.navbar-nav .nav-link {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  margin: 0 0.3rem;
-  color: #d50096 !important;
-  background: #fff;
-  border-radius: 4px;
-  font-weight: 600;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
-  background: #e8f5e9;
-  color: #2E7D32 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+.btn-gradient:hover {
+  transform: scale(1.03);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent-color) 85%, white),
+    var(--accent-color)
+  );
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
-.navbar-nav .nav-link:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.4);
+.btn-outline-primary {
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
-.btn-primary {
-  background-color: #fff;
-  color: #2E7D32;
-  border: none;
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.btn-outline-primary:hover {
+  background: var(--accent-color);
+  color: #fff;
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
-.btn-primary:hover {
-  background-color: #e8f5e9;
-  color: #2E7D32;
-}
-
-
-
-.postbtn {
-  font-size: 14px !important;
-}
-
-.margin-left {
-  margin-left: 10px;
+/* ==========================================================
+   📱 MOBILE OPTIMIZATION
+   ========================================================== */
+@media (max-width: 991px) {
+  .modern-link {
+    text-align: center;
+    display: block;
+  }
+  .navbar-nav {
+    margin-top: 1rem;
+  }
+  .btn-gradient,
+  .btn-outline-primary {
+    font-size: 0.9rem;
+    width: 100%;
+  }
 }

@@ -11,6 +11,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SharedModule } from './shared/shared.module';
 import { PropertyMapComponent } from './components/property-map/property-map.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
+import { ThemeService } from './services/theme.service';
  
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
     HeaderComponent,
     HomeComponent,
     PropertyMapComponent,
+    ThemeToggleComponent,
    ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import { AuthInterceptor } from './services/auth.interceptor';
     SharedModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    ThemeService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,9 +1,76 @@
+/* ======================================
+   🌈 Table, Card & Button - Smart Styling
+   ====================================== */
+
+/* 🧾 Table Hover */
+.table-hover tbody tr {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
 .table-hover tbody tr:hover {
-  background-color: #f9f9f9;
+  background-color: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+  color: var(--text-color);
+  cursor: pointer;
 }
+
+/* 💳 Card Styling */
 .card {
+  background: var(--card-bg);
+  color: var(--text-color);
   border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 8%, transparent);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
 }
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+/* 🪶 Buttons */
 .btn {
   border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.25s ease-in-out;
+  padding: 0.45rem 1rem;
+}
+
+/* Primary Button (Accent-aware) */
+.btn-primary {
+  background: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  color: #fff;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color) 25%, transparent);
+}
+
+.btn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color) 90%, black);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 35%, transparent);
+  transform: translateY(-2px);
+}
+
+/* Secondary Button */
+.btn-outline-secondary {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+}
+
+.btn-outline-secondary:hover {
+  background: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  color: var(--accent-color);
+}
+
+/* 🌙 Dark Mode Enhancements */
+[data-theme='dark'] .table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+}
+
+[data-theme='dark'] .card {
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 25%, black);
 }

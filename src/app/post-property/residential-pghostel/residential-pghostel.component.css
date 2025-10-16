@@ -1,0 +1,114 @@
+/* ===========================================
+   🌸 Navigation, Inputs, Drag Area, Buttons
+   =========================================== */
+
+/* 🧭 Navigation Links */
+.nav-link {
+  cursor: pointer;
+  color: var(--accent-color, #d50096) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+  background: color-mix(in srgb, var(--accent-color, #d50096) 12%, var(--card-bg, #fff));
+  color: var(--accent-color, #d50096) !important;
+}
+
+.nav-link.active {
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--accent-color, #d50096);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--accent-color, #d50096) 25%, transparent);
+}
+
+/* 🌙 Dark Theme Tweaks */
+[data-theme='dark'] .nav-link:hover {
+  background: color-mix(in srgb, var(--accent-color, #ff3ba2) 15%, var(--card-bg, #0f1724));
+}
+
+[data-theme='dark'] .nav-link.active {
+  background: color-mix(in srgb, var(--accent-color, #ff3ba2) 80%, black);
+}
+
+/* ===========================================
+   🧾 Input with Datalist (Search / Autocomplete)
+   =========================================== */
+
+input[list] {
+  border-radius: 0.375rem;
+  border: 1px solid var(--border-color, #ddd);
+  background: var(--card-bg, #fff);
+  color: var(--text-color, #222);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+input[list]:focus {
+  border-color: var(--accent-color, #d50096);
+  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--accent-color, #d50096) 25%, transparent);
+  outline: none;
+}
+
+input[list]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* ===========================================
+   📦 Drag-and-Drop Highlight
+   =========================================== */
+
+.drag-over {
+  border: 2px dashed var(--accent-color, #d50096) !important;
+  background-color: color-mix(in srgb, var(--accent-color, #d50096) 12%, var(--bg-color, #f8f9fa)) !important;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-color, #d50096) 25%, transparent);
+  transition: all 0.25s ease;
+}
+
+/* ===========================================
+   🎯 Button Group
+   =========================================== */
+
+.btn-group .btn {
+  min-width: 100px;
+  border-radius: 6px !important;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  color: var(--text-color, #333);
+  border: 1px solid var(--border-color, #ddd);
+}
+
+.btn-group .btn:hover {
+  background: color-mix(in srgb, var(--accent-color, #d50096) 12%, var(--card-bg, #fff));
+  color: var(--accent-color, #d50096);
+}
+
+.btn-group .btn.active {
+  background: var(--accent-color, #d50096);
+  color: #fff;
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--accent-color, #d50096) 25%, transparent);
+}
+
+/* ===========================================
+   💅 Accent Variable (Default + Dark Mode)
+   =========================================== */
+
+:root {
+  --accent-color: #d50096; /* Pink CRM Theme */
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #1f2937;
+  --border-color: rgba(0,0,0,0.08);
+}
+
+[data-theme='dark'] {
+  --accent-color: #ff3ba2;
+  --bg-color: #0d1117;
+  --card-bg: #0f1724;
+  --text-color: #e5e7eb;
+  --border-color: rgba(255,255,255,0.08);
+}

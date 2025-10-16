@@ -1,29 +1,90 @@
+/* ===========================================
+   🌈 NAVIGATION, INPUT, BUTTON & DRAG STYLES
+   =========================================== */
+
+/* 🧭 Navigation Links */
 .nav-link {
   cursor: pointer;
+  color: var(--text-color);
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 8px 14px;
+  transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+  background: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  color: var(--accent-color);
 }
 
 .nav-link.active {
-  font-weight: bold;
-  color: #0d6efd; /* Bootstrap primary */
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-color);
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--accent-color) 25%, transparent);
 }
 
+/* 🌙 Dark Theme Tweaks */
+[data-theme="dark"] .nav-link:hover {
+  background: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+}
 
-/* In your CSS file or styles.css */
+[data-theme="dark"] .nav-link.active {
+  background: color-mix(in srgb, var(--accent-color) 80%, black);
+  color: #fff;
+}
+
+/* ===========================================
+   🧾 Input with Datalist (Search/Autocomplete)
+   =========================================== */
+
+input[list] {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-color) 5%, transparent);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input[list]:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--accent-color) 25%, transparent);
+  outline: none;
+}
+
+/* Hide dropdown arrow (cleaner UI for datalist) */
 input[list]::-webkit-calendar-picker-indicator {
   display: none;
 }
-input[list] {
-  border-radius: 0.375rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+/* ===========================================
+   📦 Drag-and-Drop File Upload Highlight
+   =========================================== */
+
+.drag-over {
+  border: 2px dashed var(--accent-color) !important;
+  background-color: color-mix(in srgb, var(--accent-color) 10%, var(--bg-color)) !important;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-color) 25%, transparent);
+  transition: all 0.25s ease-in-out;
 }
 
-/* Optional for better drag-and-drop area highlight */
-.drag-over {
-  border: 2px dashed #007bff !important;
-  background-color: #e9f7fe !important;
-}
+/* ===========================================
+   🎯 Button Group Styling
+   =========================================== */
 
 .btn-group .btn {
   min-width: 100px;
+  border-radius: 6px !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
- 
+
+.btn-group .btn:hover {
+  background: color-mix(in srgb, var(--accent-color) 12%, var(--card-bg));
+  color: var(--accent-color);
+}
+
+.btn-group .bt

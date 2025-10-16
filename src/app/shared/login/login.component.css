@@ -1,41 +1,52 @@
-/* --- Container Layout --- */
+/* ==========================================================
+   🧭 PAGE WRAPPER (Theme Adaptive)
+   ========================================================== */
 .page-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
+  background: var(--bg-color);
   font-family: "Inter", "Segoe UI", Roboto, sans-serif;
   padding: 16px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* --- Card --- */
+/* ==========================================================
+   🧩 CARD CONTAINER
+   ========================================================== */
 .form-card {
   width: 100%;
   max-width: 420px;
-  background: #ffffff;
+  background: var(--card-bg);
+  color: var(--text-color);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-color) 10%, transparent);
   padding: 28px 24px;
   box-sizing: border-box;
   animation: fadeIn 0.4s ease;
+  border: 1px solid var(--border-color);
 }
 
-/* --- Title --- */
+/* ==========================================================
+   🧾 TITLES & SUBTITLES
+   ========================================================== */
 .form-title {
   margin: 0 0 4px;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-color);
 }
 
 .form-subtitle {
   margin: 0 0 20px;
-  color: #475569;
+  color: var(--muted-color);
   font-size: 0.95rem;
 }
 
-/* --- Form Fields --- */
+/* ==========================================================
+   🧱 FORM FIELDS
+   ========================================================== */
 .form-field {
   display: flex;
   flex-direction: column;
@@ -45,28 +56,32 @@
 .form-field label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-color);
   margin-bottom: 6px;
 }
 
 .form-field input {
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-color);
   outline: none;
   font-size: 0.95rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--card-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
 .form-field input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent);
 }
 
-/* --- Buttons --- */
+/* ==========================================================
+   🎨 BUTTONS
+   ========================================================== */
 .btn-primary {
   width: 100%;
-  background: linear-gradient(180deg, #2563eb, #1e40af);
+  background: var(--accent-color);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -74,57 +89,69 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 .btn-primary:disabled {
-  background: #94a3b8;
+  background: color-mix(in srgb, var(--accent-color) 20%, var(--card-bg));
+  color: var(--muted-color);
   cursor: not-allowed;
 }
 
-/* --- Messages --- */
+/* ==========================================================
+   ⚠️ MESSAGE BOXES (Error / Success)
+   ========================================================== */
 .error-msg {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: color-mix(in srgb, #dc2626 12%, var(--card-bg));
+  color: #dc2626;
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 10px;
   font-size: 0.9rem;
+  border: 1px solid color-mix(in srgb, #dc2626 40%, transparent);
 }
 
 .success-msg {
-  background: #dcfce7;
-  color: #166534;
+  background: color-mix(in srgb, #16a34a 12%, var(--card-bg));
+  color: #16a34a;
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 10px;
   font-size: 0.9rem;
+  border: 1px solid color-mix(in srgb, #16a34a 40%, transparent);
 }
 
-/* --- Switch Text --- */
+/* ==========================================================
+   🔄 SWITCH TEXT (Login/Signup Toggle)
+   ========================================================== */
 .switch-text {
   text-align: center;
   margin-top: 1rem;
   font-size: 0.9rem;
-  color: #475569;
+  color: var(--muted-color);
 }
 
 .switch-text a {
-  color: #2563eb;
+  color: var(--accent-color);
   font-weight: 600;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .switch-text a:hover {
   text-decoration: underline;
+  color: color-mix(in srgb, var(--accent-color) 85%, white);
 }
 
-/* --- Animation --- */
+/* ==========================================================
+   ✨ ANIMATION
+   ========================================================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -136,7 +163,9 @@
   }
 }
 
-/* --- Mobile --- */
+/* ==========================================================
+   📱 RESPONSIVE DESIGN
+   ========================================================== */
 @media (max-width: 480px) {
   .form-card {
     padding: 20px;

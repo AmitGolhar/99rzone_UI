@@ -1,0 +1,43 @@
+<div class="card p-3 shadow-sm">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5>🏠 MagicBricks Leads</h5>
+    <span class="badge bg-primary fs-6">Total: {{ count }}</span>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <table class="table table-hover align-middle" *ngIf="!loading && leads.length">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Property</th>
+        <th>City</th>
+        <th>Locality</th>
+        <th>Received</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let l of leads; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ l.name }}</td>
+        <td>{{ l.phone }}</td>
+        <td>{{ l.email }}</td>
+        <td>{{ l.propertyName }}</td>
+        <td>{{ l.city }}</td>
+        <td>{{ l.locality }}</td>
+        <td>{{ l.receivedAt | date:'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && !leads.length" class="text-center py-4 text-muted">
+    No leads received yet.
+  </div>
+</div>

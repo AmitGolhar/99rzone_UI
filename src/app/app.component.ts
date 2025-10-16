@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'w3realestateUI';
   showHeader = false;
 
-   constructor(private router: Router) {
+   constructor(private router: Router,private themeService: ThemeService) {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
       const token = localStorage.getItem('auth_token');
       const hideRoutes = ['/login', '/register'];
@@ -20,5 +21,7 @@ export class AppComponent {
   }
     
  
-
+ngOnInit(): void {
+    this.themeService.loadTheme(); // apply stored theme on app startup
+  }
 }

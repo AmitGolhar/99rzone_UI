@@ -1,15 +1,106 @@
-.table-hover tbody tr:hover {
-  background-color: #f9f9f9;
+/* ===== 🧾 Table Hover ===== */
+.table-hover tbody tr {
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+.table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  color: var(--text-color);
+  cursor: pointer;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color) 8%, transparent);
+}
+
+/* Optional: subtle border effect for rows */
+.table-hover tbody tr td {
+  border-top: 1px solid var(--border-color);
+}
+
+/* ===== 🪟 Modal Titles ===== */
 .modal-title {
   font-weight: 600;
+  color: var(--accent-color);
+  letter-spacing: 0.3px;
+  transition: color 0.3s ease;
 }
 
+/* ===== 🧩 Buttons ===== */
 .btn {
-  border-radius: 6px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.25s ease;
 }
 
-input.form-control, select.form-select, textarea.form-control {
-  border-radius: 6px;
+/* Primary Buttons */
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 85%, black);
+  border-color: color-mix(in srgb, var(--accent-color) 90%, black);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color) 30%, transparent);
+}
+
+/* Secondary / Outline Buttons */
+.btn-outline-primary {
+  border: 1.5px solid var(--accent-color);
+  color: var(--accent-color);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--accent-color) 25%, transparent);
+}
+
+/* Success Buttons */
+.btn-success {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 40%, #28a745), #28a745);
+  border: none;
+  color: #fff;
+}
+
+.btn-success:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 25%, #28a745);
+}
+
+/* ===== 🧠 Form Controls ===== */
+input.form-control,
+select.form-select,
+textarea.form-control {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: all 0.25s ease;
+  font-size: 0.95rem;
+  box-shadow: none;
+}
+
+input.form-control:focus,
+select.form-select:focus,
+textarea.form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--accent-color) 40%, transparent);
+  background-color: color-mix(in srgb, var(--card-bg) 90%, var(--accent-color) 5%);
+  outline: none;
+}
+
+/* Placeholder Color */
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted-color);
+  opacity: 0.9;
+}
+
+/* ===== Dark Mode Table Adjustments ===== */
+[data-theme="dark"] .table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--accent-color) 20%, transparent);
 }

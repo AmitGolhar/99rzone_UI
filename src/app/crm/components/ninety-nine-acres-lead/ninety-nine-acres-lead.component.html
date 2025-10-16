@@ -1,0 +1,73 @@
+<div class="container-fluid py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>🏡 99acres Leads</h4>
+    <span class="badge bg-primary fs-6">Total: {{ count }}</span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-responsive shadow-sm rounded bg-white p-2">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Lead ID</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>City</th>
+          <th>Locality</th>
+          <th>Budget</th>
+          <th>Req Type</th>
+          <th>Agent</th>
+          <th>Received</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lead of leads; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ lead.leadId || '-' }}</td>
+          <td>{{ lead.name }}</td>
+          <td>{{ lead.phone }}</td>
+          <td>{{ lead.city }}</td>
+          <td>{{ lead.locality }}</td>
+          <td>{{ lead.budget }}</td>
+          <td>{{ lead.requirementType }}</td>
+          <td>{{ lead.agentName || '-' }}</td>
+          <td>{{ lead.receivedAt | date:'short' }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary" (click)="viewLead(lead)">
+              🔍
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Lead Details Modal -->
+<div class="modal fade" id="leadModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Lead Details</h5>
+        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedLead">
+        <div class="row g-3">
+          <div class="col-md-6"><strong>Name:</strong> {{ selectedLead.name }}</div>
+          <div class="col-md-6"><strong>Phone:</strong> {{ selectedLead.phone }}</div>
+          <div class="col-md-6"><strong>Email:</strong> {{ selectedLead.email }}</div>
+          <div class="col-md-6"><strong>City:</strong> {{ selectedLead.city }}</div>
+          <div class="col-md-6"><strong>Locality:</strong> {{ selectedLead.locality }}</div>
+          <div class="col-md-6"><strong>Budget:</strong> {{ selectedLead.budget }}</div>
+          <div class="col-md-6"><strong>Requirement:</strong> {{ selectedLead.requirementType }}</div>
+          <div class="col-md-6"><strong>Property:</strong> {{ selectedLead.propertyName }}</div>
+          <div class="col-md-12"><strong>Message:</strong> {{ selectedLead.message }}</div>
+          <div class="col-md-6"><strong>Agent:</strong> {{ selectedLead.agentName }}</div>
+          <div class="col-md-6"><strong>Received:</strong> {{ selectedLead.receivedAt | date:'medium' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

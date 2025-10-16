@@ -1,1 +1,49 @@
-.card { border-radius: 10px; }
+/* 🌈 Smart Theme-Aware Card Design */
+.card {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 8%, transparent);
+  transition: 
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
+  overflow: hidden;
+}
+
+/* 💫 Hover Effect */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color) 18%, transparent);
+}
+
+/* 🧾 Optional Header */
+.card-header {
+  background: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+  border-bottom: 1px solid var(--border-color);
+  color: var(--accent-color);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 0.75rem 1rem;
+}
+
+/* 🪶 Optional Body */
+.card-body {
+  padding: 1rem 1.25rem;
+}
+
+/* 🌙 Dark Mode Boost */
+[data-theme="dark"] .card {
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 20%, black);
+}
+
+[data-theme="dark"] .card-header {
+  background: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+}
+
+/* 🧱 Optional Accent Border Variant */
+.card.accent {
+  border-top: 4px solid var(--accent-color);
+}

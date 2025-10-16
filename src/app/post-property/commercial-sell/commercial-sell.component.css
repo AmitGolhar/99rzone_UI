@@ -1,31 +1,105 @@
+/* ===========================================
+   🌈 Navigation, Inputs, Drag & Buttons
+   =========================================== */
+
+/* 🧭 Navigation Links */
 .nav-link {
   cursor: pointer;
+  color: var(--accent-color) !important;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+  background: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  color: var(--accent-color);
 }
 
 .nav-link.active {
-  font-weight: bold;
-  color: #0d6efd; /* Bootstrap primary */
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--accent-color);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color) 25%, transparent);
 }
 
+/* 🌙 Dark Theme Tweaks */
+[data-theme='dark'] .nav-link:hover {
+  background: color-mix(in srgb, var(--accent-color) 20%, var(--card-bg));
+}
 
-/* In your CSS file or styles.css */
+[data-theme='dark'] .nav-link.active {
+  background: color-mix(in srgb, var(--accent-color) 80%, black);
+}
+
+/* ===========================================
+   🧾 Input with Datalist (Autocomplete)
+   =========================================== */
+input[list] {
+  border-radius: 0.375rem;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-color) 5%, transparent);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input[list]:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--accent-color) 25%, transparent);
+  outline: none;
+}
+
+/* Hide dropdown arrow (cleaner look) */
 input[list]::-webkit-calendar-picker-indicator {
   display: none;
 }
-input[list] {
-  border-radius: 0.375rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
 
-/* Optional for better drag-and-drop area highlight */
+/* ===========================================
+   📦 Drag-and-Drop Upload Highlight
+   =========================================== */
 .drag-over {
-  border: 2px dashed #007bff !important;
-  background-color: #e9f7fe !important;
+  border: 2px dashed var(--accent-color) !important;
+  background-color: color-mix(in srgb, var(--accent-color) 10%, var(--bg-color)) !important;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-color) 25%, transparent);
+  transition: all 0.25s ease;
 }
 
+/* ===========================================
+   🎯 Button Group Styling
+   =========================================== */
 .btn-group .btn {
   min-width: 100px;
+  border-radius: 6px !important;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
 }
-.nav-link{
-  color: #d50096 !important;
+
+.btn-group .btn:hover {
+  background: color-mix(in srgb, var(--accent-color) 12%, var(--card-bg));
+  color: var(--accent-color);
+}
+
+.btn-group .btn.active {
+  background: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--accent-color) 25%, transparent);
+}
+
+/* ===========================================
+   ✨ Custom Accent (for pink theme preference)
+   =========================================== */
+:root {
+  --accent-color: #d50096; /* Your custom CRM pink theme */
+}
+
+/* Works with your existing theme system */
+[data-theme='dark'] {
+  --accent-color: #ff3ba2; /* Slightly brighter tone for dark mode */
 }

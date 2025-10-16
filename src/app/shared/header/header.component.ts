@@ -7,7 +7,16 @@ declare var bootstrap:any
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  
+  navItems = [
+  { label: 'Buy', link: '/buy' },
+  { label: 'Rent', link: '/rent' },
+  { label: 'Commercial', link: '/commercial' },
+  { label: 'Post Property', link: '/post-property' },
+  { label: 'Check On Map', link: '/check_on_map' },
+  { label: 'CRM', link: '/crm' },
+];
+
+
   constructor(private router: Router) {}
 
 

@@ -1,10 +1,83 @@
+/* ==========================================
+   🌈 Modern Card & Badge Styling (Theme-Aware)
+   ========================================== */
+
+/* 🧩 Cards */
 .card {
+  background: var(--card-bg);
+  color: var(--text-color);
   border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 6%, transparent);
+  transition: 
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
 }
+
+/* 💫 Hover */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-color) 15%, transparent);
+}
+
+/* 🏷️ Badges (Modern Look) */
+.badge {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+  transition: all 0.25s ease;
+}
+
+/* ✅ Success Badge */
 .badge-success {
-  background-color: #28a745;
+  background: linear-gradient(135deg, #22c55e, color-mix(in srgb, var(--accent-color) 10%, #16a34a));
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 6px color-mix(in srgb, #22c55e 25%, transparent);
 }
+
+.badge-success:hover {
+  box-shadow: 0 4px 10px color-mix(in srgb, #22c55e 35%, transparent);
+}
+
+/* ⚠️ Warning Badge */
 .badge-warning {
-  background-color: #ffc107;
+  background: linear-gradient(135deg, #facc15, color-mix(in srgb, var(--accent-color) 8%, #eab308));
   color: #000;
+  box-shadow: 0 2px 6px color-mix(in srgb, #facc15 20%, transparent);
+}
+
+.badge-warning:hover {
+  box-shadow: 0 4px 10px color-mix(in srgb, #facc15 30%, transparent);
+}
+
+/* 🔵 Optional Accent Badge */
+.badge-accent {
+  background: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-color) 25%, transparent);
+}
+
+.badge-accent:hover {
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 35%, transparent);
+}
+
+/* 🌙 Dark Mode Tweaks */
+[data-theme="dark"] .card {
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 20%, black);
+}
+
+[data-theme="dark"] .badge-warning {
+  color: #111;
+  background: linear-gradient(135deg, #facc15, #eab308);
+}
+
+[data-theme="dark"] .badge-success {
+  background: linear-gradient(135deg, #16a34a, color-mix(in srgb, var(--accent-color) 15%, #22c55e));
 }

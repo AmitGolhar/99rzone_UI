@@ -1,37 +1,42 @@
-<header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3">
+<header class="navbar navbar-expand-lg smart-navbar">
   <div class="container-fluid">
-    <a class="navbar-brand fw-bold margin-left" routerLink="/">Local Briks🏠</a>
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold brand-text" routerLink="/home">
+      <span class="logo-icon">🏠</span> Local Briks
+    </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Toggle Button -->
+    <button
+      class="navbar-toggler border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/buy" routerLinkActive="active" (click)="closeNavbar()">Buy</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/rent" routerLinkActive="active" (click)="closeNavbar()">Rent</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/commercial" routerLinkActive="active" (click)="closeNavbar()">Commercial</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/post-property" routerLinkActive="active" (click)="closeNavbar()">Post Property</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/check_on_map" routerLinkActive="active" (click)="closeNavbar()">Check On Map</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/crm" routerLinkActive="active" (click)="closeNavbar()">CRM</a>
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav align-items-center gap-2">
+        <li class="nav-item" *ngFor="let item of navItems">
+          <a
+            class="nav-link modern-link"
+            [routerLink]="item.link"
+            routerLinkActive="active"
+            (click)="closeNavbar()">
+            {{ item.label }}
+          </a>
         </li>
       </ul>
-      
-      <div>
-        <button class="btn btn-primary" (click)="logout()">Logout</button>
-      </div>
     </div>
+ <!-- Right Buttons -->
+   <div class="d-flex align-items-center gap-3">
+ 
+  <button class="btn btn-primary" (click)="logout()">Logout</button>
+</div>
+
+   
   </div>
 </header>

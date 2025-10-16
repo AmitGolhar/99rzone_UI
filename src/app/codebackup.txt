@@ -1,134 +1,779 @@
-   ### all from Post Your Property - Rent Property Details
+/* 1️⃣ Common Dropdown Styling */
 
-               <!-- Looking For  -->
-            <div class="mb-3">
-              <label for="purposeStatus" class="form-label">
-                Looking For <span class="text-danger">*</span>
-              </label>
-              <select id="purposeStatus" class="form-select" [(ngModel)]="formData.purposeStatus" name="purposeStatus"
-                required #purposeRef="ngModel">
-                <option value="">Select</option>
-                <option value="Full House">Rent</option>
-                <option value="Land/Plot">Buy</option>
-                 <option value="Sell">Sell</option>
-
-                  <option value="Lease">Lease</option>
-                   <option value="PG/Coliving">PG/Coliving</option>
-                    <option value="Short-Term Rent">Short-Term Rent</option>
-                    <option value="Invest">Invest</option>
-              </select>
-              <div class="text-danger" *ngIf="purposeRef.invalid && (purposeRef.dirty || purposeRef.touched)">This field is
-                required</div>
-            </div>
+body {
+  background: #f1f8f4; /* soft greenish background complementing the header theme */
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
 
 
-
-              <!-- Property Status -->
-            <div class="mb-3">
-              <label for="propertyStatus" class="form-label">
-                Property Status <span class="text-danger">*</span>
-              </label>
-              <select id="propertyStatus" class="form-select" [(ngModel)]="formData.propertyStatus" name="propertyStatus" required
-                #propertyStatusRef="ngModel">
-                <option value="">Select</option>
-              
-                <option value="Ready to Move">Ready to Move</option>
-                <option value="Under Construction">Under Construction</option>
-              
-                <option value="New Launch">New Launch</option>
-                <option value="Possession Soon">Possession Soon</option>
-                <option value="Pre-Launch">Pre-Launch</option>
-                <option value="Resale">Resale</option>
-              </select>
-              <div class="text-danger"
-                *ngIf="propertyStatusRef.invalid && (propertyStatusRef.dirty || propertyStatusRef.touched)">This field is
-                required</div>
-            </div>
+.container-fluid {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
 
+select.form-select {
+  appearance: none; /* Remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #f8f9fa; /* Light background */
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem; /* Rounded corners */
+  padding: 0.5rem 2.5rem 0.5rem 1rem; /* Space for custom icon */
+  font-size: 1rem;
+  color: #495057;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M70 100 L20 40 L120 40 Z' fill='%23666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
 
-             
-    
-            <!-- Availability Status -->
-            <div class="mb-3">
-              <label for="availabilityStatus" class="form-label">
-                Availability Status <span class="text-danger">*</span>
-              </label>
-              <select id="availabilityStatus" class="form-select" [(ngModel)]="formData.availabilityStatus"
-                name="availabilityStatus" required #availabilityRef="ngModel">
-                <option value="">Select</option>
-                <option value="Full House">Immediate</option>
-                <option value="Land/Plot">within 1 week</option>
-                <option value="Land/Plot">within 15 days</option>
-                <option value="Land/Plot">30 days</option>
-                <option value="Land/Plot">60 days</option>
-                <option value="Land/Plot">90 days</option>
-              </select>
-              <div class="text-danger"
-                *ngIf="availabilityRef.invalid && (availabilityRef.dirty || availabilityRef.touched)">This field is required
-              </div>
-            </div>
-    
+select.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+  background-color: #ffffff; /* Bright background on focus */
+}
 
-End Post Your Property - Rent Property Details
+/* 2️⃣ Hover Effect */
+select.form-select:hover {
+  border-color: #80bdff;
+}
 
+/* 3️⃣ Remove default arrow for Safari */
+select.form-select::-ms-expand {
+  display: none;
+}
 
+/* General spacing & alignment */
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 
+.form-check-label {
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
 
+/* Make radio and checkbox bigger for better UX */
+.form-check-input {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
 
+/* Optional: color customization */
+.form-check-input:checked {
+  background-color: #0d6efd; /* Bootstrap primary */
+  border-color: #0d6efd;
+}
 
+.btn-outline-primary {
+  border: 2px solid #0d6efd;
+  color: #0d6efd;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
 
- <!-- Property BuyType -->
-            <div class="mb-3">
-              <label for="buyPropertyType" class="form-label">
-                Buy Property Type <span class="text-danger">*</span>
-              </label>
-              <select id="buyPropertyType" class="form-select" [(ngModel)]="formData.buyPropertyType" name="buyPropertyType"
-                required #buyPropertyTypeRef="ngModel">
-                <option value="">Select</option>
-                 <option value="NA">NA</option>
-                <option value="Full Property">Full Property</option>
-                <option value="Land/Plot">Land/Plot</option>
-              </select>
-              <div class="text-danger"
-                *ngIf="buyPropertyTypeRef.invalid && (buyPropertyTypeRef.dirty || buyPropertyTypeRef.touched)">This field is
-                required</div>
-            </div>
-    
-            <!-- Rental Type -->
-              <ng-container  *ngIf="this.postPropertyParentForm.propertyAdsType == 'Rent'">
-              <div class="mb-3">
-              <label for="RentalType" class="form-label">
-                Rental Type <span class="text-danger">*</span>
-              </label>
-              <select id="RentalType" class="form-select" [(ngModel)]="formData.rentalType" name="RentalType" required
-                #RentalTypeRef="ngModel">
-                <option value="">Select</option>
-                <option value="NA">NA</option>
-                <option value="Full Property">Full Property</option>
-                <option value="PG/Hostel">PG/Hostel</option>
+.btn-outline-primary:hover,
+.btn-outline-primary.active {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-              </select>
-              <div class="text-danger" *ngIf="RentalTypeRef.invalid && (RentalTypeRef.dirty || RentalTypeRef.touched)">This
-                field is required</div>
-            </div>
-              </ng-container>
-
-
-formData
-
-formData.apartmentType
-
-formData.bhkType
-
-formData.floor
-formData.totalFloor
-formData.facing
-formData.apartmentName
-formData.propertyAge
-formData.builtUpArea
+.form-check .form-check-input {
+ 
+    border: 1px solid #0488e5 !important;
+}
 
 
+/* 🌆 General App Layout */
+body {
+  background-color: #f8f9fc;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #2d3436;
+}
+
+/* 🔵 Headings & Text */
+h4, h2, h3 {
+  font-weight: 600;
+  color: #0d6efd;
+  letter-spacing: -0.3px;
+}
+p {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+/* 🧭 Tabs Styling (Buy / Rent / Commercial) */
+.nav-tabs, .nav-pills {
+  border: none;
+  background: #ffffff;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+.nav-tabs .nav-item .nav-link,
+.nav-pills .nav-item .nav-link {
+  border: none;
+  border-radius: 50px;
+  color: #0d6efd;
+  font-weight: 500;
+  padding: 10px 25px;
+  transition: all 0.3s ease;
+}
+.nav-tabs .nav-item .nav-link.active,
+.nav-pills .nav-item .nav-link.active {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* 🎯 Form Elements */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+.form-select,
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  padding: 10px 12px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+.form-select:focus,
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+/* 🏷 Labels & Form Layout */
+.form-check-label {
+  font-size: 0.9rem;
+  color: #495057;
+}
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+/* 🔍 Search Bar */
+.input-group {
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.08);
+}
+.input-group .form-control {
+  border: none;
+  border-radius: 0;
+}
+.input-group .btn {
+  border: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.input-group .btn:hover {
+  background-color: #0b5ed7;
+}
+
+/* 🏘 Featured Properties Section */
+.featured-properties h2,
+.featured-properties h3 {
+  color: #212529;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: #0d6efd #e9ecef;
+}
+.scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #0d6efd;
+  border-radius: 6px;
+}
+
+/* 🧩 Property Cards */
+.card {
+  border: none;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(13, 110, 253, 0.15);
+}
+.card .card-body {
+  padding: 1.25rem 1.5rem;
+}
+.card .card-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #0d6efd;
+}
+.card .card-text {
+  font-size: 0.9rem;
+  color: #495057;
+  line-height: 1.4;
+}
+
+/* 🖱 "View Details" Button */
+.btn-outline-primary {
+  border-radius: 50px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ⚡ Utility Enhancements */
+.text-muted {
+  color: #6c757d !important;
+}
+.shadow-sm {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+}
+.rounded-pill {
+  border-radius: 50px !important;
+}
+.hover-shadow:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(13, 110, 253, 0.2);
+}
+
+/* 📱 Mobile Responsiveness */
+@media (max-width: 767.98px) {
+  .nav-tabs .nav-link,
+  .nav-pills .nav-link {
+    font-size: 0.85rem;
+    padding: 8px 15px;
+  }
+
+  .input-group .form-control {
+    font-size: 0.9rem;
+  }
+
+  .card .card-body {
+    padding: 1rem;
+  }
+}
+
+/* 🏡 Universal Modal Styling */
+.modal-content {
+  border-radius: 20px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(13, 110, 253, 0.15);
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+/* ✨ Header */
+.modal-header {
+  background: linear-gradient(135deg, #0d6efd, #3b82f6);
+  color: #fff;
+  border-bottom: none;
+  padding: 1.25rem 2rem;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+.modal-title {
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: 0.3px;
+}
+.btn-close {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* 📋 Body */
+.modal-body {
+  padding: 2rem;
+  background-color: #f8f9fc;
+  border-radius: 0 0 20px 20px;
+  overflow-y: auto;
+}
+
+/* 🦶 Footer */
+.modal-footer {
+  background-color: #ffffff;
+  border-top: 1px solid #dee2e6;
+  padding: 1rem 1.5rem;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.modal-footer .btn {
+  border-radius: 50px;
+  padding: 8px 24px;
+  font-weight: 500;
+}
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  transition: all 0.3s ease;
+}
+.modal-footer .btn-secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* ✨ Section Headings inside modals */
+.modal-body h5 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #0d6efd;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+/* 📋 Improved List Groups (for detail sections) */
+.modal-body .list-group {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.modal-body .list-group-item {
+  border: none;
+  border-bottom: 1px solid #f1f3f5;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.modal-body .list-group-item:last-child {
+  border-bottom: none;
+}
+.modal-body .list-group-item strong {
+  color: #212529;
+  font-weight: 600;
+  width: 45%;
+  min-width: 180px;
+}
+
+/* 🖼️ Images inside modals */
+.modal-body .img-thumbnail {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  object-fit: cover;
+}
+.modal-body .img-thumbnail:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 20px rgba(13, 110, 253, 0.25);
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 768px) {
+  .modal-dialog.modal-fullscreen {
+    padding: 0;
+  }
+  .modal-body {
+    padding: 1rem;
+  }
+  .modal-body .list-group-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .modal-body .list-group-item strong {
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
+  .modal-body h5 {
+    font-size: 1.05rem;
+  }
+}
+
+/* 🌈 Bonus: subtle animation when modal opens */
+.modal.fade .modal-dialog {
+  transform: scale(0.95);
+  transition: all 0.25s ease-in-out;
+}
+.modal.show .modal-dialog {
+  transform: scale(1);
+}
 
 
 
+
+/* 🌇 Global Layout */
+body {
+  background: #f8f9fc;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #2d3436;
+}
+
+/* 🧭 Sidebar Navigation */
+.bg-light {
+  background: #ffffff !important;
+  border-right: 1px solid #e9ecef;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+.bg-light h5 {
+  font-size: 1.05rem;
+  color: #0d6efd;
+}
+.nav-link {
+  color: #495057;
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+}
+.nav-link:hover {
+  background: rgba(13, 110, 253, 0.08);
+  color: #0d6efd;
+}
+.nav-link.active {
+  background-color: #1d2532;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+}
+
+/* 🏗️ Step Heading */
+h4 {
+  font-weight: 600;
+  color: #232c38;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 🧾 Form Containers */
+form {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+form .form-label {
+  font-weight: 500;
+  color: #343a40;
+}
+form .fw-bold {
+  
+}
+
+/* 🪶 Form Controls */
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+/* ⚠️ Error Messages */
+.text-danger {
+  font-size: 0.85rem;
+}
+
+/* 🧩 Input Groups */
+.input-group-text {
+  background-color: #e9ecef;
+  font-weight: 500;
+  border-radius: 0 10px 10px 0;
+}
+
+/* 🧱 Step Section Dividers */
+.row + .row {
+  margin-top: 1.5rem;
+}
+
+/* 🔘 Buttons */
+.btn {
+  border-radius: 50px;
+  padding: 8px 22px;
+  font-weight: 500;
+  transition: all 0.25s ease-in-out;
+}
+.btn-outline-secondary {
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+}
+.btn-outline-secondary:hover {
+  background: #f1f3f5;
+}
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+}
+.btn-success {
+  border: none;
+  background: linear-gradient(135deg, #00b09b, #96c93d);
+  box-shadow: 0 4px 12px rgba(0, 176, 155, 0.3);
+}
+.btn-success:hover {
+  background: linear-gradient(135deg, #00a38c, #85b83a);
+  transform: translateY(-2px);
+}
+
+/* 🧮 Checkbox & Radio */
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+.form-check-label {
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+/* 🏗️ File Upload Section */
+.border.border-secondary {
+  border: 2px dashed #ced4da !important;
+  transition: all 0.3s ease;
+}
+.border.border-secondary:hover {
+  background-color: #eef4ff;
+  border-color: #0d6efd !important;
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+}
+.text-primary {
+  color: #0d6efd !important;
+}
+
+/* 🖼️ Gallery Thumbnails */
+img.img-fluid {
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+img.img-fluid:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.25);
+}
+
+/* 🪜 Navigation Buttons Row */
+.d-flex.justify-content-between {
+  border-top: 1px solid #e9ecef;
+  padding-top: 1.5rem;
+}
+
+/* 🕒 Step-Specific Titles */
+p.fw-bold {
+ 
+  border-left: 4px solid #0d6efd;
+  padding-left: 10px;
+  margin-bottom: 1rem;
+}
+
+/* 🧭 Loader Container Padding */
+.container-fluid {
+  padding: 0;
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 767.98px) {
+  form {
+    padding: 1rem;
+  }
+  .bg-light {
+    border-right: none;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: none;
+  }
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+
+form.ng-star-inserted {
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
+/* fix leaflet marker icons */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+.leaflet-pane img {
+  max-width: none;
+}
+/* ==========================
+   GLOBAL Leaflet Marker Styles
+   ========================== */
+
+.custom-marker {
+       display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    color: #fff;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    transition: all 0.25s ease;
+}
+
+.custom-marker.rent {
+  background-color: #0d6efd; /* Blue for Rent */
+}
+
+.custom-marker.sell {
+  background-color: #28a745; /* Green for Sell */
+}
+
+.custom-marker:hover {
+  transform: scale(1.25);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+.bounce-marker {
+  animation: bounce 1.2s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-20px); }
+  60% { transform: translateY(-10px); }
+}
+
+
+/* ---------- THEME VARIABLES (global) ---------- */
+:root{
+  --bg-color: #f9fafb;
+  --text-color: #1f2937;
+  --card-bg: #ffffff;
+  --muted-color: #6b7280;
+  --navbar-bg: #ffffff;
+  --accent-color: #007bff;
+  --border-color: rgba(0,0,0,0.06);
+  --glass: rgba(255,255,255,0.6);
+}
+
+/* dark theme overrides */
+[data-theme='dark']{
+  --bg-color: #0d1117;
+  --text-color: #e5e7eb;
+  --card-bg: #0f1724;
+  --muted-color: #9ca3af;
+  --navbar-bg: #0b1220;
+  --border-color: rgba(255,255,255,0.04);
+  --glass: rgba(20,24,31,0.6);
+}
+
+/* global base using variables */
+html, body {
+  height: 100%;
+  background: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  font-family: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* smooth transitions app-wide */
+* {
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.2s ease, box-shadow 0.18s ease;
+}
+
+/* components / common */
+.app-card {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.04);
+}
+
+.navbar-custom {
+  background: var(--navbar-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Buttons using accent */
+.btn-accent {
+  background: var(--accent-color);
+  color: #fff;
+  border: 1px solid var(--accent-color);
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.btn-accent.outline {
+  background: transparent;
+  color: var(--accent-color);
+}
+
+a {
+  color: var(--accent-color);
+}
+
+/* utility for color swatches */
+.color-swatch {
+  width: 34px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.08);
+  cursor: pointer;
+  display:inline-block;
+}
+.navbar {
+  background-color: var(--navbar-bg);
+  color: var(--text-color);
+}
+.btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+:host ::ng-deep .navbar {
+  background: var(--navbar-bg);
+  color: var(--text-color);
+}

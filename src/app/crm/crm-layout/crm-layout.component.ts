@@ -8,7 +8,7 @@ declare var bootstrap:any
 })
 export class CrmLayoutComponent {
   menuOpen = false;
-
+ 
   closeSidebar(): void {
     const sidebar = document.getElementById('crmSidebar');
     if (sidebar && sidebar.classList.contains('show')) {

@@ -1,2 +1,67 @@
-.card { border-radius: 10px; }
-canvas { width: 100% !important; }
+/* ======================================
+   🌈 Card + Canvas Styling (CRM Dashboard)
+   ====================================== */
+
+/* 🧩 Smart Card Styling */
+.card {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 8%, transparent);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
+  overflow: hidden;
+}
+
+/* 💫 Subtle hover effect for interactivity */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color) 18%, transparent);
+}
+
+/* 🧾 Optional header for dashboard widgets */
+.card-header {
+  background: color-mix(in srgb, var(--accent-color) 8%, var(--card-bg));
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  color: var(--accent-color);
+  padding: 0.75rem 1rem;
+  letter-spacing: 0.3px;
+}
+
+/* 📊 Card Body (padding and layout for charts) */
+.card-body {
+  padding: 1rem 1.25rem;
+}
+
+/* 📈 Canvas (charts, analytics, dashboards) */
+canvas {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+  border-radius: 6px;
+  background: transparent;
+  transition: filter 0.3s ease;
+}
+
+/* Smooth brightness tweak when hovered */
+.card:hover canvas {
+  filter: brightness(1.05);
+}
+
+/* 🌙 Dark Theme Adjustments */
+[data-theme='dark'] .card {
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 20%, black);
+}
+
+[data-theme='dark'] .card-header {
+  background: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+}
+
+[data-theme='dark'] canvas {
+  filter: brightness(0.95);
+}

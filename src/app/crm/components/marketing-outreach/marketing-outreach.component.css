@@ -1,15 +1,104 @@
-.table-hover tbody tr:hover {
-  background-color: #f9f9f9;
+/* ===========================
+   🌈 THEME-AWARE UI ELEMENTS
+   =========================== */
+
+/* 🧾 Table Hover */
+.table-hover tbody tr {
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+.table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  color: var(--text-color);
+  cursor: pointer;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-color) 10%, transparent);
+}
+
+/* 🪟 Modal Title */
 .modal-title {
   font-weight: 600;
+  color: var(--accent-color);
+  letter-spacing: 0.3px;
+  transition: color 0.3s ease;
 }
 
+/* 🔘 Buttons */
 .btn {
-  border-radius: 6px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  border: none;
 }
 
-input.form-control, select.form-select, textarea.form-control {
-  border-radius: 6px;
+/* Primary Button */
+.btn-primary {
+  background-color: var(--accent-color);
+  color: #fff;
+  border: 1px solid var(--accent-color);
+}
+
+.btn-primary:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 85%, black);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color) 25%, transparent);
+  transform: translateY(-1px);
+}
+
+/* Outline Button */
+.btn-outline-primary {
+  border: 1.5px solid var(--accent-color);
+  background: transparent;
+  color: var(--accent-color);
+}
+
+.btn-outline-primary:hover {
+  background: var(--accent-color);
+  color: #fff;
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--accent-color) 25%, transparent);
+}
+
+/* ✏️ Form Inputs */
+input.form-control,
+select.form-select,
+textarea.form-control {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+input.form-control:focus,
+select.form-select:focus,
+textarea.form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--accent-color) 40%, transparent);
+  outline: none;
+}
+
+/* Placeholder Styling */
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted-color);
+  opacity: 0.9;
+}
+
+/* ===========================
+   🌙 Dark Mode Enhancements
+   =========================== */
+[data-theme="dark"] .table-hover tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 15%, var(--card-bg));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+[data-theme="dark"] .modal-title {
+  color: color-mix(in srgb, var(--accent-color) 85%, #fff);
+}
+
+[data-theme="dark"] input.form-control,
+[data-theme="dark"] select.form-select,
+[data-theme="dark"] textarea.form-control {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
 }

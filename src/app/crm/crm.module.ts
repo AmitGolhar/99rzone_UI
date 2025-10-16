@@ -19,6 +19,8 @@ import { MarketingOutreachComponent } from './components/marketing-outreach/mark
 import { PropertyListingComponent } from './components/property-listing/property-listing.component';
 import { CrmLayoutComponent } from './crm-layout/crm-layout.component';
  import { SharedModule } from '@app/shared/shared.module';
+import { MagicBricksLeadsComponent } from './components/magicbricks-leads/magicbricks-leads.component';
+import { NinetyNineAcresLeadComponent } from './components/ninety-nine-acres-lead/ninety-nine-acres-lead.component';
  
 
 @NgModule({
@@ -35,6 +37,8 @@ import { CrmLayoutComponent } from './crm-layout/crm-layout.component';
     FilterPipe,
     CrmDashboardComponent,
     TodoListComponent,
+    MagicBricksLeadsComponent,
+    NinetyNineAcresLeadComponent,
      
     
   ],
