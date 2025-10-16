@@ -1,0 +1,41 @@
+<div class="page-wrapper">
+  <div class="form-card">
+    <h2 class="form-title">🔐 Login</h2>
+    <p class="form-subtitle">Access your Local Briks account</p>
+
+    <form (ngSubmit)="submit()" #loginForm="ngForm">
+      <div class="form-field">
+        <label>Username</label>
+        <input
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          placeholder="Enter your username"
+          required
+        />
+      </div>
+
+      <div class="form-field">
+        <label>Password</label>
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <div *ngIf="error" class="error-msg">{{ error }}</div>
+
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">
+        Login
+      </button>
+
+       <p class="switch-text">
+        Don’t have an account?
+        <a routerLink="/register">Register here</a>
+      </p>  
+    </form>
+  </div>
+</div>

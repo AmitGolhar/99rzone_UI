@@ -18,6 +18,7 @@ import { LegalDocumentationComponent } from './components/legal-documentation/le
 import { MarketingOutreachComponent } from './components/marketing-outreach/marketing-outreach.component';
 import { PropertyListingComponent } from './components/property-listing/property-listing.component';
 import { CrmLayoutComponent } from './crm-layout/crm-layout.component';
+ import { SharedModule } from '@app/shared/shared.module';
  
 
 @NgModule({
@@ -34,6 +35,7 @@ import { CrmLayoutComponent } from './crm-layout/crm-layout.component';
     FilterPipe,
     CrmDashboardComponent,
     TodoListComponent,
+     
     
   ],
   imports: [
@@ -44,7 +46,8 @@ import { CrmLayoutComponent } from './crm-layout/crm-layout.component';
     ReactiveFormsModule,
     FormsModule,
     FinanceModule,
-    DragDropModule
+    DragDropModule,
+     SharedModule
   ]
 })
 export class CrmModule { }

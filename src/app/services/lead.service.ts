@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
  import { Observable, of } from 'rxjs';
 import { LeadTask } from'@app/models/lead.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@app/environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeadService {
+
+
+    private baseUrl = `${environment.apiUrl}/lead-management`;
+  
+    constructor(private http: HttpClient) {}
+    
   private leadTasks: LeadTask[] = [
   {
     id: 1,
@@ -119,25 +127,28 @@ export class LeadService {
   }
 ];
 
-
+// ✅ Get All Leads
   getAllLeads(): Observable<LeadTask[]> {
-    return of(this.leadTasks);
+    return this.http.get<LeadTask[]>(`${this.baseUrl}`);
   }
 
+  // ✅ Get Lead by ID
+  getLeadById(id: number): Observable<LeadTask> {
+    return this.http.get<LeadTask>(`${this.baseUrl}/${id}`);
+  }
+
+  // ✅ Add New Lead
   addLead(task: LeadTask): Observable<LeadTask> {
-    task.id = this.leadTasks.length + 1;
-    this.leadTasks.push(task);
-    return of(task);
+    return this.http.post<LeadTask>(`${this.baseUrl}`, task);
   }
 
+  // ✅ Update Lead
   updateLead(task: LeadTask): Observable<LeadTask> {
-    const index = this.leadTasks.findIndex(t => t.id === task.id);
-    if (index !== -1) this.leadTasks[index] = task;
-    return of(task);
+    return this.http.put<LeadTask>(`${this.baseUrl}/${task.id}`, task);
   }
 
-  deleteLead(id: number): Observable<boolean> {
-    this.leadTasks = this.leadTasks.filter(t => t.id !== id);
-    return of(true);
+  // ✅ Delete Lead
+  deleteLead(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

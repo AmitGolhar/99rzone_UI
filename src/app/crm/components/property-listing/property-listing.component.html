@@ -3,115 +3,218 @@
   <button class="btn btn-success" (click)="openAddModal()">➕ Add Task</button>
 </div>
 
-<div class="mb-3">
-  <input type="text" class="form-control" placeholder="Search by property name, location..."
-         [(ngModel)]="searchText">
+<!-- 🔄 Loader -->
+<div *ngIf="isLoading" class="text-center my-4">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="text-muted mt-2">Loading property tasks...</p>
 </div>
 
-<table class="table table-hover align-middle">
-  <thead class="table-primary">
-    <tr>
-      <th>#</th>
-      <th>Task Type</th>
-      <th>Property Name</th>
-      <th>Location</th>
-      <th>Assigned To</th>
-      <th>Status</th>
-      <th>Due Date</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let task of propertyTasks | filter: searchText; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{ task.taskType }}</td>
-      <td>{{ task.propertyName }}</td>
-      <td>{{ task.location }}</td>
-      <td>{{ task.assignedTo }}</td>
-      <td>
-        <span class="badge"
-              [ngClass]="{
-                'bg-warning': task.status === 'Pending',
-                'bg-info': task.status === 'In Progress',
-                'bg-success': task.status === 'Completed'
-              }">
-          {{ task.status }}
-        </span>
-      </td>
-      <td>{{ task.dueDate | date:'mediumDate' }}</td>
-      <td>
-        <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(task)">✏️</button>
-        <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.id)">🗑️</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<!-- ❌ Error Message -->
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 
-<!-- Modal -->
-<div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalLabel" aria-hidden="true">
+<!-- 🔍 Search Bar -->
+<div class="mb-3" *ngIf="!isLoading && !errorMessage">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search by property name, location..."
+    [(ngModel)]="searchText"
+  />
+</div>
+
+<!-- 🧾 Table -->
+<div *ngIf="!isLoading && !errorMessage">
+  <table class="table table-hover align-middle">
+    <thead class="table-primary">
+      <tr>
+        <th>#</th>
+        <th>Task Type</th>
+        <th>Property Name</th>
+        <th>Property Code</th>
+        <th>Location</th>
+        <th>Assigned To</th>
+        <th>Status</th>
+        <th>Due Date</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let task of propertyTasks | filter: searchText; let i = index"
+        class="animate__animated animate__fadeIn"
+      >
+        <td>{{ i + 1 }}</td>
+        <td>{{ task.taskType }}</td>
+        <td>{{ task.propertyName }}</td>
+        <td>{{ task.propertyCode || '-' }}</td>
+        <td>{{ task.location }}</td>
+        <td>{{ task.assignedTo }}</td>
+        <td>
+          <span
+            class="badge"
+            [ngClass]="{
+              'bg-warning text-dark': task.status === 'Pending',
+              'bg-info text-dark': task.status === 'In Progress',
+              'bg-success': task.status === 'Completed'
+            }"
+          >
+            {{ task.status }}
+          </span>
+        </td>
+        <td>{{ task.dueDate | date: 'mediumDate' }}</td>
+        <td class="text-center">
+          <button
+            class="btn btn-sm btn-outline-primary me-1"
+            (click)="openEditModal(task)"
+          >
+            ✏️
+          </button>
+          <button
+            class="btn btn-sm btn-outline-danger"
+            (click)="deleteTask(task.id)"
+          >
+            🗑️
+          </button>
+        </td>
+      </tr>
+
+      <!-- Empty Message -->
+      <tr *ngIf="propertyTasks.length === 0">
+        <td colspan="9" class="text-center text-muted py-3">
+          No property tasks found.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 🧩 Modal -->
+<div
+  class="modal fade"
+  id="propertyModal"
+  tabindex="-1"
+  aria-labelledby="propertyModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="propertyModalLabel">
           {{ isEditing ? '✏️ Edit Task' : '➕ Add New Task' }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
 
       <div class="modal-body">
         <form>
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label">Task Type</label>
-              <select class="form-select" [(ngModel)]="selectedTask.taskType" name="taskType" required>
+              <label class="form-label fw-semibold">Task Type</label>
+              <select
+                class="form-select"
+                [(ngModel)]="selectedTask.taskType"
+                name="taskType"
+                required
+              >
                 <option value="">Select...</option>
                 <option *ngFor="let type of taskTypes">{{ type }}</option>
               </select>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Property Name</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedTask.propertyName" name="propertyName" required>
+              <label class="form-label fw-semibold">Property Name</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="selectedTask.propertyName"
+                name="propertyName"
+                required
+              />
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Property Code</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedTask.propertyCode" name="propertyCode">
+              <label class="form-label fw-semibold">Property Code</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="selectedTask.propertyCode"
+                name="propertyCode"
+              />
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Location</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedTask.location" name="location" required>
+              <label class="form-label fw-semibold">Location</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="selectedTask.location"
+                name="location"
+                required
+              />
             </div>
 
             <div class="col-md-6">
-              <label class="form-label">Assigned To</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedTask.assignedTo" name="assignedTo">
+              <label class="form-label fw-semibold">Assigned To</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="selectedTask.assignedTo"
+                name="assignedTo"
+              />
             </div>
 
             <div class="col-md-3">
-              <label class="form-label">Status</label>
-              <select class="form-select" [(ngModel)]="selectedTask.status" name="status">
+              <label class="form-label fw-semibold">Status</label>
+              <select
+                class="form-select"
+                [(ngModel)]="selectedTask.status"
+                name="status"
+              >
                 <option *ngFor="let s of statuses">{{ s }}</option>
               </select>
             </div>
 
             <div class="col-md-3">
-              <label class="form-label">Due Date</label>
-              <input type="date" class="form-control" [(ngModel)]="selectedTask.dueDate" name="dueDate" required>
+              <label class="form-label fw-semibold">Due Date</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="selectedTask.dueDate"
+                name="dueDate"
+                required
+              />
             </div>
 
             <div class="col-12">
-              <label class="form-label">Notes</label>
-              <textarea class="form-control" rows="2" [(ngModel)]="selectedTask.notes" name="notes"></textarea>
+              <label class="form-label fw-semibold">Notes</label>
+              <textarea
+                class="form-control"
+                rows="2"
+                [(ngModel)]="selectedTask.notes"
+                name="notes"
+              ></textarea>
             </div>
           </div>
         </form>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" (click)="saveTask()">{{ isEditing ? 'Update' : 'Save' }}</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          (click)="saveTask()"
+          [disabled]="isLoading"
+        >
+          {{ isEditing ? 'Update' : 'Save' }}
+        </button>
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PropertyTask } from '@app/models/property.model copy';
 import { PropertyService } from '@app/services/property.service';
- 
+import { finalize } from 'rxjs/operators';
 
 declare var bootstrap: any;
 
@@ -15,6 +15,8 @@ export class PropertyListingComponent implements OnInit {
   selectedTask: PropertyTask = this.initTask();
   searchText = '';
   isEditing = false;
+  isLoading = false;
+  errorMessage = '';
 
   taskTypes: string[] = [
     'Property Onboarding',
@@ -34,38 +36,84 @@ export class PropertyListingComponent implements OnInit {
     this.loadTasks();
   }
 
+  /** 🔹 Load All Property Tasks */
   loadTasks(): void {
-    this.propertyService.getAll().subscribe(tasks => this.propertyTasks = tasks);
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.propertyService
+      .getAll()
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (tasks) => (this.propertyTasks = tasks || []),
+        error: (err) => {
+          console.error('❌ Failed to load property tasks:', err);
+          this.errorMessage = 'Failed to load property data. Please try again later.';
+        }
+      });
   }
 
+  /** 🔹 Open Add Modal */
   openAddModal(): void {
     this.isEditing = false;
     this.selectedTask = this.initTask();
-    new bootstrap.Modal(document.getElementById('propertyModal')).show();
+    const modalEl = document.getElementById('propertyModal');
+    if (modalEl) new bootstrap.Modal(modalEl).show();
   }
 
+  /** 🔹 Open Edit Modal */
   openEditModal(task: PropertyTask): void {
     this.isEditing = true;
     this.selectedTask = { ...task };
-    new bootstrap.Modal(document.getElementById('propertyModal')).show();
+    const modalEl = document.getElementById('propertyModal');
+    if (modalEl) new bootstrap.Modal(modalEl).show();
   }
 
+  /** 🔹 Save or Update Task */
   saveTask(): void {
-    if (this.isEditing) {
-      this.propertyService.update(this.selectedTask).subscribe(() => this.loadTasks());
-    } else {
-      this.propertyService.add(this.selectedTask).subscribe(() => this.loadTasks());
+    if (!this.selectedTask.propertyName?.trim() || !this.selectedTask.taskType) {
+      alert('Please fill all mandatory fields before saving.');
+      return;
     }
-    const modal = bootstrap.Modal.getInstance(document.getElementById('propertyModal'));
-    modal?.hide();
+
+    this.isLoading = true;
+    const request$ = this.isEditing
+      ? this.propertyService.update(this.selectedTask)
+      : this.propertyService.add(this.selectedTask);
+
+    request$
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: () => {
+          this.loadTasks();
+          this.closeModal();
+        },
+        error: (err) => {
+          console.error('❌ Save/Update failed:', err);
+          alert('Error saving property task. Please try again.');
+        }
+      });
   }
 
+  /** 🔹 Delete a Task */
   deleteTask(id?: number): void {
-    if (id && confirm('Delete this task?')) {
-      this.propertyService.delete(id).subscribe(() => this.loadTasks());
-    }
+    if (!id) return;
+    if (!confirm('Are you sure you want to delete this task?')) return;
+
+    this.isLoading = true;
+    this.propertyService
+      .delete(id)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: () => this.loadTasks(),
+        error: (err) => {
+          console.error('❌ Delete failed:', err);
+          alert('Failed to delete the task.');
+        }
+      });
   }
 
+  /** 🔹 Initialize New Task */
   initTask(): PropertyTask {
     return {
       taskType: '',
@@ -77,5 +125,14 @@ export class PropertyListingComponent implements OnInit {
       dueDate: '',
       notes: ''
     };
+  }
+
+  /** 🔹 Close Modal */
+  private closeModal(): void {
+    const modalEl = document.getElementById('propertyModal');
+    if (modalEl) {
+      const modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance?.hide();
+    }
   }
 }

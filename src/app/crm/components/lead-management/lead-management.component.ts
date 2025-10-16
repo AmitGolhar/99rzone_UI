@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { LeadTask } from '@app/models/lead.model';
 import { LeadService } from '@app/services/lead.service';
- 
- declare var bootstrap: any;
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-lead-management',
   templateUrl: './lead-management.component.html',
-  styleUrls: ['./lead-management.component.css']
+  styleUrls: ['./lead-management.component.css'],
 })
 export class LeadManagementComponent implements OnInit {
-
   leadTasks: LeadTask[] = [];
   searchText = '';
   selectedTask: LeadTask = this.initTask();
@@ -28,7 +27,7 @@ export class LeadManagementComponent implements OnInit {
     'Negotiation / Offer Discussion',
     'Booking Confirmation',
     'Re-Engage Dormant Lead',
-    'Close / Lost Lead Reason'
+    'Close / Lost Lead Reason',
   ];
 
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
@@ -39,10 +38,17 @@ export class LeadManagementComponent implements OnInit {
     this.loadLeads();
   }
 
+  // ✅ Fetch All Leads
   loadLeads(): void {
-    this.leadService.getAllLeads().subscribe(tasks => this.leadTasks = tasks);
+    this.leadService.getAllLeads().subscribe({
+      next: (tasks) => {
+        this.leadTasks = tasks;
+      },
+      error: (err) => console.error('Error loading leads:', err),
+    });
   }
 
+  // ✅ Open Add Modal
   openAddModal(): void {
     this.isEditing = false;
     this.selectedTask = this.initTask();
@@ -50,6 +56,7 @@ export class LeadManagementComponent implements OnInit {
     if (modal) new bootstrap.Modal(modal).show();
   }
 
+  // ✅ Open Edit Modal
   openEditModal(task: LeadTask): void {
     this.isEditing = true;
     this.selectedTask = { ...task };
@@ -57,23 +64,41 @@ export class LeadManagementComponent implements OnInit {
     if (modal) new bootstrap.Modal(modal).show();
   }
 
+  // ✅ Save Task (Create / Update)
   saveTask(): void {
-    if (this.isEditing) {
-      this.leadService.updateLead(this.selectedTask).subscribe(() => this.loadLeads());
-    } else {
-      this.leadService.addLead(this.selectedTask).subscribe(() => this.loadLeads());
-    }
     const modalEl = document.getElementById('leadModal');
     const modal = bootstrap.Modal.getInstance(modalEl!);
-    modal?.hide();
-  }
 
-  deleteTask(id?: number): void {
-    if (id && confirm('Are you sure you want to delete this task?')) {
-      this.leadService.deleteLead(id).subscribe(() => this.loadLeads());
+    if (this.isEditing) {
+      this.leadService.updateLead(this.selectedTask).subscribe({
+        next: () => {
+          this.loadLeads();
+          modal?.hide();
+        },
+        error: (err) => console.error('Error updating lead:', err),
+      });
+    } else {
+      this.leadService.addLead(this.selectedTask).subscribe({
+        next: () => {
+          this.loadLeads();
+          modal?.hide();
+        },
+        error: (err) => console.error('Error adding lead:', err),
+      });
     }
   }
 
+  // ✅ Delete Lead
+  deleteTask(id?: number): void {
+    if (id && confirm('Are you sure you want to delete this task?')) {
+      this.leadService.deleteLead(id).subscribe({
+        next: () => this.loadLeads(),
+        error: (err) => console.error('Error deleting lead:', err),
+      });
+    }
+  }
+
+  // ✅ Initialize Empty Task
   initTask(): LeadTask {
     return {
       taskType: '',
@@ -83,7 +108,7 @@ export class LeadManagementComponent implements OnInit {
       assignedTo: '',
       status: 'Pending',
       dueDate: '',
-      notes: ''
+      notes: '',
     };
   }
 }
