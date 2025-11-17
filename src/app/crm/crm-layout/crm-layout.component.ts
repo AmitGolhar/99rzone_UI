@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
-declare var bootstrap:any
 @Component({
   selector: 'app-crm-layout',
   templateUrl: './crm-layout.component.html',
@@ -8,21 +7,27 @@ declare var bootstrap:any
 })
 export class CrmLayoutComponent {
   menuOpen = false;
- 
-  closeSidebar(): void {
-    const sidebar = document.getElementById('crmSidebar');
-    if (sidebar && sidebar.classList.contains('show')) {
-      const bsOffcanvas = bootstrap.Offcanvas.getInstance(sidebar);
-      bsOffcanvas?.hide();
-    }
-  }
 
-    toggleMenu(): void {
+  toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
 
   closeMenu(): void {
-    this.menuOpen = false;
+    if (window.innerWidth < 992) {
+      this.menuOpen = false;
+    }
   }
 
+  @HostListener('window:resize')
+  onResize(): void {
+    if (window.innerWidth >= 992) {
+      this.menuOpen = true;  // Keep sidebar visible on desktop
+    } else {
+      this.menuOpen = false; // Hide it on mobile
+    }
+  }
+
+  ngOnInit(): void {
+    this.menuOpen = window.innerWidth >= 992;
+  }
 }

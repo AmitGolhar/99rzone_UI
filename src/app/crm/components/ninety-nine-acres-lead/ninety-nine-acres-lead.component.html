@@ -1,72 +1,150 @@
 <div class="container-fluid py-3">
+  <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>🏡 99acres Leads</h4>
-    <span class="badge bg-primary fs-6">Total: {{ count }}</span>
+    <h4 class="fw-bold text-primary mb-0">🏘 99 Acres Leads</h4>
+
+    <div>
+      <input
+        type="file"
+        (change)="onFileChange($event)"
+        accept=".xls,.xlsx"
+        class="form-control d-inline-block"
+        style="width: 220px"
+      />
+      <button
+        class="btn btn-outline-success ms-2"
+        (click)="uploadLeads()"
+        [disabled]="isUploading || !excelData.length"
+      >
+        ⬆️ Upload Excel
+      </button>
+      <button class="btn btn-outline-secondary ms-2" (click)="clearData()">🧹 Clear</button>
+    </div>
   </div>
 
-  <!-- Table -->
-  <div class="table-responsive shadow-sm rounded bg-white p-2">
-    <table class="table table-hover align-middle">
-      <thead class="table-light">
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="text-center py-4">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 text-muted">Loading leads...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Leads Table -->
+  <div class="table-responsive" *ngIf="!isLoading && leads.length > 0">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-primary">
         <tr>
           <th>#</th>
-          <th>Lead ID</th>
-          <th>Name</th>
+          <th>Service Type</th>
+          <th>Property Type</th>
+          <th>Lead Date</th>
+          <th>Lead Name</th>
           <th>Phone</th>
+          <th>Email</th>
+          <th>Seller</th>
           <th>City</th>
           <th>Locality</th>
-          <th>Budget</th>
-          <th>Req Type</th>
-          <th>Agent</th>
-          <th>Received</th>
-          <th></th>
+          <th>Configuration</th>
+          <th>Price</th>
+          <th>Project</th>
+          <th>Primary Status</th>
+          <th>Secondary Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let lead of leads; let i = index">
+        <tr *ngFor="let lead of leads; index as i">
           <td>{{ i + 1 }}</td>
-          <td>{{ lead.leadId || '-' }}</td>
-          <td>{{ lead.name }}</td>
-          <td>{{ lead.phone }}</td>
+          <td>{{ lead.serviceType }}</td>
+          <td>{{ lead.propertyType }}</td>
+          <td>{{ lead.leadDate }}</td>
+          <td>{{ lead.leadName }}</td>
+          <td>{{ lead.leadPhoneNumber?.replace('(+91)-', '') }}</td>
+          <td>{{ lead.leadEmail }}</td>
+          <td>{{ lead.sellerName }}</td>
           <td>{{ lead.city }}</td>
           <td>{{ lead.locality }}</td>
-          <td>{{ lead.budget }}</td>
-          <td>{{ lead.requirementType }}</td>
-          <td>{{ lead.agentName || '-' }}</td>
-          <td>{{ lead.receivedAt | date:'short' }}</td>
+          <td>{{ lead.configuration }}</td>
+          <td>{{ lead.price }}</td>
+          <td>{{ lead.buildingProjectName }}</td>
           <td>
-            <button class="btn btn-sm btn-outline-primary" (click)="viewLead(lead)">
-              🔍
+            <span class="badge bg-info text-dark">{{ lead.primary_lead_status }}</span>
+          </td>
+          <td>
+            <span class="badge bg-secondary">{{ lead.secondary_lead_status }}</span>
+          </td>
+          <td>
+            <button
+              class="btn btn-sm btn-outline-primary me-1"
+              (click)="viewLead(lead)"
+              title="View Lead Details"
+            >
+              👁️
+            </button>
+            <button
+              class="btn btn-sm btn-outline-danger"
+              (click)="deleteLead(lead.id)"
+              title="Delete Lead"
+            >
+              🗑️
             </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <!-- No Data Message -->
+  <div *ngIf="!isLoading && leads.length === 0" class="text-center text-muted py-4">
+    <p>No 99 Acres leads available.</p>
+  </div>
 </div>
 
 <!-- Lead Details Modal -->
-<div class="modal fade" id="leadModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+<div
+  class="modal fade"
+  id="leadModal"
+  tabindex="-1"
+  aria-labelledby="leadModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Lead Details</h5>
-        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+        <h5 class="modal-title" id="leadModalLabel">
+          Lead Details - {{ selectedLead?.leadName }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
-      <div class="modal-body" *ngIf="selectedLead">
+      <div class="modal-body">
         <div class="row g-3">
-          <div class="col-md-6"><strong>Name:</strong> {{ selectedLead.name }}</div>
-          <div class="col-md-6"><strong>Phone:</strong> {{ selectedLead.phone }}</div>
-          <div class="col-md-6"><strong>Email:</strong> {{ selectedLead.email }}</div>
-          <div class="col-md-6"><strong>City:</strong> {{ selectedLead.city }}</div>
-          <div class="col-md-6"><strong>Locality:</strong> {{ selectedLead.locality }}</div>
-          <div class="col-md-6"><strong>Budget:</strong> {{ selectedLead.budget }}</div>
-          <div class="col-md-6"><strong>Requirement:</strong> {{ selectedLead.requirementType }}</div>
-          <div class="col-md-6"><strong>Property:</strong> {{ selectedLead.propertyName }}</div>
-          <div class="col-md-12"><strong>Message:</strong> {{ selectedLead.message }}</div>
-          <div class="col-md-6"><strong>Agent:</strong> {{ selectedLead.agentName }}</div>
-          <div class="col-md-6"><strong>Received:</strong> {{ selectedLead.receivedAt | date:'medium' }}</div>
+          <div class="col-md-6"><strong>Lead Date:</strong> {{ selectedLead?.leadDate }}</div>
+          <div class="col-md-6"><strong>Service Type:</strong> {{ selectedLead?.serviceType }}</div>
+          <div class="col-md-6"><strong>Property Type:</strong> {{ selectedLead?.propertyType }}</div>
+          <div class="col-md-6"><strong>Configuration:</strong> {{ selectedLead?.configuration }}</div>
+          <div class="col-md-6"><strong>Price:</strong> {{ selectedLead?.price }}</div>
+          <div class="col-md-6"><strong>Project:</strong> {{ selectedLead?.buildingProjectName }}</div>
+          <div class="col-md-6"><strong>Seller:</strong> {{ selectedLead?.sellerName }}</div>
+          <div class="col-md-6"><strong>City:</strong> {{ selectedLead?.city }}</div>
+          <div class="col-md-6"><strong>Locality:</strong> {{ selectedLead?.locality }}</div>
+          <div class="col-md-6"><strong>Email:</strong> {{ selectedLead?.leadEmail || 'N/A' }}</div>
+          <div class="col-md-6"><strong>Phone:</strong> {{ selectedLead?.leadPhoneNumber }}</div>
+          <div class="col-md-6"><strong>Primary Status:</strong> {{ selectedLead?.primary_lead_status }}</div>
+          <div class="col-md-6"><strong>Secondary Status:</strong> {{ selectedLead?.secondary_lead_status }}</div>
+          <div class="col-md-6"><strong>Address:</strong> {{ selectedLead?.address }}</div>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

@@ -53,7 +53,7 @@ export class TodoService {
       id: undefined,
       title: task.title || 'Untitled',
       description: task.description || '',
-      moduleType: task.moduleType || 'GENERAL',
+      moduleType: task.moduleType || 'OTHER',
       priority: task.priority || 'Medium',
       status: task.status || 'Pending',
       category: task.category || 'General Task',

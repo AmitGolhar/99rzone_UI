@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientTask } from '@app/models/client.model';
 import { ClientService } from '@app/services/client.service';
+import { EmployeeService } from '@app/services/employee.service';
+import { Employee } from '@app/models/employee.model';
 import { finalize } from 'rxjs/operators';
 
 declare var bootstrap: any;
@@ -12,6 +14,7 @@ declare var bootstrap: any;
 })
 export class ClientInteractionComponent implements OnInit {
   clientTasks: ClientTask[] = [];
+  employees: Employee[] = [];   // ✅ employee list here
   selectedTask: ClientTask = this.initTask();
   isEditing = false;
   isLoading = false;
@@ -33,10 +36,22 @@ export class ClientInteractionComponent implements OnInit {
 
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
 
-  constructor(private clientService: ClientService) {}
+  constructor(
+    private clientService: ClientService,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
+    this.loadEmployees(); // ✅ Load employee list on init
+  }
+
+  // 🔹 Load all employees
+  loadEmployees(): void {
+    this.employeeService.getAllEmployees().subscribe({
+      next: (list) => (this.employees = list),
+      error: () => console.error("Failed to load employees")
+    });
   }
 
   // 🔹 Load all client tasks
@@ -50,21 +65,18 @@ export class ClientInteractionComponent implements OnInit {
       });
   }
 
-  // 🔹 Open modal for add
   openAddModal(): void {
     this.isEditing = false;
     this.selectedTask = this.initTask();
     new bootstrap.Modal(document.getElementById('clientModal')).show();
   }
 
-  // 🔹 Open modal for edit
   openEditModal(task: ClientTask): void {
     this.isEditing = true;
     this.selectedTask = { ...task };
     new bootstrap.Modal(document.getElementById('clientModal')).show();
   }
 
-  // 🔹 Save or Update
   saveTask(): void {
     const modalEl = document.getElementById('clientModal');
     const modal = bootstrap.Modal.getInstance(modalEl);
@@ -81,11 +93,10 @@ export class ClientInteractionComponent implements OnInit {
         modal?.hide();
         this.loadTasks();
       },
-      error: () => this.showToast('❌ Failed to save task. Please try again.')
+      error: () => this.showToast('❌ Failed to save task.')
     });
   }
 
-  // 🔹 Delete
   deleteTask(id?: number): void {
     if (id && confirm('Are you sure you want to delete this task?')) {
       this.clientService.delete(id).subscribe({
@@ -98,7 +109,6 @@ export class ClientInteractionComponent implements OnInit {
     }
   }
 
-  // 🔹 Initialize empty task
   initTask(): ClientTask {
     return {
       taskType: '',
@@ -112,7 +122,6 @@ export class ClientInteractionComponent implements OnInit {
     };
   }
 
-  // 🔹 Show bootstrap toast notification
   showToast(message: string): void {
     const toastEl = document.getElementById('toastMessage');
     if (toastEl) {

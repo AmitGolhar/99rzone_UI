@@ -579,10 +579,7 @@ isEndTimeValid(): boolean {
     formData.append('propertyPhotos7', this.propertyPhotos7);
   
 
-/*     this.http.post('http://localhost:8082/api/post-ads', formData).subscribe({
-      next: (res) => console.log('Success:', res),
-      error: (err) => console.error('Error:', err),
-    }); */
+ 
     this.postPropertiesService.postcommercialAds(formData).subscribe({
         next: (response) => {
           // Handle success (HTTP 200)

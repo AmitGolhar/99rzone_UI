@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PropertyTask } from '@app/models/property.model copy';
 import { PropertyService } from '@app/services/property.service';
+import { EmployeeService } from '@app/services/employee.service';
+import { Employee } from '@app/models/employee.model';
 import { finalize } from 'rxjs/operators';
 
 declare var bootstrap: any;
@@ -12,6 +14,7 @@ declare var bootstrap: any;
 })
 export class PropertyListingComponent implements OnInit {
   propertyTasks: PropertyTask[] = [];
+  employees: Employee[] = [];  // 👈 EMPLOYEE LIST
   selectedTask: PropertyTask = this.initTask();
   searchText = '';
   isEditing = false;
@@ -30,10 +33,22 @@ export class PropertyListingComponent implements OnInit {
 
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
 
-  constructor(private propertyService: PropertyService) {}
+  constructor(
+    private propertyService: PropertyService,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
+    this.loadEmployees(); // 👈 LOAD EMPLOYEES
+  }
+
+  /** 🔹 Load Employee List */
+  loadEmployees(): void {
+    this.employeeService.getAllEmployees().subscribe({
+      next: (data) => this.employees = data || [],
+      error: (err) => console.error('❌ Failed to load employees:', err)
+    });
   }
 
   /** 🔹 Load All Property Tasks */

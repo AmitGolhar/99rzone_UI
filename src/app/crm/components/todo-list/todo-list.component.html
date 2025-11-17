@@ -11,61 +11,94 @@
       {{ col.status }} <small class="text-muted">({{ col.tasks.length }})</small>
     </div>
 
-    <!-- Drop Zone -->
-    <div
-      cdkDropList
-      #list="cdkDropList"
-      [cdkDropListData]="col.tasks"
-      [cdkDropListConnectedTo]="dropLists"
-      class="kanban-list p-1"
-      (cdkDropListDropped)="drop($event, col.status)"
-    >
-      <!-- Task Card -->
-      <div
-        *ngFor="let t of col.tasks"
-        cdkDrag
+    <div cdkDropList [cdkDropListData]="col.tasks" [cdkDropListConnectedTo]="dropLists" class="kanban-list p-1"
+      (cdkDropListDropped)="drop($event, col.status)">
+
+      <div *ngFor="let t of col.tasks" cdkDrag
         class="kanban-card card mb-2 p-2 border-start border-3"
         [ngClass]="{
           'border-danger': isOverdue(t),
           'border-success': t.status === 'Completed',
           'border-warning': t.status === 'In Progress'
-        }"
-      >
+        }">
+
         <div class="fw-semibold">{{ t.title }}</div>
-        <div><small>{{ t.moduleType }} • {{ t.priority }}</small></div>
-        <div><small>👤 {{ t.assignedTo || '-' }}</small></div>
+
+        <div>
+          <small>
+            {{ t.moduleType }} •
+            <span [ngClass]="{
+              'text-danger': t.priority === 'Critical',
+              'text-warning': t.priority === 'High',
+              'text-primary': t.priority === 'Medium',
+              'text-muted': t.priority === 'Low'
+            }">
+              {{ t.priority }}
+            </span>
+          </small>
+        </div>
+
+        <div><small>👤 {{ t.assignedToName || '-' }}</small></div>
         <div><small>📅 {{ t.dueDate || '-' }}</small></div>
 
         <div class="mt-2 d-flex gap-1">
           <button class="btn btn-sm btn-outline-primary" (click)="edit(t)">✏️</button>
           <button class="btn btn-sm btn-outline-danger" (click)="delete(t)">🗑️</button>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 
-<!-- 🟨 Add/Edit Modal Form -->
+<!-- 🟨 Add/Edit Modal (existing full edit form) -->
 <div *ngIf="editing" class="modal fade show d-block" style="background: rgba(0,0,0,.5);">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content p-3 shadow">
       <div class="modal-header border-0">
-        <h5 class="modal-title mb-0">
-          {{ editing.id ? '✏️ Edit Task' : '➕ New Task' }}
-        </h5>
+        <h5 class="modal-title mb-0">{{ editing.id ? '✏️ Edit Task' : '➕ New Task' }}</h5>
         <button type="button" class="btn-close" (click)="closeForm()"></button>
       </div>
 
       <form (ngSubmit)="save(editing)">
         <div class="row g-3">
+
           <div class="col-md-6">
-            <label>Title</label>
-            <input class="form-control" [(ngModel)]="editing.title" name="title" required />
+            <label>Task Title*</label>
+            <select class="form-select"
+                    [(ngModel)]="editing.title"
+                    name="title"
+                    required
+                    (change)="autoSetModule()">
+
+              <option value="">Select Task Title...</option>
+              <option *ngFor="let t of taskTitleOptions" [value]="t">{{ t }}</option>
+
+            </select>
           </div>
 
           <div class="col-md-6">
-            <label>Assigned To</label>
-            <input class="form-control" [(ngModel)]="editing.assignedTo" name="assignedTo" />
+            <label>Assign To*</label>
+            <select class="form-select"
+                    name="assignedTo"
+                    [(ngModel)]="editing.assignedTo"
+                    required
+                    (change)="applyAssignedEmail(editing)">
+
+              <option value="">Select Employee...</option>
+              <option *ngFor="let emp of employees" [value]="emp.id">
+                {{ emp.name }} ({{ emp.email }})
+              </option>
+
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label>Auto Email Will Be Sent On Status Change</label>
+            <div class="alert alert-info py-2 px-3 small">
+              ✔ When status changes, email will be automatically sent to:
+              <strong>{{ getAssignedEmailDisplay() }}</strong>
+            </div>
           </div>
 
           <div class="col-md-4">
@@ -79,6 +112,7 @@
               <option>CLIENT_INTERACTION</option>
               <option>ADMIN</option>
               <option>AFTER_SALES</option>
+              <option>SMART</option>
               <option>OTHER</option>
             </select>
           </div>
@@ -116,30 +150,65 @@
 
           <div class="col-12">
             <label>Description</label>
-            <textarea
-              class="form-control"
-              rows="2"
-              [(ngModel)]="editing.description"
-              name="description"
-            ></textarea>
+            <textarea class="form-control" rows="2" [(ngModel)]="editing.description" name="description"></textarea>
           </div>
 
           <div class="col-12">
             <label>Notes</label>
-            <textarea
-              class="form-control"
-              rows="2"
-              [(ngModel)]="editing.notes"
-              name="notes"
-            ></textarea>
+            <textarea class="form-control" rows="2" [(ngModel)]="editing.notes" name="notes"></textarea>
           </div>
+
         </div>
 
         <div class="mt-3 d-flex justify-content-end gap-2">
           <button class="btn btn-primary" type="submit">💾 Save</button>
           <button type="button" class="btn btn-secondary" (click)="closeForm()">Cancel</button>
         </div>
+
       </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- -------------------------
+     A1.1 Drag-only small modal
+     ------------------------- -->
+<div *ngIf="dragModalVisible" class="modal fade show d-block" style="background: rgba(0,0,0,.45);">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title">Update Task Status — Note required</h6>
+        <button type="button" class="btn-close" (click)="cancelDragModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="dragModalTask">
+          <div class="mb-2">
+            <label class="form-label small">Title</label>
+            <input class="form-control form-control-sm" [value]="dragModalTask.title" readonly />
+          </div>
+
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label small">Old</label>
+              <input class="form-control form-control-sm" [value]="dragModalOldStatus" readonly />
+            </div>
+            <div class="col-6">
+              <label class="form-label small">New</label>
+              <input class="form-control form-control-sm" [value]="dragModalNewStatus" readonly />
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <label class="form-label small">Note (will be sent in email)</label>
+            <textarea class="form-control form-control-sm" rows="3" [(ngModel)]="dragModalNote" name="dragNote" required></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" (click)="cancelDragModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" (click)="saveDragModal()">Save</button>
+      </div>
     </div>
   </div>
 </div>

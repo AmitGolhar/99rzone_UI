@@ -20,6 +20,9 @@ import { IncentiveComponent } from './finance/incentive/incentive.component';
 import { ExpenseTrackerComponent } from './finance/expense-tracker/expense-tracker.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { MagicBricksLeadsComponent } from './components/magicbricks-leads/magicbricks-leads.component';
+import { NinetyNineAcresLeadComponent } from './components/ninety-nine-acres-lead/ninety-nine-acres-lead.component';
+import { EmployeeAddComponent } from './components/employee-add/employee-add.component';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 
 const routes: Routes = [
   {
@@ -55,8 +58,9 @@ const routes: Routes = [
       { path: 'finance/expenses', component: ExpenseTrackerComponent },
       { path: 'tasks', component: TodoListComponent },
       { path: 'magicbricks-leads',component: MagicBricksLeadsComponent},
-      { path: '99acres-leads',component: MagicBricksLeadsComponent},
-    
+      { path: '99acres-leads',component: NinetyNineAcresLeadComponent},
+      { path: 'add', component: EmployeeAddComponent },
+     { path: 'list', component: EmployeeListComponent },
       { path: '**', redirectTo: 'dashboard' },
     ],
   },

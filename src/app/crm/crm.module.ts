@@ -21,6 +21,8 @@ import { CrmLayoutComponent } from './crm-layout/crm-layout.component';
  import { SharedModule } from '@app/shared/shared.module';
 import { MagicBricksLeadsComponent } from './components/magicbricks-leads/magicbricks-leads.component';
 import { NinetyNineAcresLeadComponent } from './components/ninety-nine-acres-lead/ninety-nine-acres-lead.component';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { EmployeeFilterPipe } from '@app/pipes/employee-filter.pipe';
  
 
 @NgModule({
@@ -39,7 +41,8 @@ import { NinetyNineAcresLeadComponent } from './components/ninety-nine-acres-lea
     TodoListComponent,
     MagicBricksLeadsComponent,
     NinetyNineAcresLeadComponent,
-     
+    EmployeeListComponent,
+     EmployeeFilterPipe
     
   ],
   imports: [

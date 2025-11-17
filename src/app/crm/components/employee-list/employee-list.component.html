@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="text-primary">👥 Employee Directory</h4>
+</div>
+
+<div class="mb-3">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search employee by name, email or department..."
+    [(ngModel)]="searchText"
+  />
+</div>
+
+<!-- Loader -->
+<div *ngIf="isLoading" class="text-center text-muted p-3">
+  <div class="spinner-border text-primary"></div>
+  <p>Loading employees...</p>
+</div>
+
+<!-- Error -->
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+<!-- Employee Table -->
+<table *ngIf="!isLoading" class="table table-striped table-hover align-middle employee-table">
+  <thead class="table-primary">
+    <tr>
+      <th>#</th>
+      <th>Employee Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Department</th>
+      <th>Joining Date</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr
+      *ngFor="let emp of employees | filter: searchText; let i = index"
+    >
+      <td>{{ i + 1 }}</td>
+      <td>{{ emp.name }}</td>
+      <td>{{ emp.email }}</td>
+      <td>{{ emp.phone }}</td>
+      <td>{{ emp.department }}</td>
+      <td>{{ emp.joiningDate | date: 'mediumDate' }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Employee } from '@app/models/employee.model';
 import { LeadTask } from '@app/models/lead.model';
+import { EmployeeService } from '@app/services/employee.service';
 import { LeadService } from '@app/services/lead.service';
 
 declare var bootstrap: any;
@@ -31,11 +33,17 @@ export class LeadManagementComponent implements OnInit {
   ];
 
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
+  employees: Employee[] = [];
 
-  constructor(private leadService: LeadService) {}
+  constructor(
+    private leadService: LeadService,
+
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.loadLeads();
+    this.loadEmployees();
   }
 
   // ✅ Fetch All Leads
@@ -45,6 +53,13 @@ export class LeadManagementComponent implements OnInit {
         this.leadTasks = tasks;
       },
       error: (err) => console.error('Error loading leads:', err),
+    });
+  }
+
+  loadEmployees() {
+    this.employeeService.getAllEmployees().subscribe({
+      next: (res) => (this.employees = res),
+      error: (err) => console.error('Error loading employees:', err),
     });
   }
 

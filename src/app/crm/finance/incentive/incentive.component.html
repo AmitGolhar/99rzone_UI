@@ -1,55 +1,135 @@
-<div class="card p-3">
-  <div class="d-flex justify-content-between">
-    <h5>🏆 Incentive Module</h5>
-    <button class="btn btn-sm btn-success" (click)="openAddModal('incentiveModal')">➕ Add Incentive</button>
-  </div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="text-primary mb-0">🏆 Incentive & Payout Management</h4>
+  <button class="btn btn-success" (click)="openAddModal('incentiveModal')">➕ Add Incentive</button>
+</div>
 
-  <table class="table mt-3">
-    <thead><tr><th>#</th><th>Employee</th><th>Deal</th><th>Amount</th><th>Comm %</th><th>Payout</th><th>Status</th></tr></thead>
+<!-- 🔍 Search -->
+<div class="mb-3">
+  <input class="form-control" placeholder="Search by employee or deal ID..."
+         [(ngModel)]="searchText">
+</div>
+
+<!-- 🔄 Loader -->
+<div *ngIf="isLoading" class="text-center my-4">
+  <div class="spinner-border text-primary"></div>
+  <p class="text-muted mt-2">Loading incentives...</p>
+</div>
+
+<!-- ❌ Error -->
+<div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+<!-- 🧾 Table -->
+<div *ngIf="!isLoading">
+  <table class="table table-hover align-middle">
+    <thead class="table-primary">
+      <tr>
+        <th>#</th>
+        <th>Employee</th>
+        <th>Deal</th>
+        <th>Amount</th>
+        <th>Commission %</th>
+        <th>Payout</th>
+        <th>Status</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+
     <tbody>
-      <tr *ngFor="let it of incentives; let i = index">
+      <tr *ngFor="let it of incentives | filter: searchText; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ it.employee }}</td>
         <td>{{ it.dealId }}</td>
         <td>₹{{ it.amount | number }}</td>
         <td>{{ it.commissionPct }}%</td>
         <td>₹{{ it.computedPayout | number }}</td>
-        <td>{{ it.status }}</td>
+        <td>
+          <span class="badge"
+            [ngClass]="{
+              'bg-warning text-dark': it.status === 'Pending',
+              'bg-info text-dark': it.status === 'Approved',
+              'bg-success': it.status === 'Paid'
+            }">
+            {{ it.status }}
+          </span>
+        </td>
+
+        <td class="text-center">
+          <button class="btn btn-sm btn-outline-danger" (click)="delete(it.id)">🗑️</button>
+        </td>
+      </tr>
+
+      <!-- Empty -->
+      <tr *ngIf="incentives.length === 0">
+        <td colspan="8" class="text-center text-muted py-3">
+          No incentive records found.
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<!-- Add Modal -->
+<!-- 🧩 Add Incentive Modal -->
 <div class="modal fade" id="incentiveModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+
+      <div class="modal-header bg-primary text-white">
         <h5 class="modal-title">➕ Add Incentive</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <div class="modal-body">
-        <div class="row g-2">
-          <div class="col-6"><input class="form-control" placeholder="Employee" [(ngModel)]="model.employee"></div>
-          <div class="col-6"><input class="form-control" placeholder="Deal ID" [(ngModel)]="model.dealId"></div>
-          <div class="col-6"><input type="number" class="form-control" placeholder="Amount" [(ngModel)]="model.amount"></div>
-          <div class="col-6"><input type="number" class="form-control" placeholder="Commission %" [(ngModel)]="model.commissionPct"></div>
-        </div>
+        <form>
+          <div class="row g-3">
+
+            <!-- Employee -->
+            <div class="col-md-6">
+              <label class="form-label">Employee</label>
+              <select class="form-select" [(ngModel)]="model.employee" name="employee" required>
+                <option value="">Select...</option>
+                <option *ngFor="let emp of employees" [value]="emp.name">
+                  {{ emp.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Deal ID -->
+            <div class="col-md-6">
+              <label class="form-label">Deal ID</label>
+              <input class="form-control" [(ngModel)]="model.dealId" name="dealId" required>
+            </div>
+
+            <!-- Amount -->
+            <div class="col-md-6">
+              <label class="form-label">Amount (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="model.amount" name="amount" required>
+            </div>
+
+            <!-- Commission -->
+            <div class="col-md-6">
+              <label class="form-label">Commission %</label>
+              <input type="number" class="form-control" [(ngModel)]="model.commissionPct" name="commissionPct" required>
+            </div>
+
+          </div>
+        </form>
       </div>
 
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" (click)="add()">Add</button>
+        <button class="btn btn-primary" (click)="add()">Save</button>
       </div>
+
     </div>
   </div>
 </div>
+
+<!-- Toast -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="toastMessage" class="toast align-items-center text-bg-primary border-0" role="alert">
+  <div id="toastMessage" class="toast text-bg-primary border-0">
     <div class="d-flex">
       <div class="toast-body"></div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
     </div>
   </div>
 </div>

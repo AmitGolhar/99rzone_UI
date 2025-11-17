@@ -91,7 +91,7 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.totals = t;
       this.moduleLabels = t.map(x => x.title);
       this.moduleCounts = t.map(x => x.count);
-      this.moduleColors = t.map(x => x.color);
+    //  this.moduleColors = t.map(x => x.color);
       this.buildPieChart();
     }));
 

@@ -1,3 +1,5 @@
+// todo-task.model.ts
+
 export type ModuleType =
   | 'RENT'
   | 'RESELL'
@@ -7,26 +9,43 @@ export type ModuleType =
   | 'CLIENT_INTERACTION'
   | 'ADMIN'
   | 'AFTER_SALES'
+  | 'SMART'
   | 'OTHER'
-  | 'GENERAL'; 
+  'GENERAL';
 
-export type Priority = 'Low' | 'Medium' | 'High' | 'Critical';
-export type Status = 'Pending' | 'In Progress' | 'On Hold' | 'Completed' | 'Cancelled';
+export type Status =
+  | 'Pending'
+  | 'In Progress'
+  | 'On Hold'
+  | 'Completed'
+  | 'Cancelled';
 
 export interface TodoTask {
   id?: number;
   title: string;
   description?: string;
   moduleType: ModuleType;
-  priority: Priority;
+  priority: 'Low' | 'Medium' | 'High' | 'Critical';
   status: Status;
+
   category?: string;
-  assignedTo?: string;
+
+  assignedTo?: string;     // employee ID
+  assignedToName?: string; // UI-only
+  assignedEmail?: string | null; // ⭐ ADD THIS
+ 
   createdBy?: string;
+
   dueDate?: string;
   reminderDate?: string;
+
   notes?: string;
-  attachments?: { name: string; dataUrl?: string }[];
+  attachments?: any[];
+
   createdAt?: string;
   updatedAt?: string;
+
+  // Backend-only fields (UI must NOT send them)
+  lastStatus?: string;
+  statusChanged?: boolean;
 }

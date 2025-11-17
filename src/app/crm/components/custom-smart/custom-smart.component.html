@@ -69,6 +69,7 @@
       <div class="modal-body">
         <form>
           <div class="row g-3">
+
             <div class="col-md-6">
               <label class="form-label">Task Type</label>
               <select class="form-select" [(ngModel)]="selectedTask.taskType" name="taskType" required>
@@ -93,9 +94,15 @@
               </select>
             </div>
 
+            <!-- UPDATED: ASSIGNED TO 🧑‍💼 -->
             <div class="col-md-6">
               <label class="form-label">Assigned To</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedTask.assignedTo" name="assignedTo" required>
+              <select class="form-select" [(ngModel)]="selectedTask.assignedTo" name="assignedTo">
+                <option value="">Select Employee...</option>
+                <option *ngFor="let emp of employees" [value]="emp.name">
+                  {{ emp.name }}
+                </option>
+              </select>
             </div>
 
             <div class="col-md-4">
@@ -114,6 +121,7 @@
               <label class="form-label">Notes</label>
               <textarea class="form-control" rows="2" [(ngModel)]="selectedTask.notes" name="notes"></textarea>
             </div>
+
           </div>
         </form>
       </div>
@@ -128,7 +136,7 @@
   </div>
 </div>
 
-<!-- Toast Notification -->
+<!-- Toast -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
   <div id="toastMessage" class="toast text-bg-primary border-0" role="alert">
     <div class="d-flex">

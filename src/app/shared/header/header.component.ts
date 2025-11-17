@@ -14,6 +14,7 @@ export class HeaderComponent {
   { label: 'Post Property', link: '/post-property' },
   { label: 'Check On Map', link: '/check_on_map' },
   { label: 'CRM', link: '/crm' },
+   { label: 'Excel Upload', link: '/excel-upload' },
 ];
 
 

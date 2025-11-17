@@ -1,0 +1,46 @@
+/* Wrapper shadow + smooth hover */
+.employee-table {
+  background: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-color) 8%, transparent);
+  transition: all 0.3s ease;
+}
+
+.employee-table:hover {
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-color) 15%, transparent);
+}
+
+/* Table header */
+.employee-table thead th {
+  font-weight: 600;
+  color: var(--text-color);
+  background-color: color-mix(in srgb, var(--accent-color) 12%, var(--card-bg));
+}
+
+/* Hover effect for rows */
+.employee-table tbody tr {
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.employee-table tbody tr:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 10%, var(--card-bg));
+  cursor: pointer;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color) 8%, transparent);
+}
+
+ 
+.employee-badge {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+}
+
+
+/* Loader alignment */
+.text-center {
+  color: var(--text-color);
+}

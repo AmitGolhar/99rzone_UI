@@ -4,8 +4,7 @@
 </div>
 
 <div class="mb-3">
-  <input type="text" class="form-control" placeholder="Search by client or property..."
-         [(ngModel)]="searchText">
+  <input type="text" class="form-control" placeholder="Search by client or property..." [(ngModel)]="searchText">
 </div>
 
 <div *ngIf="isLoading" class="text-center text-muted p-3">
@@ -36,8 +35,7 @@
       <td>{{ task.propertyName }}</td>
       <td>{{ task.assignedTo }}</td>
       <td>
-        <span class="badge"
-              [ngClass]="{
+        <span class="badge" [ngClass]="{
                 'bg-warning': task.status === 'Pending',
                 'bg-info': task.status === 'In Progress',
                 'bg-success': task.status === 'Completed'
@@ -85,11 +83,16 @@
               <label class="form-label">Property Name</label>
               <input type="text" class="form-control" [(ngModel)]="selectedTask.propertyName" name="propertyName">
             </div>
-
             <div class="col-md-6">
               <label class="form-label">Assigned To</label>
-              <input type="text" class="form-control" [(ngModel)]="selectedTask.assignedTo" name="assignedTo">
+              <select class="form-select" [(ngModel)]="selectedTask.assignedTo" name="assignedTo">
+                <option value="">Select...</option>
+                <option *ngFor="let emp of employees" [value]="emp.name">
+                  {{ emp.name }}
+                </option>
+              </select>
             </div>
+
 
             <div class="col-md-3">
               <label class="form-label">Status</label>

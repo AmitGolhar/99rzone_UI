@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Employee } from '@app/models/employee.model';
 import { SmartTask } from '@app/models/smart.model';
+import { EmployeeService } from '@app/services/employee.service';
 import { SmartService } from '@app/services/smart.service';
 import { finalize } from 'rxjs/operators';
 
@@ -17,6 +19,7 @@ export class CustomSmartComponent implements OnInit {
   isEditing = false;
   isLoading = false;
   errorMessage = '';
+  employees: Employee[] = [];
 
   taskTypes: string[] = [
     'SLA Breach Alert',
@@ -48,10 +51,14 @@ export class CustomSmartComponent implements OnInit {
 
   statuses: string[] = ['Pending', 'Triggered', 'Executed', 'Resolved'];
 
-  constructor(private smartService: SmartService) {}
-
+constructor(
+  private smartService: SmartService,
+  private employeeService: EmployeeService
+) {}
   ngOnInit(): void {
     this.loadTasks();
+      this.loadEmployees();
+
   }
 
   /** 🔹 Load Smart Automation Tasks */
@@ -100,6 +107,13 @@ export class CustomSmartComponent implements OnInit {
       error: () => this.showToast('❌ Failed to save task. Please retry.')
     });
   }
+
+  loadEmployees() {
+  this.employeeService.getAllEmployees().subscribe({
+    next: (res) => (this.employees = res),
+    error: (err) => console.error('Error loading employees:', err)
+  });
+}
 
   /** 🔹 Delete Automation Task */
   deleteTask(id?: number): void {

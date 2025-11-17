@@ -5,12 +5,8 @@
 
 <!-- 🔍 Search Bar -->
 <div class="mb-3">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Search by lead name, property or assigned person..."
-    [(ngModel)]="searchText"
-  />
+  <input type="text" class="form-control" placeholder="Search by lead name, property or assigned person..."
+    [(ngModel)]="searchText" />
 </div>
 
 <!-- 🧾 Table -->
@@ -30,41 +26,28 @@
     </thead>
 
     <tbody>
-      <tr
-        *ngFor="let task of leadTasks | asyncFilter: searchText; let i = index"
-        [ngClass]="{'table-warning': task.status === 'Pending', 'table-success': task.status === 'Completed'}"
-      >
+      <tr *ngFor="let task of leadTasks | asyncFilter: searchText; let i = index"
+        [ngClass]="{'table-warning': task.status === 'Pending', 'table-success': task.status === 'Completed'}">
         <td>{{ i + 1 }}</td>
         <td>{{ task.taskType }}</td>
         <td>{{ task.leadName }}</td>
         <td>{{ task.propertyName || '-' }}</td>
         <td>{{ task.assignedTo || '-' }}</td>
         <td>
-          <span
-            class="badge"
-            [ngClass]="{
+          <span class="badge" [ngClass]="{
               'bg-warning text-dark': task.status === 'Pending',
               'bg-info text-dark': task.status === 'In Progress',
               'bg-success': task.status === 'Completed'
-            }"
-          >
+            }">
             {{ task.status }}
           </span>
         </td>
         <td>{{ task.dueDate | date: 'mediumDate' }}</td>
         <td>
-          <button
-            class="btn btn-sm btn-outline-primary me-1"
-            (click)="openEditModal(task)"
-            title="Edit Task"
-          >
+          <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(task)" title="Edit Task">
             ✏️
           </button>
-          <button
-            class="btn btn-sm btn-outline-danger"
-            (click)="deleteTask(task.id)"
-            title="Delete Task"
-          >
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.id)" title="Delete Task">
             🗑️
           </button>
         </td>
@@ -96,12 +79,7 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Task Type</label>
-              <select
-                class="form-select"
-                [(ngModel)]="selectedTask.taskType"
-                name="taskType"
-                required
-              >
+              <select class="form-select" [(ngModel)]="selectedTask.taskType" name="taskType" required>
                 <option value="">Select...</option>
                 <option *ngFor="let type of taskTypes" [value]="type">
                   {{ type }}
@@ -111,77 +89,46 @@
 
             <div class="col-md-6">
               <label class="form-label">Lead Name</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="selectedTask.leadName"
-                name="leadName"
-                required
-              />
+              <input type="text" class="form-control" [(ngModel)]="selectedTask.leadName" name="leadName" required />
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Contact Number</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="selectedTask.contactNumber"
-                name="contactNumber"
-                maxlength="10"
-                required
-              />
+              <input type="text" class="form-control" [(ngModel)]="selectedTask.contactNumber" name="contactNumber"
+                maxlength="10" required />
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Property Name</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="selectedTask.propertyName"
-                name="propertyName"
-              />
+              <input type="text" class="form-control" [(ngModel)]="selectedTask.propertyName" name="propertyName" />
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Assigned To</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="selectedTask.assignedTo"
-                name="assignedTo"
-              />
+              <select class="form-select" [(ngModel)]="selectedTask.assignedTo" name="assignedTo">
+                <option value="">Select...</option>
+                <option *ngFor="let emp of employees" [value]="emp.name">
+                  {{ emp.name }}
+                </option>
+              </select>
             </div>
+
 
             <div class="col-md-3">
               <label class="form-label">Status</label>
-              <select
-                class="form-select"
-                [(ngModel)]="selectedTask.status"
-                name="status"
-              >
+              <select class="form-select" [(ngModel)]="selectedTask.status" name="status">
                 <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
               </select>
             </div>
 
             <div class="col-md-3">
               <label class="form-label">Due Date</label>
-              <input
-                type="date"
-                class="form-control"
-                [(ngModel)]="selectedTask.dueDate"
-                name="dueDate"
-                required
-              />
+              <input type="date" class="form-control" [(ngModel)]="selectedTask.dueDate" name="dueDate" required />
             </div>
 
             <div class="col-12">
               <label class="form-label">Notes</label>
-              <textarea
-                class="form-control"
-                rows="2"
-                [(ngModel)]="selectedTask.notes"
-                name="notes"
-              ></textarea>
+              <textarea class="form-control" rows="2" [(ngModel)]="selectedTask.notes" name="notes"></textarea>
             </div>
           </div>
         </form>

@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">📤 Excel Upload</h5>
+      <button *ngIf="excelData.length" class="btn btn-light btn-sm" (click)="clearData()">Clear</button>
+    </div>
+
+    <div class="card-body">
+      <input
+        type="file"
+        class="form-control mb-3"
+        accept=".xlsx, .xls"
+        (change)="onFileChange($event)"
+      />
+
+      <div *ngIf="fileName" class="alert alert-info py-2">
+        Uploaded File: <strong>{{ fileName }}</strong>
+      </div>
+
+      <div *ngIf="excelData.length">
+        <h6>📊 Parsed Data Preview ({{ excelData.length }} rows)</h6>
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+          <table class="table table-sm table-bordered table-striped">
+            <thead>
+              <tr>
+                <th *ngFor="let col of expectedColumns">{{ col }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of excelData; let i = index">
+                <td *ngFor="let col of expectedColumns">{{ row[col] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="!excelData.length" class="text-muted small mt-3">
+        Upload an Excel file (.xlsx) to preview and convert to JSON.
+      </div>
+    </div>
+  </div>
+
+ 
+</div>

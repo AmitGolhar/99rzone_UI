@@ -1,0 +1,10 @@
+.container {
+  max-width: 95%;
+}
+.table {
+  font-size: 0.8rem;
+}
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

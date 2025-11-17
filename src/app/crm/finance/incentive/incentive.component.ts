@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IncentiveService, Incentive } from '../services/incentive.service';
+import { EmployeeService } from '@app/services/employee.service';
+import { Employee } from '@app/models/employee.model';
 import { Subscription } from 'rxjs';
 
 declare var bootstrap: any;
@@ -11,27 +13,49 @@ declare var bootstrap: any;
 })
 export class IncentiveComponent implements OnInit, OnDestroy {
   incentives: Incentive[] = [];
+  employees: Employee[] = [];
+
+  searchText = '';
+  isLoading = false;
+  errorMessage = '';
+
   model = { employee: '', dealId: '', amount: 0, commissionPct: 0 };
   private sub?: Subscription;
 
-  constructor(private svc: IncentiveService) {}
+  constructor(
+    private svc: IncentiveService,
+    private empService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
-    // 🔁 Subscribe to real-time incentive updates via SSE
+    this.loadEmployees();
+    this.loadIncentives();
+  }
+
+  /** 🔹 Load employees for dropdown */
+  loadEmployees(): void {
+    this.empService.getAllEmployees().subscribe({
+      next: (res) => (this.employees = res),
+      error: () => console.error('Error loading employees')
+    });
+  }
+
+  /** 🔹 Load incentives */
+  loadIncentives(): void {
     this.sub = this.svc.listen().subscribe(data => {
       this.incentives = data.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
     });
 
-    // Optional fallback initial load (if no live data yet)
     this.svc.getAll().subscribe(data => {
       if (data?.length && !this.incentives.length) this.incentives = data;
     });
   }
 
-  /** ✅ Add incentive */
+  /** 🔹 Add incentive */
   add(): void {
-    if (!this.model.employee || !this.model.dealId || !this.model.amount || !this.model.commissionPct) {
-      this.showToast('⚠️ Please fill in all required fields');
+    if (!this.model.employee || !this.model.dealId ||
+        !this.model.amount || !this.model.commissionPct) {
+      this.showToast('⚠️ Please fill all fields');
       return;
     }
 
@@ -54,10 +78,10 @@ export class IncentiveComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** 🗑️ Delete incentive */
+  /** 🔹 Delete incentive */
   delete(id?: number): void {
     if (!id) return;
-    if (confirm('Are you sure you want to delete this incentive?')) {
+    if (confirm('Delete this incentive?')) {
       this.svc.delete(id).subscribe({
         next: () => this.showToast('🗑️ Incentive deleted'),
         error: () => this.showToast('❌ Delete failed')
@@ -65,18 +89,17 @@ export class IncentiveComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** 🎯 Open add modal */
-  openAddModal(modalId: string): void {
-    bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId)).show();
+  /** 🔹 Open modal */
+  openAddModal(id: string): void {
+    bootstrap.Modal.getOrCreateInstance(document.getElementById(id)).show();
   }
 
-  /** 🔔 Toast notification */
-  showToast(message: string): void {
+  /** 🔹 Toast */
+  showToast(msg: string): void {
     const toastEl = document.getElementById('toastMessage');
     if (toastEl) {
-      toastEl.querySelector('.toast-body')!.textContent = message;
-      const toast = new bootstrap.Toast(toastEl);
-      toast.show();
+      toastEl.querySelector('.toast-body')!.textContent = msg;
+      new bootstrap.Toast(toastEl).show();
     }
   }
 

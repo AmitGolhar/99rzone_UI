@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Employee } from '@app/models/employee.model';
 import { SupportTask } from '@app/models/support.model';
+import { EmployeeService } from '@app/services/employee.service';
 import { SupportService } from '@app/services/support.service';
 import { finalize } from 'rxjs/operators';
 
@@ -8,7 +10,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-client-support',
   templateUrl: './client-support.component.html',
-  styleUrls: ['./client-support.component.css']
+  styleUrls: ['./client-support.component.css'],
 })
 export class ClientSupportComponent implements OnInit {
   supportTasks: SupportTask[] = [];
@@ -17,6 +19,7 @@ export class ClientSupportComponent implements OnInit {
   isEditing = false;
   isLoading = false;
   errorMessage = '';
+  employees: Employee[] = [];
 
   taskTypes: string[] = [
     'Handover Scheduling',
@@ -26,15 +29,19 @@ export class ClientSupportComponent implements OnInit {
     'Client Feedback Collection',
     'Warranty / AMC Management',
     'Complaint Resolution',
-    'Follow-Up Visit / Call'
+    'Follow-Up Visit / Call',
   ];
 
   statuses: string[] = ['Pending', 'In Progress', 'Resolved', 'Closed'];
 
-  constructor(private supportService: SupportService) {}
+  constructor(
+    private supportService: SupportService,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
+    this.loadEmployees();
   }
 
   // 🔹 Fetch tasks from API
@@ -42,14 +49,22 @@ export class ClientSupportComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.supportService.getAll()
+    this.supportService
+      .getAll()
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (tasks) => (this.supportTasks = tasks),
-        error: () => (this.errorMessage = '⚠️ Failed to load client support tasks.')
+        error: () =>
+          (this.errorMessage = '⚠️ Failed to load client support tasks.'),
       });
   }
 
+  loadEmployees() {
+    this.employeeService.getAllEmployees().subscribe({
+      next: (res) => (this.employees = res),
+      error: (err) => console.error('Error loading employees:', err),
+    });
+  }
   // 🔹 Open Add Modal
   openAddModal(): void {
     this.isEditing = false;
@@ -75,11 +90,15 @@ export class ClientSupportComponent implements OnInit {
 
     operation.subscribe({
       next: () => {
-        this.showToast(this.isEditing ? '✅ Task updated successfully' : '🎯 Task added successfully');
+        this.showToast(
+          this.isEditing
+            ? '✅ Task updated successfully'
+            : '🎯 Task added successfully'
+        );
         modal?.hide();
         this.loadTasks();
       },
-      error: () => this.showToast('❌ Failed to save task. Try again.')
+      error: () => this.showToast('❌ Failed to save task. Try again.'),
     });
   }
 
@@ -91,7 +110,7 @@ export class ClientSupportComponent implements OnInit {
           this.showToast('🗑️ Task deleted successfully');
           this.loadTasks();
         },
-        error: () => this.showToast('❌ Failed to delete task.')
+        error: () => this.showToast('❌ Failed to delete task.'),
       });
     }
   }
@@ -105,7 +124,7 @@ export class ClientSupportComponent implements OnInit {
       assignedTo: '',
       status: 'Pending',
       dueDate: '',
-      notes: ''
+      notes: '',
     };
   }
 

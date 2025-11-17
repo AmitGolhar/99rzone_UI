@@ -13,6 +13,9 @@ import { PropertyMapComponent } from './components/property-map/property-map.com
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { ThemeService } from './services/theme.service';
+import { ExcelUploadComponent } from './components/excel-upload/excel-upload.component';
+import { EmployeeAddComponent } from './crm/components/employee-add/employee-add.component';
+import { EmployeeFilterPipe } from './pipes/employee-filter.pipe';
  
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { ThemeService } from './services/theme.service';
     HomeComponent,
     PropertyMapComponent,
     ThemeToggleComponent,
-   ],
+    ExcelUploadComponent,
+    EmployeeAddComponent,
+    ],
   imports: [
     BrowserModule,
     InfiniteScrollModule,

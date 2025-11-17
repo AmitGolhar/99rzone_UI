@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminTask } from '@app/models/admin.model';
+import { Employee } from '@app/models/employee.model';
 import { AdminService } from '@app/services/admin.service';
+import { EmployeeService } from '@app/services/employee.service';
 import { finalize } from 'rxjs/operators';
 
 declare var bootstrap: any;
@@ -8,7 +10,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-admin-internal',
   templateUrl: './admin-internal.component.html',
-  styleUrls: ['./admin-internal.component.css']
+  styleUrls: ['./admin-internal.component.css'],
 })
 export class AdminInternalComponent implements OnInit {
   adminTasks: AdminTask[] = [];
@@ -17,6 +19,7 @@ export class AdminInternalComponent implements OnInit {
   isEditing = false;
   isLoading = false;
   errorMessage = '';
+  employees: Employee[] = [];
 
   taskTypes: string[] = [
     'Team Meeting / Briefing',
@@ -26,32 +29,49 @@ export class AdminInternalComponent implements OnInit {
     'Office Maintenance / Supplies',
     'System Access Setup',
     'Inventory Management',
-    'Compliance / Audit Task'
+    'Compliance / Audit Task',
   ];
 
   departments: string[] = [
-    'Sales', 'Marketing', 'Legal', 'Operations', 'Admin', 'Support', 'IT'
+    'Sales',
+    'Marketing',
+    'Legal',
+    'Operations',
+    'Admin',
+    'Support',
+    'IT',
   ];
 
   priorities: string[] = ['Low', 'Medium', 'High'];
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
 
-  constructor(private adminService: AdminService) {}
+constructor(private adminService: AdminService, private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
     this.loadTasks();
+    this.loadEmployees();
   }
 
   /** 🔹 Load tasks from backend */
   loadTasks(): void {
     this.isLoading = true;
     this.errorMessage = '';
-    this.adminService.getAll()
-      .pipe(finalize(() => this.isLoading = false))
+    this.adminService
+      .getAll()
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: (tasks) => this.adminTasks = tasks,
-        error: () => this.errorMessage = '⚠️ Failed to load admin tasks. Please try again later.'
+        next: (tasks) => (this.adminTasks = tasks),
+        error: () =>
+          (this.errorMessage =
+            '⚠️ Failed to load admin tasks. Please try again later.'),
       });
+  }
+
+  loadEmployees() {
+    this.employeeService.getAllEmployees().subscribe({
+      next: (res) => (this.employees = res || []),
+      error: (err) => console.error('Error loading employees:', err),
+    });
   }
 
   /** 🔹 Open Add Modal */
@@ -79,11 +99,15 @@ export class AdminInternalComponent implements OnInit {
 
     operation.subscribe({
       next: () => {
-        this.showToast(this.isEditing ? '✅ Task updated successfully!' : '🎯 New task added!');
+        this.showToast(
+          this.isEditing
+            ? '✅ Task updated successfully!'
+            : '🎯 New task added!'
+        );
         modal?.hide();
         this.loadTasks();
       },
-      error: () => this.showToast('❌ Failed to save task. Please retry.')
+      error: () => this.showToast('❌ Failed to save task. Please retry.'),
     });
   }
 
@@ -95,7 +119,7 @@ export class AdminInternalComponent implements OnInit {
           this.showToast('🗑️ Task deleted successfully');
           this.loadTasks();
         },
-        error: () => this.showToast('❌ Failed to delete task.')
+        error: () => this.showToast('❌ Failed to delete task.'),
       });
     }
   }
@@ -109,7 +133,7 @@ export class AdminInternalComponent implements OnInit {
       priority: 'Medium',
       status: 'Pending',
       dueDate: '',
-      notes: ''
+      notes: '',
     };
   }
 
