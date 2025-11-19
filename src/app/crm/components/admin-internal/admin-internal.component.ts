@@ -44,12 +44,20 @@ export class AdminInternalComponent implements OnInit {
 
   priorities: string[] = ['Low', 'Medium', 'High'];
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
+loading = true;
 
-constructor(private adminService: AdminService, private employeeService: EmployeeService) {}
+  constructor(
+    private adminService: AdminService,
+    private employeeService: EmployeeService
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
     this.loadEmployees();
+
+      setTimeout(() => {
+    this.loading = false; // hide loader
+  }, 1200);
   }
 
   /** 🔹 Load tasks from backend */
@@ -88,14 +96,26 @@ constructor(private adminService: AdminService, private employeeService: Employe
     new bootstrap.Modal(document.getElementById('adminModal')).show();
   }
 
-  /** 🔹 Save or Update */
   saveTask(): void {
     const modalEl = document.getElementById('adminModal');
     const modal = bootstrap.Modal.getInstance(modalEl);
 
+    // 🔥 Ensure assignedTo = employeeId (not email)
+    const assignedEmployee = this.employees.find(
+      (e) => String(e.id) === String(this.selectedTask.assignedTo)
+    );
+
+    // Build payload with correct assignedTo value
+    const payload = {
+      ...this.selectedTask,
+      assignedTo: assignedEmployee
+        ? String(assignedEmployee.id)
+        : this.selectedTask.assignedTo,
+    };
+
     const operation = this.isEditing
-      ? this.adminService.update(this.selectedTask)
-      : this.adminService.add(this.selectedTask);
+      ? this.adminService.update(payload)
+      : this.adminService.add(payload);
 
     operation.subscribe({
       next: () => {

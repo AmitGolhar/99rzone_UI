@@ -1,111 +1,108 @@
-<div class="employee-form-wrapper">
+<form (ngSubmit)="submitForm()" #empForm="ngForm" class="row g-3">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="text-primary">👨‍💼 Add New Employee</h4>
+    <!-- Full Name -->
+    <div class="col-md-6">
+        <label class="form-label">
+            Full Name <span style="color:red">*</span>
+        </label>
+        <input type="text" class="form-control" name="name"
+               [(ngModel)]="employee.name"
+               placeholder="Enter employee name" required />
     </div>
 
-    <form (ngSubmit)="submitForm()" #empForm="ngForm" class="row g-3">
-
-        <!-- Full Name -->
-        <div class="col-md-6">
-            <label class="form-label">Full Name</label>
-            <input type="text" class="form-control" name="name" [(ngModel)]="employee.name"
-                placeholder="Enter employee name" required />
-        </div>
-
-        <!-- Email -->
-        <div class="col-md-6">
-            <label class="form-label">Email (Login Username)</label>
-            <input type="email" class="form-control" name="email" [(ngModel)]="employee.email"
-                placeholder="example@company.com" required />
-        </div>
-
-        <!-- Phone -->
-        <div class="col-md-6">
-            <label class="form-label">Phone</label>
-            <input type="text" class="form-control" name="phone" [(ngModel)]="employee.phone"
-                placeholder="Enter phone number" required />
-        </div>
-
-        <!-- Department -->
-        <div class="col-md-6">
-            <label class="form-label">Department</label>
-            <select class="form-select" name="department" [(ngModel)]="employee.department" required>
-                <option value="">Select...</option>
-
-                <!-- Core Business -->
-                <option value="SALES">Sales</option>
-                <option value="MARKETING">Marketing</option>
-                <option value="CRM_SUPPORT">CRM / Customer Support</option>
-                <option value="BUSINESS_DEVELOPMENT">Business Development</option>
-
-                <!-- Property & Project Management -->
-                <option value="PROPERTY_MANAGEMENT">Property Management</option>
-                <option value="FACILITY_MANAGEMENT">Facility Management</option>
-                <option value="OPERATIONS">Operations</option>
-                <option value="PROJECT_MANAGEMENT">Project Management</option>
-                <option value="SITE_MANAGEMENT">Site Management</option>
-
-                <!-- Finance & Legal -->
-                <option value="FINANCE">Finance</option>
-                <option value="ACCOUNTS">Accounts</option>
-                <option value="LEGAL">Legal</option>
-                <option value="COMPLIANCE">Compliance</option>
-
-                <!-- Technical & Engineering -->
-                <option value="ELECTRICAL">Electrical</option>
-                <option value="INTERIOR_DESIGN">Interior Design</option>
-
-                <!-- Corporate Departments -->
-                <option value="HR">Human Resources (HR)</option>
-                <option value="ADMIN">Admin</option>
-                <option value="IT_TECH">IT / Tech</option>
-                <option value="QUALITY_ASSURANCE">Quality Assurance (QA)</option>
-
-                <!-- Data & Strategy -->
-                <option value="MARKET_RESEARCH">Market Research</option>
-                <option value="DATA_ANALYTICS">Data Analytics</option>
-                <option value="STRATEGY_PLANNING">Strategy & Planning</option>
-
-                <!-- Brokerage + Channel Partners -->
-                <option value="BROKER_RELATIONS">Broker Relations</option>
-                <option value="CHANNEL_PARTNER_MANAGEMENT">Channel Partner Management</option>
-
-                <!-- Construction / Development -->
-                <option value="DEVELOPER_RELATIONS">Developer Relations</option>
-
-            </select>
-        </div>
-
-
-        <!-- Joining Date -->
-        <div class="col-md-6">
-            <label class="form-label">Joining Date</label>
-            <input type="date" class="form-control" name="joiningDate" [(ngModel)]="employee.joiningDate" required />
-        </div>
-
-        <!-- Button -->
-        <div class="col-12 mt-3">
-            <button class="btn btn-primary w-100" type="submit" [disabled]="empForm.invalid">
-                ➕ Add Employee (User Will Be Auto-Created)
-            </button>
-        </div>
-
-    </form>
-
-    <!-- Loader -->
-    <div *ngIf="isSubmitting" class="text-center mt-3">
-        <div class="spinner-border text-primary"></div>
-        <p class="text-muted">Creating employee & user...</p>
+    <!-- Company Email -->
+    <div class="col-md-6">
+        <label class="form-label">
+            Company Email (Login Username) <span style="color:red">*</span>
+        </label>
+        <input type="email" class="form-control" name="companyEmail"
+               [(ngModel)]="employee.companyEmail"
+               placeholder="name@townshiphomes.in" required />
     </div>
 
-    <!-- Success Message -->
-    <div *ngIf="successMessage" class="alert alert-success mt-3">
-        {{ successMessage }}
+    <!-- Personal Gmail ID -->
+    <div class="col-md-6">
+        <label class="form-label">
+            Personal Gmail ID (For Welcome Email) <span style="color:red">*</span>
+        </label>
+        <input type="email" class="form-control" name="gmailId"
+               [(ngModel)]="employee.email"
+               placeholder="example@gmail.com" required />
     </div>
 
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-        {{ errorMessage }}
+    <!-- Phone -->
+    <div class="col-md-6">
+        <label class="form-label">
+            Phone <span style="color:red">*</span>
+        </label>
+        <input type="text" class="form-control" name="phone"
+               [(ngModel)]="employee.phone"
+               placeholder="Enter phone number" required />
     </div>
-</div>
+
+    <!-- Department -->
+    <div class="col-md-6">
+        <label class="form-label">
+            Department <span style="color:red">*</span>
+        </label>
+        <select class="form-select" name="department" [(ngModel)]="employee.department" required>
+            <option value="">Select...</option>
+
+            <!-- Core Business -->
+            <option value="SALES">Sales</option>
+            <option value="MARKETING">Marketing</option>
+            <option value="CRM_SUPPORT">CRM / Customer Support</option>
+            <option value="BUSINESS_DEVELOPMENT">Business Development</option>
+
+            <!-- Property & Project -->
+            <option value="PROPERTY_MANAGEMENT">Property Management</option>
+            <option value="FACILITY_MANAGEMENT">Facility Management</option>
+            <option value="OPERATIONS">Operations</option>
+            <option value="PROJECT_MANAGEMENT">Project Management</option>
+            <option value="SITE_MANAGEMENT">Site Management</option>
+
+            <!-- Finance & Legal -->
+            <option value="FINANCE">Finance</option>
+            <option value="ACCOUNTS">Accounts</option>
+            <option value="LEGAL">Legal</option>
+            <option value="COMPLIANCE">Compliance</option>
+
+            <!-- Tech -->
+            <option value="ELECTRICAL">Electrical</option>
+            <option value="INTERIOR_DESIGN">Interior Design</option>
+            <option value="HR">Human Resources (HR)</option>
+            <option value="ADMIN">Admin</option>
+            <option value="IT_TECH">IT / Tech</option>
+            <option value="QUALITY_ASSURANCE">Quality Assurance (QA)</option>
+
+            <!-- Data -->
+            <option value="MARKET_RESEARCH">Market Research</option>
+            <option value="DATA_ANALYTICS">Data Analytics</option>
+            <option value="STRATEGY_PLANNING">Strategy & Planning</option>
+
+            <!-- Broker -->
+            <option value="BROKER_RELATIONS">Broker Relations</option>
+            <option value="CHANNEL_PARTNER_MANAGEMENT">Channel Partner Management</option>
+
+            <!-- Developer -->
+            <option value="DEVELOPER_RELATIONS">Developer Relations</option>
+        </select>
+    </div>
+
+    <!-- Joining Date -->
+    <div class="col-md-6">
+        <label class="form-label">
+            Joining Date <span style="color:red">*</span>
+        </label>
+        <input type="date" class="form-control" name="joiningDate"
+               [(ngModel)]="employee.joiningDate" required />
+    </div>
+
+    <!-- Submit -->
+    <div class="col-12 mt-3">
+        <button class="btn btn-primary w-100" type="submit" [disabled]="empForm.invalid">
+            ➕ Add Employee (User Will Be Auto-Created)
+        </button>
+    </div>
+
+</form>

@@ -88,23 +88,34 @@ export class MarketingOutreachComponent implements OnInit {
     new bootstrap.Modal(document.getElementById('marketingModal')).show();
   }
 
-  saveTask(): void {
-    const modalEl = document.getElementById('marketingModal');
-    const modal = bootstrap.Modal.getInstance(modalEl);
+saveTask(): void {
+  const modalEl = document.getElementById('marketingModal');
+  const modal = bootstrap.Modal.getInstance(modalEl);
 
-    const op = this.isEditing
-      ? this.marketingService.update(this.selectedTask)
-      : this.marketingService.add(this.selectedTask);
+  // 🔥 Ensure assignedTo = employeeId
+  const assignedEmployee = this.employees.find(
+    e => String(e.id) === String(this.selectedTask.assignedTo)
+  );
 
-    op.subscribe({
-      next: () => {
-        this.showToast(this.isEditing ? 'Task updated successfully' : 'Task added successfully');
-        modal?.hide();
-        this.loadTasks();
-      },
-      error: () => this.showToast('❌ Failed to save task')
-    });
-  }
+  const payload = {
+    ...this.selectedTask,
+    assignedTo: assignedEmployee ? String(assignedEmployee.id) : this.selectedTask.assignedTo
+  };
+
+  const op = this.isEditing
+    ? this.marketingService.update(payload)
+    : this.marketingService.add(payload);
+
+  op.subscribe({
+    next: () => {
+      this.showToast(this.isEditing ? 'Task updated successfully' : 'Task added successfully');
+      modal?.hide();
+      this.loadTasks();
+    },
+    error: () => this.showToast('❌ Failed to save task')
+  });
+}
+
 
   deleteTask(id?: number): void {
     if (id && confirm("Delete this task?")) {

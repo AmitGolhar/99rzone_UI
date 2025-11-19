@@ -87,7 +87,7 @@
               <label class="form-label">Assigned To</label>
               <select class="form-select" [(ngModel)]="selectedTask.assignedTo" name="assignedTo">
                 <option value="">Select...</option>
-                <option *ngFor="let emp of employees" [value]="emp.name">
+                <option *ngFor="let emp of employees" [value]="emp.id">
                   {{ emp.name }}
                 </option>
               </select>

@@ -110,4 +110,9 @@ export class PaymentFormComponent implements OnInit {
       toast.show();
     }
   }
+
+  goBack() {
+  this.router.navigate(['/crm/payments']);
+}
+
 }

@@ -14,7 +14,8 @@ export class EmployeeAddComponent {
     email: '',
     phone: '',
     department: '',
-    joiningDate: ''
+    joiningDate: '',
+    companyEmail :''
   };
 
   isSubmitting = false;
@@ -39,7 +40,8 @@ export class EmployeeAddComponent {
           email: '',
           phone: '',
           department: '',
-          joiningDate: ''
+          joiningDate: '',
+          companyEmail:''
         };
 
         this.isSubmitting = false;

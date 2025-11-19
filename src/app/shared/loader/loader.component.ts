@@ -8,5 +8,6 @@ import { Component, Input } from '@angular/core';
 export class LoaderComponent {
 
     @Input() isLoading: boolean = false;
+  @Input() visible: boolean = true;
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '@app/models/employee.model';
 import { LeadTask } from '@app/models/lead.model';
+import { EmailService } from '@app/services/email.service';
 import { EmployeeService } from '@app/services/employee.service';
 import { LeadService } from '@app/services/lead.service';
 
@@ -38,7 +39,8 @@ export class LeadManagementComponent implements OnInit {
   constructor(
     private leadService: LeadService,
 
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private emailService: EmailService
   ) {}
 
   ngOnInit(): void {
@@ -84,8 +86,29 @@ export class LeadManagementComponent implements OnInit {
     const modalEl = document.getElementById('leadModal');
     const modal = bootstrap.Modal.getInstance(modalEl!);
 
+    // ⚠ Ensure assignedTo is employeeId
+    const assignedEmployee = this.employees.find(
+      (e) => String(e.id) === String(this.selectedTask.assignedTo)
+    );
+
+    if (!assignedEmployee) {
+      console.warn(
+        '⚠ Invalid assignedTo. No employee matched with ID:',
+        this.selectedTask.assignedTo
+      );
+    }
+
+    // Ensure payload contains employeeId only
+    const payload = {
+      ...this.selectedTask,
+      assignedTo: assignedEmployee
+        ? String(assignedEmployee.id)
+        : this.selectedTask.assignedTo,
+    };
+
     if (this.isEditing) {
-      this.leadService.updateLead(this.selectedTask).subscribe({
+      // ----- UPDATE -----
+      this.leadService.updateLead(payload).subscribe({
         next: () => {
           this.loadLeads();
           modal?.hide();
@@ -93,7 +116,8 @@ export class LeadManagementComponent implements OnInit {
         error: (err) => console.error('Error updating lead:', err),
       });
     } else {
-      this.leadService.addLead(this.selectedTask).subscribe({
+      // ----- ADD -----
+      this.leadService.addLead(payload).subscribe({
         next: () => {
           this.loadLeads();
           modal?.hide();
@@ -125,5 +149,10 @@ export class LeadManagementComponent implements OnInit {
       dueDate: '',
       notes: '',
     };
+  }
+
+  private getAssignedEmail(empId: string): string | null {
+    const emp = this.employees.find((e) => String(e.id) === String(empId));
+    return emp ? emp.email : null;
   }
 }

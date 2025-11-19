@@ -11,6 +11,7 @@ import { ThemeService } from './services/theme.service';
 export class AppComponent implements OnInit {
   title = 'w3realestateUI';
   showHeader = false;
+loading = true;
 
    constructor(private router: Router,private themeService: ThemeService) {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
@@ -22,6 +23,9 @@ export class AppComponent implements OnInit {
     
  
 ngOnInit(): void {
+   setTimeout(() => {
+    this.loading = false; // hide loader
+  }, 1200);
     this.themeService.loadTheme(); // apply stored theme on app startup
   }
 }

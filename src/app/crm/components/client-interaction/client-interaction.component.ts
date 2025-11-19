@@ -10,11 +10,11 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-client-interaction',
   templateUrl: './client-interaction.component.html',
-  styleUrls: ['./client-interaction.component.css']
+  styleUrls: ['./client-interaction.component.css'],
 })
 export class ClientInteractionComponent implements OnInit {
   clientTasks: ClientTask[] = [];
-  employees: Employee[] = [];   // ✅ employee list here
+  employees: Employee[] = []; // ✅ employee list here
   selectedTask: ClientTask = this.initTask();
   isEditing = false;
   isLoading = false;
@@ -31,10 +31,11 @@ export class ClientInteractionComponent implements OnInit {
     'Payment Collection / Receipt',
     'Feedback / Testimonial Collection',
     'Property Handover / Key Delivery',
-    'Post-Sale Support / Maintenance Request'
+    'Post-Sale Support / Maintenance Request',
   ];
 
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
+loading = true;
 
   constructor(
     private clientService: ClientService,
@@ -42,6 +43,10 @@ export class ClientInteractionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+      setTimeout(() => {
+    this.loading = false; // hide loader
+  }, 1200);
     this.loadTasks();
     this.loadEmployees(); // ✅ Load employee list on init
   }
@@ -50,18 +55,19 @@ export class ClientInteractionComponent implements OnInit {
   loadEmployees(): void {
     this.employeeService.getAllEmployees().subscribe({
       next: (list) => (this.employees = list),
-      error: () => console.error("Failed to load employees")
+      error: () => console.error('Failed to load employees'),
     });
   }
 
   // 🔹 Load all client tasks
   loadTasks(): void {
     this.isLoading = true;
-    this.clientService.getAll()
+    this.clientService
+      .getAll()
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (tasks) => (this.clientTasks = tasks),
-        error: () => (this.errorMessage = 'Failed to load client tasks.')
+        error: () => (this.errorMessage = 'Failed to load client tasks.'),
       });
   }
 
@@ -81,19 +87,33 @@ export class ClientInteractionComponent implements OnInit {
     const modalEl = document.getElementById('clientModal');
     const modal = bootstrap.Modal.getInstance(modalEl);
 
+    // 🔥 Ensure assignedTo = employeeId
+    const assignedEmployee = this.employees.find(
+      (e) => String(e.id) === String(this.selectedTask.assignedTo)
+    );
+
+    const payload = {
+      ...this.selectedTask,
+      assignedTo: assignedEmployee
+        ? String(assignedEmployee.id)
+        : this.selectedTask.assignedTo,
+    };
+
     const operation = this.isEditing
-      ? this.clientService.update(this.selectedTask)
-      : this.clientService.add(this.selectedTask);
+      ? this.clientService.update(payload)
+      : this.clientService.add(payload);
 
     operation.subscribe({
       next: () => {
         this.showToast(
-          this.isEditing ? 'Task updated successfully ✅' : 'Task added successfully 🎯'
+          this.isEditing
+            ? 'Task updated successfully ✅'
+            : 'Task added successfully 🎯'
         );
         modal?.hide();
         this.loadTasks();
       },
-      error: () => this.showToast('❌ Failed to save task.')
+      error: () => this.showToast('❌ Failed to save task.'),
     });
   }
 
@@ -104,7 +124,7 @@ export class ClientInteractionComponent implements OnInit {
           this.showToast('🗑️ Task deleted successfully');
           this.loadTasks();
         },
-        error: () => this.showToast('❌ Failed to delete task.')
+        error: () => this.showToast('❌ Failed to delete task.'),
       });
     }
   }
@@ -118,7 +138,7 @@ export class ClientInteractionComponent implements OnInit {
       assignedTo: '',
       status: 'Pending',
       dueDate: '',
-      notes: ''
+      notes: '',
     };
   }
 

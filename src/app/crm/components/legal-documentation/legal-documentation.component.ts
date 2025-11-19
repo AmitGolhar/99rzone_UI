@@ -10,7 +10,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-legal-documentation',
   templateUrl: './legal-documentation.component.html',
-  styleUrls: ['./legal-documentation.component.css']
+  styleUrls: ['./legal-documentation.component.css'],
 })
 export class LegalDocumentationComponent implements OnInit {
   legalTasks: LegalTask[] = [];
@@ -20,7 +20,7 @@ export class LegalDocumentationComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
 
-  employees: Employee[] = [];   // ⬅️ EMPLOYEE LIST
+  employees: Employee[] = []; // ⬅️ EMPLOYEE LIST
 
   taskTypes: string[] = [
     'Agreement Preparation',
@@ -30,7 +30,7 @@ export class LegalDocumentationComponent implements OnInit {
     'Payment Reconciliation',
     'Legal Clearance Check',
     'NOC / Builder Document Collection',
-    'Stamp Duty & Tax Filing'
+    'Stamp Duty & Tax Filing',
   ];
 
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
@@ -47,19 +47,20 @@ export class LegalDocumentationComponent implements OnInit {
 
   loadEmployees(): void {
     this.employeeService.getAllEmployees().subscribe({
-      next: (res) => this.employees = res,
-      error: (err) => console.error('Error loading employees:', err)
+      next: (res) => (this.employees = res),
+      error: (err) => console.error('Error loading employees:', err),
     });
   }
 
   loadTasks(): void {
     this.isLoading = true;
     this.errorMessage = '';
-    this.legalService.getAll()
-      .pipe(finalize(() => this.isLoading = false))
+    this.legalService
+      .getAll()
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: (tasks) => this.legalTasks = tasks,
-        error: () => this.errorMessage = '⚠️ Failed to load legal tasks.'
+        next: (tasks) => (this.legalTasks = tasks),
+        error: () => (this.errorMessage = '⚠️ Failed to load legal tasks.'),
       });
   }
 
@@ -79,19 +80,33 @@ export class LegalDocumentationComponent implements OnInit {
     const modalEl = document.getElementById('legalModal');
     const modal = bootstrap.Modal.getInstance(modalEl);
 
+    // 🔥 Ensure assignedTo = employeeId, not email
+    const assignedEmployee = this.employees.find(
+      (e) => String(e.id) === String(this.selectedTask.assignedTo)
+    );
+
+    const payload = {
+      ...this.selectedTask,
+      assignedTo: assignedEmployee
+        ? String(assignedEmployee.id)
+        : this.selectedTask.assignedTo,
+    };
+
     const operation = this.isEditing
-      ? this.legalService.update(this.selectedTask)
-      : this.legalService.add(this.selectedTask);
+      ? this.legalService.update(payload)
+      : this.legalService.add(payload);
 
     operation.subscribe({
       next: () => {
         this.showToast(
-          this.isEditing ? '✅ Task updated successfully' : '🎯 Task added successfully'
+          this.isEditing
+            ? '✅ Task updated successfully'
+            : '🎯 Task added successfully'
         );
         modal?.hide();
         this.loadTasks();
       },
-      error: () => this.showToast('❌ Failed to save task. Try again.')
+      error: () => this.showToast('❌ Failed to save task. Try again.'),
     });
   }
 
@@ -102,7 +117,7 @@ export class LegalDocumentationComponent implements OnInit {
           this.showToast('🗑️ Task deleted successfully');
           this.loadTasks();
         },
-        error: () => this.showToast('❌ Failed to delete task.')
+        error: () => this.showToast('❌ Failed to delete task.'),
       });
     }
   }
@@ -115,7 +130,7 @@ export class LegalDocumentationComponent implements OnInit {
       assignedTo: '',
       status: 'Pending',
       dueDate: '',
-      notes: ''
+      notes: '',
     };
   }
 

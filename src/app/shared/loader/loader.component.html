@@ -1,7 +1,41 @@
-<div class="real-estate-loader" *ngIf="isLoading">
-  <div class="loader-icon">
-    <div class="house-spinner"></div>
+<div id="app-loader" class="loader-overlay" [class.hidden]="!visible" role="status" aria-live="polite">
+  <div class="loader-card">
 
+    <!-- SVG ICON -->
+    <div class="loader-icon">
+      <svg width="120" height="120" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- Building -->
+        <g class="building" transform="translate(55,26)">
+          <rect x="0" y="14" width="28" height="40" fill="#d9e9ff" rx="2" />
+          <rect x="5" y="18" width="6" height="7" fill="white" />
+          <rect x="17" y="18" width="6" height="7" fill="white" />
+          <rect x="5" y="30" width="6" height="7" fill="white" />
+          <rect x="17" y="30" width="6" height="7" fill="white" />
+        </g>
+
+        <!-- House -->
+        <g transform="translate(8,16)">
+          <polygon class="roof" points="20,0 40,18 0,18" fill="var(--primary)" />
+          <rect x="4" y="18" width="32" height="24" rx="3" fill="#eef4ff" />
+          <rect class="door" x="18" y="28" width="8" height="12" rx="1" fill="var(--accent)" />
+          <rect x="8" y="22" width="8" height="7" fill="white" />
+          <rect x="26" y="22" width="8" height="7" fill="white" />
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- TEXT -->
+    <div class="loader-text">
+      <h3 class="loader-title">TownShipHomes CRM Loading…</h3>
+      <p class="loader-sub">Preparing your real-estate dashboard.</p>
+
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+    </div>
   </div>
-  <p class="loader-text">Finding your perfect property...</p>
 </div>

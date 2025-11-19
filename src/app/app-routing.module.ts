@@ -6,6 +6,7 @@ import { LoginComponent } from './shared/login/login.component';
 import { RegisterComponent } from './shared/register/register.component';
 import { AuthGuard } from './services/auth.guard';
 import { ExcelUploadComponent } from './components/excel-upload/excel-upload.component';
+import { PricingPlansComponent } from './shared/pricing-plans/pricing-plans.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent ,canActivate: [AuthGuard]},
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'crm', loadChildren: () => import('./crm/crm.module').then(m => m.CrmModule) ,canActivate: [AuthGuard]},
   { path: 'check_on_map', component: PropertyMapComponent ,canActivate: [AuthGuard]},
   { path: 'excel-upload', component: ExcelUploadComponent },
+  { path: 'pricing', component: PricingPlansComponent },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

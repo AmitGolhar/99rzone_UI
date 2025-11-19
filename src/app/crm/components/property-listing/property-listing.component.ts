@@ -10,11 +10,11 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-property-listing',
   templateUrl: './property-listing.component.html',
-  styleUrls: ['./property-listing.component.css']
+  styleUrls: ['./property-listing.component.css'],
 })
 export class PropertyListingComponent implements OnInit {
   propertyTasks: PropertyTask[] = [];
-  employees: Employee[] = [];  // 👈 EMPLOYEE LIST
+  employees: Employee[] = []; // 👈 EMPLOYEE LIST
   selectedTask: PropertyTask = this.initTask();
   searchText = '';
   isEditing = false;
@@ -28,7 +28,7 @@ export class PropertyListingComponent implements OnInit {
     'Maintenance / Repairs',
     'Under Construction Updates',
     'Price / Rent Update',
-    'Inventory Check'
+    'Inventory Check',
   ];
 
   statuses: string[] = ['Pending', 'In Progress', 'Completed'];
@@ -46,8 +46,8 @@ export class PropertyListingComponent implements OnInit {
   /** 🔹 Load Employee List */
   loadEmployees(): void {
     this.employeeService.getAllEmployees().subscribe({
-      next: (data) => this.employees = data || [],
-      error: (err) => console.error('❌ Failed to load employees:', err)
+      next: (data) => (this.employees = data || []),
+      error: (err) => console.error('❌ Failed to load employees:', err),
     });
   }
 
@@ -63,8 +63,9 @@ export class PropertyListingComponent implements OnInit {
         next: (tasks) => (this.propertyTasks = tasks || []),
         error: (err) => {
           console.error('❌ Failed to load property tasks:', err);
-          this.errorMessage = 'Failed to load property data. Please try again later.';
-        }
+          this.errorMessage =
+            'Failed to load property data. Please try again later.';
+        },
       });
   }
 
@@ -86,28 +87,42 @@ export class PropertyListingComponent implements OnInit {
 
   /** 🔹 Save or Update Task */
   saveTask(): void {
-    if (!this.selectedTask.propertyName?.trim() || !this.selectedTask.taskType) {
+    if (
+      !this.selectedTask.propertyName?.trim() ||
+      !this.selectedTask.taskType
+    ) {
       alert('Please fill all mandatory fields before saving.');
       return;
     }
 
-    this.isLoading = true;
-    const request$ = this.isEditing
-      ? this.propertyService.update(this.selectedTask)
-      : this.propertyService.add(this.selectedTask);
+    // 🔥 Ensure assignedTo = employeeId
+    const assignedEmployee = this.employees.find(
+      (e) => String(e.id) === String(this.selectedTask.assignedTo)
+    );
 
-    request$
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: () => {
-          this.loadTasks();
-          this.closeModal();
-        },
-        error: (err) => {
-          console.error('❌ Save/Update failed:', err);
-          alert('Error saving property task. Please try again.');
-        }
-      });
+    const payload = {
+      ...this.selectedTask,
+      assignedTo: assignedEmployee
+        ? String(assignedEmployee.id)
+        : this.selectedTask.assignedTo,
+    };
+
+    this.isLoading = true;
+
+    const request$ = this.isEditing
+      ? this.propertyService.update(payload)
+      : this.propertyService.add(payload);
+
+    request$.pipe(finalize(() => (this.isLoading = false))).subscribe({
+      next: () => {
+        this.loadTasks();
+        this.closeModal();
+      },
+      error: (err) => {
+        console.error('❌ Save/Update failed:', err);
+        alert('Error saving property task. Please try again.');
+      },
+    });
   }
 
   /** 🔹 Delete a Task */
@@ -124,7 +139,7 @@ export class PropertyListingComponent implements OnInit {
         error: (err) => {
           console.error('❌ Delete failed:', err);
           alert('Failed to delete the task.');
-        }
+        },
       });
   }
 
@@ -138,7 +153,7 @@ export class PropertyListingComponent implements OnInit {
       assignedTo: '',
       status: 'Pending',
       dueDate: '',
-      notes: ''
+      notes: '',
     };
   }
 

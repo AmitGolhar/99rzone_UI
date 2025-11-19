@@ -496,3 +496,41 @@ label, .form-label {
   filter: invert(1); /* visible on dark backgrounds */
 }
 
+/* ==========================================
+   🌙 DARK MODE TABLE FIX (HARD OVERRIDE)
+   ========================================== */
+
+[data-theme='dark'] table,
+[data-theme='dark'] .table {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Table header */
+[data-theme='dark'] .table thead th {
+  background: color-mix(in srgb, var(--card-bg) 70%, black) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Table rows */
+[data-theme='dark'] .table tbody tr {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+[data-theme='dark'] .table tbody tr:hover {
+  background-color: color-mix(in srgb, var(--card-bg) 85%, white) !important;
+}
+
+/* Cells */
+[data-theme='dark'] .table td,
+[data-theme='dark'] .table th {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+[data-theme='dark'] .table.table-striped tbody tr:nth-of-type(odd) {
+  background-color: color-mix(in srgb, var(--card-bg) 90%, black) !important;
+}

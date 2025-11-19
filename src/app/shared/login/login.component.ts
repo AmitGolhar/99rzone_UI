@@ -18,7 +18,7 @@ export class LoginComponent {
   submit() {
     this.error = '';
     this.auth.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/home']),
+      next: () => this.router.navigate(['/crm']),
       error: (err) => this.error = err.error?.error || 'Login failed'
     });
   }

@@ -15,6 +15,8 @@ export class HeaderComponent {
   { label: 'Check On Map', link: '/check_on_map' },
   { label: 'CRM', link: '/crm' },
    { label: 'Excel Upload', link: '/excel-upload' },
+    { label: 'Out Pricings', link: '/pricing' },
+
 ];
 
 

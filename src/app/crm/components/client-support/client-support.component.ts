@@ -33,6 +33,7 @@ export class ClientSupportComponent implements OnInit {
   ];
 
   statuses: string[] = ['Pending', 'In Progress', 'Resolved', 'Closed'];
+  loading = true;
 
   constructor(
     private supportService: SupportService,
@@ -40,6 +41,9 @@ export class ClientSupportComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+     setTimeout(() => {
+    this.loading = false; // hide loader
+  }, 1200);
     this.loadTasks();
     this.loadEmployees();
   }
@@ -79,28 +83,38 @@ export class ClientSupportComponent implements OnInit {
     new bootstrap.Modal(document.getElementById('supportModal')).show();
   }
 
-  // 🔹 Save (Add / Update)
-  saveTask(): void {
-    const modalEl = document.getElementById('supportModal');
-    const modal = bootstrap.Modal.getInstance(modalEl);
+saveTask(): void {
+  const modalEl = document.getElementById('supportModal');
+  const modal = bootstrap.Modal.getInstance(modalEl);
 
-    const operation = this.isEditing
-      ? this.supportService.update(this.selectedTask)
-      : this.supportService.add(this.selectedTask);
+  // 🔥 Ensure assignedTo = employeeId (not email)
+  const assignedEmployee = this.employees.find(
+    e => String(e.id) === String(this.selectedTask.assignedTo)
+  );
 
-    operation.subscribe({
-      next: () => {
-        this.showToast(
-          this.isEditing
-            ? '✅ Task updated successfully'
-            : '🎯 Task added successfully'
-        );
-        modal?.hide();
-        this.loadTasks();
-      },
-      error: () => this.showToast('❌ Failed to save task. Try again.'),
-    });
-  }
+  const payload = {
+    ...this.selectedTask,
+    assignedTo: assignedEmployee ? String(assignedEmployee.id) : this.selectedTask.assignedTo
+  };
+
+  const operation = this.isEditing
+    ? this.supportService.update(payload)
+    : this.supportService.add(payload);
+
+  operation.subscribe({
+    next: () => {
+      this.showToast(
+        this.isEditing
+          ? '✅ Task updated successfully'
+          : '🎯 Task added successfully'
+      );
+      modal?.hide();
+      this.loadTasks();
+    },
+    error: () => this.showToast('❌ Failed to save task. Try again.')
+  });
+}
+
 
   // 🔹 Delete Task
   deleteTask(id?: number): void {

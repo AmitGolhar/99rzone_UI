@@ -100,3 +100,28 @@ canvas {
     height: 200px !important;
   }
 }
+
+.task-scroll {
+  max-height: 360px;  /* Adjust based on layout */
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Optional: smoother, modern scrolling */
+.task-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-scroll::-webkit-scrollbar-thumb {
+  background: #ced4da;
+  border-radius: 4px;
+}
+
+.task-scroll::-webkit-scrollbar-thumb:hover {
+  background: #adb5bd;
+}
+
+.task-scroll {
+  max-height: 330px;
+  overflow-y: auto;
+}

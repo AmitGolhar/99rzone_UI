@@ -4,7 +4,7 @@
       {{ isEditMode ? '✏️ Edit Payment Record' : '➕ Add Payment Record' }}
     </h5>
 
-    <a routerLink="/crm/payments" class="btn btn-sm btn-outline-secondary">
+    <a  (click)="goBack()" class="btn btn-sm btn-outline-secondary">
       ← Back to List
     </a>
   </div>
@@ -156,7 +156,7 @@
       <button class="btn btn-primary px-4">
         {{ isEditMode ? '💾 Update Payment' : '💰 Save Payment' }}
       </button>
-      <a routerLink="/crm/payments" class="btn btn-outline-secondary ms-2 px-4">
+      <a  (click)="goBack()"class="btn btn-outline-secondary ms-2 px-4">
         Cancel
       </a>
     </div>

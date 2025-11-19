@@ -89,24 +89,40 @@ constructor(
     new bootstrap.Modal(document.getElementById('smartModal')).show();
   }
 
-  /** 🔹 Save or Update Automation Task */
-  saveTask(): void {
-    const modalEl = document.getElementById('smartModal');
-    const modal = bootstrap.Modal.getInstance(modalEl);
+/** 🔹 Save or Update Automation Task */
+saveTask(): void {
+  const modalEl = document.getElementById('smartModal');
+  const modal = bootstrap.Modal.getInstance(modalEl);
 
-    const operation = this.isEditing
-      ? this.smartService.update(this.selectedTask)
-      : this.smartService.add(this.selectedTask);
+  // 🔥 Ensure assignedTo = employeeId (not email)
+  const assignedEmployee = this.employees.find(
+    e => String(e.id) === String(this.selectedTask.assignedTo)
+  );
 
-    operation.subscribe({
-      next: () => {
-        this.showToast(this.isEditing ? '✅ Task updated successfully!' : '🎯 New smart automation added!');
-        modal?.hide();
-        this.loadTasks();
-      },
-      error: () => this.showToast('❌ Failed to save task. Please retry.')
-    });
-  }
+  // Build payload with corrected assignedTo
+  const payload: SmartTask = {
+    ...this.selectedTask,
+    assignedTo: assignedEmployee ? String(assignedEmployee.id) : this.selectedTask.assignedTo
+  };
+
+  const operation = this.isEditing
+    ? this.smartService.update(payload)
+    : this.smartService.add(payload);
+
+  operation.subscribe({
+    next: () => {
+      this.showToast(
+        this.isEditing
+          ? '✅ Task updated successfully!'
+          : '🎯 New smart automation added!'
+      );
+      modal?.hide();
+      this.loadTasks();
+    },
+    error: () => this.showToast('❌ Failed to save task. Please retry.')
+  });
+}
+
 
   loadEmployees() {
   this.employeeService.getAllEmployees().subscribe({

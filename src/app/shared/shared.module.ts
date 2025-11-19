@@ -7,9 +7,10 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AsyncFilterPipe } from './async-filter.pipe';
-
+import { PricingPlansComponent } from './pricing-plans/pricing-plans.component';
+ 
 @NgModule({
-  declarations: [LoaderComponent,LoginComponent,RegisterComponent,AsyncFilterPipe],
+  declarations: [LoaderComponent,LoginComponent,RegisterComponent,AsyncFilterPipe, PricingPlansComponent],
   imports: [CommonModule, FormsModule,RouterModule],
   exports: [LoaderComponent,LoginComponent,RegisterComponent,RouterModule,AsyncFilterPipe] 
 })
