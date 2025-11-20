@@ -1,4 +1,3 @@
-<!-- src/app/crm/dashboard/crm-dashboard.component.html -->
 <div class="crm-dashboard-v3 container-fluid py-3">
 
   <!-- Header -->
@@ -11,13 +10,16 @@
         <span *ngIf="!loading">🔄 Refresh</span>
         <span *ngIf="loading">⏳ Loading...</span>
       </button>
+
       <div class="ms-2">
-        <span class="badge bg-light text-dark">User: {{ currentUser.name }} ({{ currentUser.role }})</span>
+        <span class="badge bg-light text-dark">
+          User: {{ currentUser.name }} ({{ currentUser.role }})
+        </span>
       </div>
     </div>
   </div>
 
-  <!-- Stat Cards (Existing CRM Totals) -->
+  <!-- CRM Totals -->
   <div class="row g-3 mb-4">
     <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let s of stats">
       <div class="card stat-card h-100" [style.borderTopColor]="s.color" (click)="navigate(s.route)">
@@ -32,39 +34,189 @@
     </div>
   </div>
 
-  <!-- 🔥 NEW: Finance + CRM Summary Cards -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>💰 Collection Target</h6>
-        <div class="h5 text-primary">₹{{ financeStats.collectionTarget | number }}</div>
+  <!-- Summary Bottom Cards (Styled Like CRM Totals) -->
+  <div class="row g-3 mt-4">
+
+    <!-- Follow Ups -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="card stat-card h-100" style="border-top-color:#0d6efd;">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-3 fs-1">📅</div>
+          <div>
+            <small class="text-muted">Follow-Ups</small>
+            <div class="h5 mb-0">
+              {{ financeStats.pendingFollowups }} 🔔 /
+              {{ financeStats.completedFollowups }} ✅
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>✅ Collection Actual</h6>
-        <div class="h5 text-success">₹{{ financeStats.collectionActual | number }}</div>
+    <!-- Attendance -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="card stat-card h-100" style="border-top-color:#20c997;">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-3 fs-1">🧑‍🤝‍🧑</div>
+          <div>
+            <small class="text-muted">Attendance</small>
+            <div class="h5 mb-0">{{ financeStats.attendancePercent }}%</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>🏠 Occupancy Rate</h6>
-        <div class="h5 text-info">{{ financeStats.occupancyRate }}%</div>
+    <!-- Expenses -->
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="card stat-card h-100" style="border-top-color:#dc3545;">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-3 fs-1">🧾</div>
+          <div>
+            <small class="text-muted">Expenses</small>
+            <div class="h5 mb-0 text-danger">₹{{ financeStats.totalExpense | number }}</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>🏆 Incentives</h6>
-        <div class="h5 text-success">₹{{ financeStats.totalIncentive | number }}</div>
+ 
+   <!-- Monthly Revenue -->
+<div class="col-lg-3 col-md-4 col-sm-6">
+  <div class="card stat-card h-100" style="border-top-color:#28a745;">
+    <div class="card-body d-flex align-items-center">
+      <div class="me-3 fs-1">💼</div>
+      <div>
+        <small class="text-muted">Revenue (Month)</small>
+        <div class="h5 mb-0 text-success">
+          ₹{{ monthlyRevenueTotal | number }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+<br>
+
+  <!-- FINANCE Summary Cards (3-Grid Layout Like CRM Totals) -->
+<div class="row g-3 mb-4">
+
+  <!-- Collection Target -->
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="card stat-card h-100" style="border-top-color:#0d6efd;">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3 fs-1">💰</div>
+        <div>
+          <small class="text-muted">Collection Target</small>
+          <div class="h5 mb-0 text-primary">
+            ₹{{ financeStats.collectionTarget | number }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 🔷 Finance + CRM Charts -->
+  <!-- Occupancy Rate -->
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="card stat-card h-100" style="border-top-color:#0dcaf0;">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3 fs-1">🏠</div>
+        <div>
+          <small class="text-muted">Occupancy Rate</small>
+          <div class="h5 mb-0 text-info">
+            {{ financeStats.occupancyRate }}%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Incentives -->
+  <div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="card stat-card h-100" style="border-top-color:#ffc107;">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3 fs-1">🏆</div>
+        <div>
+          <small class="text-muted">Incentives</small>
+          <div class="h5 mb-0 text-success">
+            ₹{{ financeStats.totalIncentive | number }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+  <!-- NEW PAYMENT SUMMARY (Styled Like CRM Totals) -->
+  <div class="row g-3 mb-4">
+
+    <!-- Total Payment Amount -->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card stat-card h-100" style="border-top-color:#0d6efd;">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-3 fs-1">💵</div>
+          <div>
+            <small class="text-muted">Total Payment Amount</small>
+            <div class="h5 mb-0 text-primary">
+              ₹{{ financeStats.totalPaymentAmount | number }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Paid Amount -->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card stat-card h-100" style="border-top-color:#28a745;">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-3 fs-1">💚</div>
+          <div>
+            <small class="text-muted">Total Paid Amount</small>
+            <div class="h5 mb-0 text-success">
+              ₹{{ financeStats.totalPaidAmount | number }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Pending Amount -->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card stat-card h-100" style="border-top-color:#dc3545;">
+        <div class="card-body d-flex align-items-center">
+          <div class="me-3 fs-1">🔔</div>
+          <div>
+            <small class="text-muted">Total Pending Amount</small>
+            <div class="h5 mb-0 text-danger">
+              ₹{{ financeStats.totalPendingAmount | number }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Finance + CRM Charts -->
   <div class="row g-3">
+
+    <!-- Total / Paid / Pending Chart -->
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h6>💳 Total vs Paid vs Pending Amounts</h6>
+        <canvas id="totalPaidPendingChart" style="height:260px;"></canvas>
+      </div>
+    </div>
+
+
+
+
+    <!-- Collection Chart -->
     <div class="col-lg-6">
       <div class="card p-3">
         <h6>📊 Collection Progress vs Target</h6>
@@ -72,27 +224,31 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card p-3">
-        <h6>💼 Property Occupancy</h6>
-        <canvas id="occupancyChart" class="dashboard-chart"></canvas>
-      </div>
-    </div>
 
+
+    <!-- Pending vs Collected Payments -->
     <div class="col-lg-3 col-md-6">
       <div class="card p-3">
         <h6>🔔 Pending vs Collected Payments</h6>
-        <canvas id="paymentsChart" class="dashboard-chart"></canvas>
+
+        <div class="d-flex justify-content-between px-2 mb-2">
+          <div>
+            <small class="text-muted">Collected</small>
+            <div class="fw-bold text-success">₹{{ financeStats.totalPaidAmount | number }}</div>
+          </div>
+          <div class="text-end">
+            <small class="text-muted">Pending</small>
+            <div class="fw-bold text-danger">₹{{ financeStats.pendingPayments | number }}</div>
+          </div>
+        </div>
+
+        <canvas id="paymentsChart" class="dashboard-chart" style="height:220px;"></canvas>
       </div>
     </div>
 
-    <div class="col-lg-6">
-      <div class="card p-3">
-        <h6>👥 Active vs Dormant Leads</h6>
-        <canvas id="leadsChart" class="dashboard-chart"></canvas>
-      </div>
-    </div>
 
+
+    <!-- Employee Performance -->
     <div class="col-lg-6">
       <div class="card p-3">
         <h6>🧩 Employee Performance</h6>
@@ -100,6 +256,7 @@
       </div>
     </div>
 
+    <!-- Expenses -->
     <div class="col-lg-6">
       <div class="card p-3">
         <h6>🧾 Expenses Trend</h6>
@@ -107,6 +264,7 @@
       </div>
     </div>
 
+    <!-- Revenue -->
     <div class="col-lg-6">
       <div class="card p-3">
         <h6>💹 Revenue vs Target</h6>
@@ -115,76 +273,66 @@
     </div>
   </div>
 
- 
- <!-- 📅 CRM: Upcoming, Overdue, Performers -->
-<div class="row g-3 mt-4">
-  
-  <!-- Upcoming -->
-  <div class="col-lg-4">
-    <div class="card p-3 h-100">
-      <div class="d-flex justify-content-between align-items-center">
-        <h6 class="text-primary mb-2">📅 Upcoming (7 days)</h6>
-        <small class="text-muted">{{ upcomingTasks.length }} items</small>
-      </div>
+  <!-- Upcoming / Overdue / Performers -->
+  <div class="row g-3 mt-4">
 
-      <!-- ✅ SCROLL ADDED -->
-      <div class="task-scroll">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item" *ngFor="let t of upcomingTasks">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <div class="fw-semibold">{{ t.title }}</div>
-                <small class="text-muted">{{ t.module }} • {{ t.assignedTo }}</small>
-              </div>
-              <div class="text-end">
-                <div><small>{{ t.dueDate | date:'shortDate' }}</small></div>
-                <div><span class="badge bg-warning text-dark">{{ t.status }}</span></div>
-              </div>
-            </div>
-          </li>
-          <li *ngIf="upcomingTasks.length === 0" class="list-group-item text-muted">
-            No upcoming tasks
-          </li>
-        </ul>
-      </div>
+    <!-- Upcoming -->
+    <div class="col-lg-4">
+      <div class="card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="text-primary mb-2">📅 Upcoming (7 days)</h6>
+          <small class="text-muted">{{ upcomingTasks.length }} items</small>
+        </div>
 
+        <div class="task-scroll">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let t of upcomingTasks">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fw-semibold">{{ t.title }}</div>
+                  <small class="text-muted">{{ t.module }} • {{ t.assignedTo }}</small>
+                </div>
+                <div class="text-end">
+                  <div><small>{{ t.dueDate | date:'shortDate' }}</small></div>
+                  <div><span class="badge bg-warning text-dark">{{ t.status }}</span></div>
+                </div>
+              </div>
+            </li>
+            <li *ngIf="upcomingTasks.length === 0" class="list-group-item text-muted">No upcoming tasks</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Overdue -->
-  <div class="col-lg-4">
-    <div class="card p-3 h-100">
+    <!-- Overdue -->
+    <div class="col-lg-4">
+      <div class="card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="text-primary mb-2">⚠️ Overdue Tasks</h6>
+          <small class="text-muted">{{ overdueTasks.length }} items</small>
+        </div>
 
-      <div class="d-flex justify-content-between align-items-center">
-        <h6 class="text-primary mb-2">⚠️ Overdue Tasks</h6>
-        <small class="text-muted">{{ overdueTasks.length }} items</small>
-      </div>
-
-      <!-- already scroll -->
-      <div class="task-scroll">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item" *ngFor="let t of overdueTasks">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <div class="fw-semibold text-danger">{{ t.title }}</div>
-                <small class="text-muted">{{ t.module }} • {{ t.assignedTo }}</small>
+        <div class="task-scroll">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let t of overdueTasks">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fw-semibold text-danger">{{ t.title }}</div>
+                  <small class="text-muted">{{ t.module }} • {{ t.assignedTo }}</small>
+                </div>
+                <div class="text-end">
+                  <div><small>{{ t.dueDate | date:'shortDate' }}</small></div>
+                  <div><span class="badge bg-danger">Overdue</span></div>
+                </div>
               </div>
-              <div class="text-end">
-                <div><small>{{ t.dueDate | date:'shortDate' }}</small></div>
-                <div><span class="badge bg-danger">Overdue</span></div>
-              </div>
-            </div>
-          </li>
-          <li *ngIf="overdueTasks.length === 0" class="list-group-item text-muted">
-            No overdue tasks
-          </li>
-        </ul>
+            </li>
+            <li *ngIf="overdueTasks.length === 0" class="list-group-item text-muted">No overdue tasks</li>
+          </ul>
+        </div>
       </div>
-
     </div>
-  </div>
 
-    <!-- Top Performers -->
+    <!-- Performers -->
     <div class="col-lg-4">
       <div class="card p-3 h-100">
         <div class="d-flex justify-content-between align-items-center">
@@ -192,11 +340,9 @@
           <small class="text-muted">This Week</small>
         </div>
 
-        <!-- ✅ SCROLL ADDED -->
         <div class="task-scroll">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center"
-                *ngFor="let p of performers">
+            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let p of performers">
               <div>
                 <div class="fw-semibold">{{ p.name }}</div>
                 <small class="text-muted">Tasks closed: {{ p.closed }}</small>
@@ -207,44 +353,13 @@
           </ul>
         </div>
 
-        <div class="mt-3" *ngIf="isAdmin()">
+        <div class="mt-3">
           <button class="btn btn-sm btn-outline-primary w-100">📤 Export Weekly Report</button>
         </div>
       </div>
     </div>
 
-</div>
-
-
-  <!-- 📋 Final Summary Section -->
-  <div class="row g-3 mt-4">
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>📅 Follow-Ups</h6>
-        <div class="h5">{{ financeStats.pendingFollowups }} 🔔 / {{ financeStats.completedFollowups }} ✅</div>
-      </div>
-    </div>
-
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>🧑‍🤝‍🧑 Attendance</h6>
-        <div class="h5">{{ financeStats.attendancePercent }}%</div>
-        <small class="text-muted">Present this week</small>
-      </div>
-    </div>
-
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>🧾 Expenses</h6>
-        <div class="h5 text-danger">₹{{ financeStats.totalExpense | number }}</div>
-      </div>
-    </div>
-
-    <div class="col-md-3 col-sm-6">
-      <div class="card p-3 text-center shadow-sm">
-        <h6>💼 Revenue (Month)</h6>
-        <div class="h5 text-success">₹{{ financeStats.collectionActual | number }}</div>
-      </div>
-    </div>
   </div>
+
+
 </div>

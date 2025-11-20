@@ -10,8 +10,6 @@ import {
 } from '@app/services/dashboard.service';
 import { CrmStatsService } from '@app/services/crm-stats.service';
 
-declare var window: any;
-
 @Component({
   selector: 'app-crm-dashboard',
   templateUrl: './crm-dashboard.component.html',
@@ -29,40 +27,50 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   overdueTasks: MiniTask[] = [];
   performers: Performer[] = [];
 
-  // NEW metrics
-  financeStats = {
-    collectionTarget: 10000000,
-    collectionActual: 8700000,
-    occupancyRate: 86,
-    pendingPayments: 250000,
-    collectedPayments: 8450000,
-    activeLeads: 74,
-    dormantLeads: 26,
-    totalIncentive: 175000,
-    totalExpense: 82000,
-    pendingFollowups: 9,
-    completedFollowups: 34,
-    attendancePercent: 93,
-    monthlyRevenue: [2200000, 1800000, 2400000, 2100000],
-    monthlyTarget: [2500000, 2000000, 2500000, 2300000],
+  // FINANCE STATS
+  financeStats: any = {
+    collectionTarget: 0,
+    collectionActual: 0,
+    occupancyRate: 0,
+
+    // Payment records
+    pendingPayments: 0,
+    collectedPayments: 0,
+
+    // New Payment Totals
+    totalPaymentAmount: 0,
+    totalPaidAmount: 0,
+    totalPendingAmount: 0,
+
+    // CRM metrics
+    activeLeads: 0,
+    dormantLeads: 0,
+    totalIncentive: 0,
+    totalExpense: 0,
+
+    pendingFollowups: 0,
+    completedFollowups: 0,
+    attendancePercent: 0,
+
+    monthlyRevenue: [],
+    monthlyTarget: [],
   };
 
   lastUpdated = new Date();
   loading = true;
-  currentUser = { name: 'Amit Golhar', role: 'ADMIN' }; // mock
+  currentUser = { name: '', role: '' };
 
   private subs: Subscription[] = [];
   private barChartRef: any;
   private pieChartRef: any;
 
-  // new charts
+  // Finance chart refs
   private collectionChartRef: any;
   private paymentsChartRef: any;
-  private leadsChartRef: any;
-  private occupancyChartRef: any;
   private revenueChartRef: any;
   private employeeChartRef: any;
   private expenseChartRef: any;
+  private totalPaidPendingChartRef: any;
 
   stats: AggregatedStat[] = [];
 
@@ -73,46 +81,58 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.loadUserInfo();
 
-     setTimeout(() => {
-    this.loading = false; // hide loader
-  }, 1200);
+    setTimeout(() => {
+      this.loading = false;
+    }, 1200);
 
     this.refreshAll();
+
+    // CRM totals
     this.crmStatsService.getAll().subscribe((res) => (this.stats = res));
 
+    // RESTORE OLD FOLLOW-UP LOGIC (DO NOT REMOVE)
+    this.svc.getTaskStats().subscribe((stats) => {
+      this.financeStats.pendingFollowups = stats.pending;
+      this.financeStats.completedFollowups = stats.completed;
+    });
 
-    this.svc.getTaskStats().subscribe(stats => {
-    this.financeStats.pendingFollowups = stats.pending;
-    this.financeStats.completedFollowups = stats.completed;
-  });
+    // Finance stats
+    this.subs.push(
+      this.svc.getFinanceStats().subscribe((data) => {
+        this.financeStats = { ...this.financeStats, ...data };
+
+        // REBUILD chart after data arrives
+        setTimeout(() => {
+          this.buildPaymentsChart(); // existing one
+          this.buildTotalPaidPendingChart(); // NEW chart
+        }, 50);
+      })
+    );
   }
 
   ngAfterViewInit(): void {
-    // build charts after data fetched
     setTimeout(() => {
+      this.buildTotalPaidPendingChart();
+
       this.buildCollectionChart();
       this.buildPaymentsChart();
-      this.buildLeadsChart();
-      this.buildOccupancyChart();
       this.buildRevenueChart();
       this.buildEmployeePerformanceChart();
       this.buildExpenseChart();
-    }, 300);
+    }, 400);
   }
 
   refreshAll(): void {
     this.loading = true;
     this.lastUpdated = new Date();
 
-    // existing logic
     this.subs.push(
       this.svc.getTotals().subscribe((t) => {
         this.totals = t;
         this.moduleLabels = t.map((x) => x.title);
         this.moduleCounts = t.map((x) => x.count);
-        //  this.moduleColors = t.map(x => x.color);
-        
         this.buildPieChart();
       })
     );
@@ -128,23 +148,20 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(
       this.svc.getUpcomingTasks(50).subscribe((u) => (this.upcomingTasks = u))
     );
+
     this.subs.push(
       this.svc.getOverdueTasks(100).subscribe((o) => (this.overdueTasks = o))
     );
+
     this.subs.push(
       this.svc.getTopPerformers(5).subscribe((p) => (this.performers = p))
     );
-    this.subs.push(
-      this.svc.getOverdueTasks(5).subscribe({
-        next: (o) => (this.overdueTasks = o || []),
-        error: (err) => {
-          console.error('Failed to load overdue tasks:', err);
-          this.overdueTasks = [];
-              this.loading = false; // hide loader
 
-        },
-      })
-    );
+    // RESTORED OLD FOLLOW-UP LOGIC IN refreshAll()
+    this.svc.getTaskStats().subscribe((stats) => {
+      this.financeStats.pendingFollowups = stats.pending;
+      this.financeStats.completedFollowups = stats.completed;
+    });
 
     setTimeout(() => {
       this.loading = false;
@@ -156,7 +173,10 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate([route]);
   }
 
-  // EXISTING CHARTS
+  // ------------------------
+  // CRM Charts
+  // ------------------------
+
   buildBarChart(): void {
     if (this.barChartRef) this.barChartRef.destroy();
     const ctx = document.getElementById('barChartV2') as HTMLCanvasElement;
@@ -214,12 +234,18 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // 🔥 NEW FINANCE + CRM CHARTS BELOW
+  // ------------------------
+  // FINANCE CHARTS
+  // ------------------------
 
   private buildCollectionChart(): void {
     if (this.collectionChartRef) this.collectionChartRef.destroy();
     const ctx = document.getElementById('collectionChart') as HTMLCanvasElement;
     if (!ctx) return;
+
+    const weeklyActual = this.financeStats.collectedPayments / 4;
+    const weeklyTarget = this.financeStats.collectionTarget / 4;
+
     this.collectionChartRef = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -227,12 +253,12 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         datasets: [
           {
             label: 'Collected',
-            data: [12, 18, 15, 19],
+            data: [weeklyActual, weeklyActual, weeklyActual, weeklyActual],
             backgroundColor: '#28a745',
           },
           {
             label: 'Target',
-            data: [15, 20, 18, 20],
+            data: [weeklyTarget, weeklyTarget, weeklyTarget, weeklyTarget],
             backgroundColor: '#007bff',
           },
         ],
@@ -248,66 +274,26 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.paymentsChartRef) this.paymentsChartRef.destroy();
     const ctx = document.getElementById('paymentsChart') as HTMLCanvasElement;
     if (!ctx) return;
+
     this.paymentsChartRef = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Collected', 'Pending'],
+        labels: ['Collected (Paid)', 'Pending'],
         datasets: [
           {
             data: [
-              this.financeStats.collectedPayments,
-              this.financeStats.pendingPayments,
+              this.financeStats.collectedPayments || 0,
+              this.financeStats.pendingPayments || 0,
             ],
             backgroundColor: ['#198754', '#dc3545'],
           },
         ],
       },
-      options: { plugins: { legend: { position: 'bottom' } } },
-    });
-  }
-
-  private buildLeadsChart(): void {
-    if (this.leadsChartRef) this.leadsChartRef.destroy();
-    const ctx = document.getElementById('leadsChart') as HTMLCanvasElement;
-    if (!ctx) return;
-    this.leadsChartRef = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Active Leads', 'Dormant Leads'],
-        datasets: [
-          {
-            data: [
-              this.financeStats.activeLeads,
-              this.financeStats.dormantLeads,
-            ],
-            backgroundColor: ['#0dcaf0', '#6c757d'],
-          },
-        ],
-      },
       options: {
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } },
+        plugins: {
+          legend: { position: 'bottom' },
+        },
       },
-    });
-  }
-
-  private buildOccupancyChart(): void {
-    if (this.occupancyChartRef) this.occupancyChartRef.destroy();
-    const ctx = document.getElementById('occupancyChart') as HTMLCanvasElement;
-    if (!ctx) return;
-    const vacant = 100 - this.financeStats.occupancyRate;
-    this.occupancyChartRef = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Occupied', 'Vacant'],
-        datasets: [
-          {
-            data: [this.financeStats.occupancyRate, vacant],
-            backgroundColor: ['#20c997', '#dee2e6'],
-          },
-        ],
-      },
-      options: { plugins: { legend: { position: 'bottom' } } },
     });
   }
 
@@ -315,6 +301,7 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.revenueChartRef) this.revenueChartRef.destroy();
     const ctx = document.getElementById('revenueChart') as HTMLCanvasElement;
     if (!ctx) return;
+
     this.revenueChartRef = new Chart(ctx, {
       type: 'line',
       data: {
@@ -346,6 +333,7 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.employeeChartRef) this.employeeChartRef.destroy();
     const ctx = document.getElementById('employeeChart') as HTMLCanvasElement;
     if (!ctx) return;
+
     this.employeeChartRef = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -374,6 +362,7 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.expenseChartRef) this.expenseChartRef.destroy();
     const ctx = document.getElementById('expenseChart') as HTMLCanvasElement;
     if (!ctx) return;
+
     this.expenseChartRef = new Chart(ctx, {
       type: 'line',
       data: {
@@ -381,7 +370,12 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         datasets: [
           {
             label: 'Expenses',
-            data: [50000, 65000, 72000, 82000],
+            data: [
+              this.financeStats.totalExpense / 4,
+              this.financeStats.totalExpense / 4,
+              this.financeStats.totalExpense / 4,
+              this.financeStats.totalExpense / 4,
+            ],
             borderColor: '#dc3545',
             fill: false,
           },
@@ -394,23 +388,70 @@ export class CrmDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // helper
-  isAdmin(): boolean {
-    return this.currentUser.role === 'ADMIN';
+  private buildTotalPaidPendingChart(): void {
+    if (this.totalPaidPendingChartRef) {
+      this.totalPaidPendingChartRef.destroy();
+    }
+
+    const ctx = document.getElementById(
+      'totalPaidPendingChart'
+    ) as HTMLCanvasElement;
+    if (!ctx) return;
+
+    this.totalPaidPendingChartRef = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Total Amount', 'Paid Amount', 'Pending Amount'],
+        datasets: [
+          {
+            label: 'Amount (₹)',
+            data: [
+              this.financeStats.totalPaymentAmount || 0,
+              this.financeStats.totalPaidAmount || 0,
+              this.financeStats.totalPendingAmount || 0,
+            ],
+            backgroundColor: ['#0d6efd', '#198754', '#dc3545'],
+            borderRadius: 6,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true },
+        },
+      },
+    });
+  }
+
+  loadUserInfo() {
+    this.currentUser.name = sessionStorage.getItem('fullName') || 'Unknown';
+    this.currentUser.role = sessionStorage.getItem('role') || 'USER';
   }
 
   ngOnDestroy(): void {
+    if (this.totalPaidPendingChartRef) {
+      this.totalPaidPendingChartRef.destroy();
+    }
+
     this.subs.forEach((s) => s.unsubscribe());
     [
       this.barChartRef,
       this.pieChartRef,
       this.collectionChartRef,
       this.paymentsChartRef,
-      this.leadsChartRef,
-      this.occupancyChartRef,
       this.revenueChartRef,
       this.employeeChartRef,
       this.expenseChartRef,
+      this.totalPaidPendingChartRef,
     ].forEach((ch) => ch?.destroy());
+  }
+
+  get monthlyRevenueTotal(): number {
+    return this.financeStats?.monthlyRevenue
+      ? this.financeStats.monthlyRevenue.reduce((a: any, b: any) => a + b, 0)
+      : 0;
   }
 }

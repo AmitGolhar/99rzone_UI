@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from '@app/environment/environment';
- 
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
- 
+
   private baseUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
@@ -17,8 +17,16 @@ export class AuthService {
       .pipe(
         tap((res) => {
           if (res && res.token) {
-            localStorage.setItem('auth_token', res.token);
-            localStorage.setItem('username', res.username);
+            // Store token
+            sessionStorage.setItem('auth_token', res.token);
+
+            // Decode token (extracting claims)
+            const payload = JSON.parse(atob(res.token.split('.')[1]));
+
+            // Store extracted values
+            sessionStorage.setItem('username', payload.sub);
+            sessionStorage.setItem('fullName', payload.fullName);
+            sessionStorage.setItem('role', payload.role);
           }
         })
       );
@@ -32,22 +40,35 @@ export class AuthService {
     });
   }
 
-  logout() {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('username');
-     window.location.href = '/login';
-  }
+logout() {
+  sessionStorage.clear();
+  localStorage.clear();
+  document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+      .replace(/^ +/, "")
+      .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+  });
+  window.location.assign('/login');
+}
+
 
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return sessionStorage.getItem('auth_token');
   }
-   
 
   getUsername(): string | null {
-    return localStorage.getItem('username');
+    return sessionStorage.getItem('username');
   }
+
+  getFullName(): string | null {
+    return sessionStorage.getItem('fullName');
+  }
+
+  getRole(): string | null {
+    return sessionStorage.getItem('role');
+  }
+
   isLoggedIn(): boolean {
-  const token = localStorage.getItem('auth_token');
-  return !!token; // returns true if token exists
-}
+    return !!sessionStorage.getItem('auth_token');
+  }
 }

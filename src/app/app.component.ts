@@ -15,7 +15,7 @@ loading = true;
 
    constructor(private router: Router,private themeService: ThemeService) {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
-      const token = localStorage.getItem('auth_token');
+      const token = sessionStorage.getItem('auth_token');
       const hideRoutes = ['/login', '/register'];
       this.showHeader = !!token && !hideRoutes.includes(this.router.url);
     });

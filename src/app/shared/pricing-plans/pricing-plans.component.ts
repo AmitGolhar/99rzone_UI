@@ -26,7 +26,7 @@ export class PricingPlansComponent {
     {
       id: 'starter',
       name: 'Starter',
-      priceMonthly: 499,
+      priceMonthly: 999,
       usersIncluded: 5,
       features: [
         'Dashboard Overview',
@@ -51,7 +51,7 @@ export class PricingPlansComponent {
     {
       id: 'growth',
       name: 'Growth',
-      priceMonthly: 1299,
+      priceMonthly: 2499,
       usersIncluded: 25,
       highlight: true,
       features: [
@@ -79,7 +79,7 @@ export class PricingPlansComponent {
     {
       id: 'enterprise',
       name: 'Enterprise',
-      priceMonthly: 4999,
+      priceMonthly: 9999,
       usersIncluded: null,
       features: [
         'Everything in Growth',
